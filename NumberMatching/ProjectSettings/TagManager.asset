@@ -16,7 +16,7 @@ TagManager:
   - Square_Next
   - Square_Gameboard
   - OverUI
-  - 
+  - Background
   - 
   - 
   - 
@@ -40,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1618667013
     locked: 0
   - name: GameView
     uniqueID: 2751922643

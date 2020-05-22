@@ -20,6 +20,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     [SerializeField] List<SpriteRenderer> connectionDisplaySpriteRenderers = default;
     [SerializeField] GameObject connectionDisplayGRP = default;
     [SerializeField] List<Sprite> numberSprites = new List<Sprite>();
+    [SerializeField] List<Sprite> completed_umberSprites = new List<Sprite>();
     [SerializeField] GameObject completedImage = default;
     [SerializeField] GameObject blockerImage = default;
     private GameBoardMechanics gameboard;
@@ -56,24 +57,57 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
     private void NumberDisplay() {
         numberSpriteRenderer.gameObject.SetActive(true);
+        numberSpriteRenderer.sprite = numberSprites[number-1];
+        numberSpriteRenderer.sortingOrder = 5;
+        PopSFX();
+        Pop();
+    }
+
+    private void PopSFX() {
         switch (number) {
             case 1:
-                numberSpriteRenderer.sprite = numberSprites[0];
+                Debug.Log("sfx1");
+                FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
                 break;
             case 2:
-                numberSpriteRenderer.sprite = numberSprites[1];
+                Debug.Log("sfx2");
+                FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
                 break;
             case 3:
-                numberSpriteRenderer.sprite = numberSprites[2];
+                Debug.Log("sfx3");
+                FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
                 break;
-            case 4:
-                numberSpriteRenderer.sprite = numberSprites[3];
-                break;
-            case 5:
-                numberSpriteRenderer.sprite = numberSprites[4];
+            default:
+                Debug.Log("nosfx");
                 break;
         }
     }
+
+    private void Pop() {
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(1f, 1f, 0f));
+        hash.Add("time", 0.5f);
+        hash.Add("oncomplete", "PopDone");
+        iTween.PunchScale(gameObject, hash);
+    }
+
+    private void PopDone() {
+        numberSpriteRenderer.sortingOrder = 2;
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    private void PopAway() {
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(-0.5f, -0.5f, 0f));
+        hash.Add("time", .5f);
+        hash.Add("oncomplete", "PopAwayDone");
+        iTween.PunchScale(gameObject, hash);
+    }
+
+    private void PopAwayDone() {
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
 
     internal void RecalculateAdjescentSquares() {
         for (int i = 0; i < adjescentSquares.Count; i++) {
@@ -141,6 +175,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     public void ResetSquare_OnCompletion() {
+        PopAway();
         ZerOutSquareInfo();
     }
 
@@ -233,6 +268,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         
         if (connections == number) {
             completed = true;
+            completedImage.GetComponent<SpriteRenderer>().sprite = completed_umberSprites[number - 1];
             completedImage.SetActive(true);
             ConnectionDisplay();
             gameboard.CheckForCompleteLink(gameObject);

@@ -6,7 +6,7 @@ using CloudOnce;
 
 public class PostToLeaderBoardCommand : MonoBehaviour{
 
-    [SerializeField] GameBoardMechanics gameboard;
+    [SerializeField] GameBoardMechanics gameboard = default;
 
     public void PostToLeaderBoardOnClick() {
         Debug.Log("Post To Leaderboard Clicked");

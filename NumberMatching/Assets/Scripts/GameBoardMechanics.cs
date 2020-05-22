@@ -11,7 +11,9 @@ public class GameBoardMechanics : MonoBehaviour{
     public int score = 0;
     public int blockersOnField = 0;
     public int speedUpBlockerSpawnEveryPts = 50;
+    public int luckyCoins = 1;
     private int speedUpBlockercounter = 1;
+
 
     [Header("GameBoard Settings")]
     public int gameBoardWidth;
@@ -31,6 +33,7 @@ public class GameBoardMechanics : MonoBehaviour{
     [SerializeField] GameObject gameOver_text = default;
     [SerializeField] Button clearBlockerButton = default;
     [SerializeField] GameObject postLeaderboardButton = default;
+    [SerializeField] Scoreboard scoreboard = default;
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
@@ -39,6 +42,11 @@ public class GameBoardMechanics : MonoBehaviour{
         SetUpCamera();
         CreateGameBoardSquares();
         SetGameBoardSquaresAdjescents();
+        SetLuckyCoin();
+    }
+
+    private void SetLuckyCoin() {
+        
     }
 
     public void GameOver() {
@@ -55,7 +63,7 @@ public class GameBoardMechanics : MonoBehaviour{
         AddSquareToCompletedList(square);
         if (completedListPass) {
             Debug.Log("Completed Link");
-            PrintCompletedLink();
+            //PrintCompletedLink();
             ResetLinkFromBoard();
         }
         else {
@@ -71,13 +79,23 @@ public class GameBoardMechanics : MonoBehaviour{
     }
 
     private void ResetLinkFromBoard() {
+        int floatingTextNumber = 0;
         for (int i = 0; i < completeList.Count; i++) {
+            floatingTextNumber += completeList[i].GetComponent<SquareMechanics_Gameboard>().number;
             AddToScore(completeList[i]);
             ResetSquare(completeList[i]);
         }
+
+        ClearSFX();
         UpdateScoreDiplay();
+        ScoreDisplayFloatingText(floatingTextNumber);
         UpdateClearsTotal();
         ReduceBlockerCountdownDuration();
+
+    }
+
+    private void ClearSFX() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard");
     }
 
     private void ReduceBlockerCountdownDuration() {
@@ -94,6 +112,7 @@ public class GameBoardMechanics : MonoBehaviour{
 
     private void UpdateScoreDiplay() {
         score_text.text = score.ToString();
+
     }
 
     public void AddBlockerToField() {
@@ -137,7 +156,13 @@ public class GameBoardMechanics : MonoBehaviour{
     }
 
     private void ResetSquare(GameObject square) {
+
         square.GetComponent<SquareMechanics_Gameboard>().ResetSquare_OnCompletion();
+
+    }
+
+    private void ScoreDisplayFloatingText(int number) {
+        scoreboard.ScoreboardAdd(number);
     }
 
     private void AddToScore(GameObject square) {
@@ -184,7 +209,7 @@ public class GameBoardMechanics : MonoBehaviour{
             Camera.main.orthographicSize = horizontalSize;
         }
 
-        cameraHolder.transform.localPosition = cameraHolder.transform.localPosition + new Vector3(0f, 1f, 0f);
+        cameraHolder.transform.localPosition = cameraHolder.transform.localPosition + new Vector3(0f, -0.75f, 0f);
     }
 
     private void CreateGameBoardSquares() {

@@ -4,20 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NextBoardMechanics : MonoBehaviour{
-
-
-    [Header("NextBoard Attributes")]
-    public int ActiveBalls = 0;
-    public int numberOfNextSquares = 0;
-
-    [Header("Game Objects")]
-    public List<GameObject> nextSquares = new List<GameObject>();
+    
+    public List<SquareMechanics_Next> nextSquares = new List<SquareMechanics_Next>();
     [SerializeField] GameBoardMechanics gameboard = default;
-    [SerializeField] GameObject square_next = default;
 
 
     private void Start() {
-        CreateNextBoard();
+        Set_NextSquare();
         FillNextBoard();
     }
 
@@ -27,18 +20,10 @@ public class NextBoardMechanics : MonoBehaviour{
         }
     }
 
-    private void CreateNextBoard() {
-        for (int i = 0; i < numberOfNextSquares; i++) {
-            Generate_NextSquare(i, gameboard.gameBoardHeight + 0.25f);
+    private void Set_NextSquare() {
+        for (int i = 0; i<nextSquares.Count;i++) {
+            nextSquares[i].SetNextBoard();
         }
-    }
-
-    private void Generate_NextSquare(float x, float y) {
-        Vector3 squareSpawnPoint = new Vector3(x, y, 0);
-        GameObject newSquare = Instantiate(square_next, squareSpawnPoint, Quaternion.identity, gameObject.transform);
-        newSquare.name = "NextBall_" + x;
-        newSquare.GetComponent<SquareMechanics_Next>().SetNextBoard();
-        nextSquares.Add(newSquare);
     }
 
     public void RotateNextBoard() {
@@ -62,10 +47,7 @@ public class NextBoardMechanics : MonoBehaviour{
                 nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
             }
             else {
-                //last square
                 nextSquares[i].GetComponent<SquareMechanics_Next>().SetRandomNumberAndDisplay();
-                //nextSquares[i].GetComponent<SquareMechanics_Next>().number = 0;
-                //nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
             }
         }
     }

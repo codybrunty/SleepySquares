@@ -9,12 +9,19 @@ public class BoardClearCommand : MonoBehaviour{
     public int clearsTotal = 0;
     public int clearsUsed = 0;
     public int clearsEveryPts = 100;
-    [SerializeField] TextMeshProUGUI clearText;
-    [SerializeField] GameBoardMechanics gameboard;
+    [SerializeField] TextMeshProUGUI clearText = default;
+    [SerializeField] GameBoardMechanics gameboard=default;
+
+    public Color blinkColor1;
 
 
     private void Start() {
         UpdateClearTextDisplay();
+
+        Hashtable hash = new Hashtable();
+        hash.Add("color", blinkColor1);
+        hash.Add("time", 2f);
+        iTween.ColorTo(gameObject, hash);
     }
 
     public void BoardClearOnClick() {

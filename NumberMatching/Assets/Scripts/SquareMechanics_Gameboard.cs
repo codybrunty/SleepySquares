@@ -10,6 +10,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     public bool completed = false;
     public bool blocker = false;
     public List<bool> adjescentConnections = new List<bool>() { false, false, false, false };
+    public bool luckyCoin = false;
     [Header("GameBoard Info")]
     public int gamePositionX=0;
     public int gamePositionY=0;
@@ -66,19 +67,19 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     private void PopSFX() {
         switch (number) {
             case 1:
-                Debug.Log("sfx1");
+                //Debug.Log("sfx1");
                 FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
                 break;
             case 2:
-                Debug.Log("sfx2");
+                //Debug.Log("sfx2");
                 FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
                 break;
             case 3:
-                Debug.Log("sfx3");
+                //Debug.Log("sfx3");
                 FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
                 break;
             default:
-                Debug.Log("nosfx");
+                //Debug.Log("nosfx");
                 break;
         }
     }

@@ -10,9 +10,18 @@ public class GameBoardMechanics : MonoBehaviour{
     [Header("GameBoard Attributes")]
     public int score = 0;
     public int blockersOnField = 0;
-    public int speedUpBlockerSpawnEveryPts = 50;
     public int luckyCoins = 1;
-    private int speedUpBlockercounter = 1;
+
+    [Header("Timer On Settings")]
+    public int reduceBlockerTimerEveryPts = 50;
+    private int reduceBlockerTimerCounter = 1;
+
+    [Header("Timer Off Settings")]
+    public int moveLimit = 10;
+    public int moveLimitMin = 5;
+    public int reduceMoveLimitEveryPts = 50;
+    public int moveCounter = 0;
+    private int reduceMoveLimitCounter = 1;
 
 
     [Header("GameBoard Settings")]
@@ -42,11 +51,34 @@ public class GameBoardMechanics : MonoBehaviour{
         SetUpCamera();
         CreateGameBoardSquares();
         SetGameBoardSquaresAdjescents();
-        SetLuckyCoin();
     }
 
-    private void SetLuckyCoin() {
-        
+    public IEnumerator SetLuckyCoin() {
+        Debug.Log("lucky coroutine started");
+        yield return new WaitForSeconds(60);
+        Debug.Log("lucky coin set");
+        gameBoardSquares[UnityEngine.Random.Range(0, gameBoardSquares.Count)].GetComponent<SquareMechanics_Gameboard>().luckyCoin = true;
+    }
+
+    public void StartGame() {
+        Debug.Log("Game Started");
+        //StartCoroutine(SetLuckyCoin());
+    }
+
+    public void AddToMoveCounter() {
+        moveCounter++;
+
+        //if timer is off blockers apear by movelimit;
+        if(GameSettings.GS.timerStatus == 0) {
+            CheckMoveLimit();
+        }
+
+    }
+
+    private void CheckMoveLimit() {
+        if (moveCounter % moveLimit == 0) {
+            AddBlockerToBoard();
+        }
     }
 
     public void GameOver() {
@@ -90,8 +122,14 @@ public class GameBoardMechanics : MonoBehaviour{
         UpdateScoreDiplay();
         ScoreDisplayFloatingText(floatingTextNumber);
         UpdateClearsTotal();
-        ReduceBlockerCountdownDuration();
 
+        //if timer on/off reduce by timer duration/move limit
+        if (GameSettings.GS.timerStatus == 0) {
+            ReduceMoveLimit();
+        }
+        else {
+            ReduceBlockerCountdownDuration();
+        }
     }
 
     private void ClearSFX() {
@@ -99,10 +137,21 @@ public class GameBoardMechanics : MonoBehaviour{
     }
 
     private void ReduceBlockerCountdownDuration() {
-        int blockerScore = speedUpBlockercounter * speedUpBlockerSpawnEveryPts;
+        int blockerScore = reduceBlockerTimerCounter * reduceBlockerTimerEveryPts;
         if (score > blockerScore) {
-            speedUpBlockercounter++;
+            reduceBlockerTimerCounter++;
             timer.ReduceBlockerCountdownDuration();
+        }
+    }
+
+    private void ReduceMoveLimit() {
+        int moveLimitScore = reduceMoveLimitCounter * reduceMoveLimitEveryPts;
+        if (score > moveLimitScore) {
+            reduceMoveLimitCounter++;
+            moveLimit--;
+            if (moveLimit < moveLimitMin) {
+                moveLimit = moveLimitMin;
+            }
         }
     }
 
@@ -115,12 +164,8 @@ public class GameBoardMechanics : MonoBehaviour{
 
     }
 
-    public void AddBlockerToField() {
+    public void AddBlockerToBoard() {
         blockersOnField++;
-        AddBlockerToBoard();
-    }
-
-    private void AddBlockerToBoard() {
         emptySquares.Clear();
         for (int i = 0; i < gameBoardSquares.Count; i++) {
             if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {

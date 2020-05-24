@@ -8,7 +8,9 @@ public class RaycastMouse : MonoBehaviour {
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] GameBoardMechanics gameboard = default;
     [SerializeField] TimerCountdown timer = default;
+    [SerializeField] SwitchButton switchButton = default;
 
+    public bool switchSquares = false;
     private bool gameStarted = false;
 
 
@@ -58,29 +60,46 @@ public class RaycastMouse : MonoBehaviour {
     }
 
     private void GameSquareHit(GameObject square){
+
         //empty square non blocker
         if (square.GetComponent<SquareMechanics_Gameboard>().number == 0) {
+            CheckIfEmptySquareLucky(square);
             EmptySquareClicked(square);
         }
         //blocker square
         else if(square.GetComponent<SquareMechanics_Gameboard>().number == 5 && square.GetComponent<SquareMechanics_Gameboard>().blocker == true) {
             BlockerSquareClicked();
         }
+
         //filled square
         else {
-            OccupiedSquareClicked(square);
+            if (switchSquares) {
+                OccupiedSquareClicked(square);
+                switchButton.ReduceSwitchAmmount();
+                switchButton.TurnOffSwitchMode();
+            }
         }
 
     }
 
+    private void CheckIfEmptySquareLucky(GameObject square) {
+        if (square.GetComponent<SquareMechanics_Gameboard>().luckyCoin == true) {
+            square.GetComponent<SquareMechanics_Gameboard>().luckyCoin = false;
+            FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+            Debug.Log("found lucky coin");
+            StartCoroutine(gameboard.SetLuckyCoin());
+        }
+    }
+
     private void BlockerSquareClicked() {
         Debug.Log("Blocker Square Clicked");
-        gameboard.GameOver();
+        //gameboard.GameOver();
     }
 
     private void OccupiedSquareClicked(GameObject square) {
 
         if (square.GetComponent<SquareMechanics_Gameboard>().completed == false) {
+
             int number = nextBoard.GetFirstNumber();
             int clickedNumber = square.GetComponent<SquareMechanics_Gameboard>().number;
 
@@ -94,17 +113,24 @@ public class RaycastMouse : MonoBehaviour {
                     square.GetComponent<SquareMechanics_Gameboard>().SetSquareDisplay();
                     square.GetComponent<SquareMechanics_Gameboard>().CalculateConnections();
                     square.GetComponent<SquareMechanics_Gameboard>().RecalculateAdjescentSquares();
+
+                    gameboard.AddToMoveCounter();
                 }
             }
+
+            
         }
         
 
     }
 
     private void EmptySquareClicked(GameObject square) {
+        //First click on board starts game
         if (!gameStarted) {
-            CheckIfGameStart();
+            CheckTimerSTatus();
+            StartGame();
         }
+        
 
         int number = nextBoard.GetFirstNumber();
         if (number != 0) {
@@ -113,12 +139,28 @@ public class RaycastMouse : MonoBehaviour {
             square.GetComponent<SquareMechanics_Gameboard>().SetSquareDisplay();
             square.GetComponent<SquareMechanics_Gameboard>().CalculateConnections();
         }
+
+
+        gameboard.AddToMoveCounter();
     }
 
-    private void CheckIfGameStart() {
-        if (!timer.started) {
+    private void StartGame() {
+        gameboard.StartGame();
+        gameStarted = true;
+    }
+
+    private void CheckTimerSTatus() {
+        //if timer settings turned on start timer
+        if (GameSettings.GS.timerStatus == 1) {
+            StartTimer();
+        }
+
+    }
+
+    private void StartTimer() {
+        if (!timer.timerStarted) {
             timer.StartTimerCountdown();
-            gameStarted = true;
         }
     }
+    
 }

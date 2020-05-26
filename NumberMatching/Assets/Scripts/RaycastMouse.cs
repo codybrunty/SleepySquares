@@ -115,6 +115,7 @@ public class RaycastMouse : MonoBehaviour {
                     square.GetComponent<SquareMechanics_Gameboard>().RecalculateAdjescentSquares();
 
                     gameboard.AddToMoveCounter();
+                    gameboard.CheckIfBoardFull();
                 }
             }
 
@@ -142,6 +143,7 @@ public class RaycastMouse : MonoBehaviour {
 
 
         gameboard.AddToMoveCounter();
+        gameboard.CheckIfBoardFull();
     }
 
     private void StartGame() {

@@ -29,6 +29,7 @@ public class GameBoardMechanics : MonoBehaviour{
     public int gameBoardHeight;
     public float borderSize = 1.0f;
     public bool touchEnabled = true;
+    public bool gameOver = false;
 
     [Header("Game Objects")]
     public List<GameObject> gameBoardSquares = new List<GameObject>();
@@ -46,11 +47,56 @@ public class GameBoardMechanics : MonoBehaviour{
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
+    public SpriteRenderer pic;
+    
 
     private void Start() {
-        SetUpCamera();
+        //SetUpCamera();
         CreateGameBoardSquares();
         SetGameBoardSquaresAdjescents();
+    }
+
+    private void Update() {
+        //SetUpCamera();
+        NewSetUp();
+    }
+
+    private void NewSetUp() {
+        float screenRatio = (float)Screen.width / ((float)Screen.height);
+        //float targetRatio = ((float)gameBoardWidth / (float)gameBoardHeight);
+        float targetRatio = (float)pic.bounds.size.x / (float)pic.bounds.size.y;
+
+
+
+        if (screenRatio > targetRatio) {
+            //Camera.main.orthographicSize = (float)gameBoardHeight / 2f;
+            Camera.main.orthographicSize = (float)pic.bounds.size.y / 2f;
+        }
+        else {
+            float differenceInSize = targetRatio / screenRatio;
+            //Camera.main.orthographicSize = (float)gameBoardHeight / 2f*differenceInSize;
+            Camera.main.orthographicSize = (float)pic.bounds.size.y / 2f*differenceInSize;
+        }
+
+        //cameraHolder.transform.position = new Vector3((float)pic.bounds.size.x / 2f, pic.bounds.size.y / 2f, -10f);
+    }
+
+    private void SetUpCamera() {
+        cameraHolder.transform.position = new Vector3((float)(gameBoardWidth - 1) / 2f, (float)(gameBoardHeight - 1) / 2f, -10f);
+
+        float aspectRatio = (float)Screen.width / (float)Screen.height;
+
+        float verticalSize = (float)gameBoardHeight / 2f + (borderSize);
+        float horizontalSize = ((float)gameBoardWidth / 2f + (borderSize)) / aspectRatio;
+
+        if (verticalSize > horizontalSize) {
+            Camera.main.orthographicSize = verticalSize;
+        }
+        else {
+            Camera.main.orthographicSize = horizontalSize;
+        }
+
+        //cameraHolder.transform.localPosition = cameraHolder.transform.localPosition + new Vector3(0f, -0.75f, 0f);
     }
 
     public IEnumerator SetLuckyCoin() {
@@ -81,12 +127,33 @@ public class GameBoardMechanics : MonoBehaviour{
         }
     }
 
+    public void CheckIfBoardFull() {
+        int emptyCounter = 0;
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {
+                emptyCounter++;
+                Debug.Log("notgame ober");
+                break;
+            }
+        }
+        if (emptyCounter == 0) {
+            GameOver();
+        }
+    }
+
     public void GameOver() {
-        Debug.Log("Game Over");
-        gameOver_text.SetActive(true);
-        touchEnabled = false;
-        timer.StopTimer();
-        postLeaderboardButton.SetActive(true);
+        if (!gameOver) {
+            gameOver = true;
+            Debug.Log("Game Over");
+            gameOver_text.SetActive(true);
+            touchEnabled = false;
+
+            if (GameSettings.GS.timerStatus == 1) {
+                timer.StopTimer();
+            }
+
+            postLeaderboardButton.SetActive(true);
+        }
     }
 
     public void CheckForCompleteLink(GameObject square) {
@@ -238,23 +305,6 @@ public class GameBoardMechanics : MonoBehaviour{
         for(int i = 0; i < gameBoardSquares.Count; i++) {
             gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SetAdjescentSquares(gameObject.GetComponent<GameBoardMechanics>());
         }
-    }
-
-    private void SetUpCamera() {
-        cameraHolder.transform.position = new Vector3((float)(gameBoardWidth - 1) / 2f, (float)(gameBoardHeight - 1) / 2f, -10f);
-
-        float aspectRatio = (float)Screen.width / (float)Screen.height;
-        float verticalSize = (float)gameBoardHeight / 2f + (borderSize);
-        float horizontalSize = ((float)gameBoardWidth / 2f + (borderSize)) / aspectRatio;
-
-        if (verticalSize > horizontalSize) {
-            Camera.main.orthographicSize = verticalSize;
-        }
-        else {
-            Camera.main.orthographicSize = horizontalSize;
-        }
-
-        cameraHolder.transform.localPosition = cameraHolder.transform.localPosition + new Vector3(0f, -0.75f, 0f);
     }
 
     private void CreateGameBoardSquares() {

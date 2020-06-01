@@ -6,22 +6,23 @@ using UnityEngine.UI;
 using TMPro;
 
 public class GameBoardMechanics : MonoBehaviour{
-    
+
     [Header("GameBoard Attributes")]
+    public int totalPoints = 0;
+    public int highScore = 0;
     public int score = 0;
-    public int blockersOnField = 0;
     public int luckyCoins = 1;
 
-    [Header("Timer On Settings")]
-    public int reduceBlockerTimerEveryPts = 50;
-    private int reduceBlockerTimerCounter = 1;
+    [Header("Clear Settings")]
+    public int clearsEveryPts = 100;
+    private int clearCounter = 1;
 
-    [Header("Timer Off Settings")]
+    [Header("Move Settings")]
+    public int moveLimitStart = 10;
     public int moveLimit = 10;
     public int moveLimitMin = 5;
     public int reduceMoveLimitEveryPts = 50;
     public int moveCounter = 0;
-    private int reduceMoveLimitCounter = 1;
 
 
     [Header("GameBoard Settings")]
@@ -37,13 +38,16 @@ public class GameBoardMechanics : MonoBehaviour{
     [SerializeField] GameObject cameraHolder = default;
     [SerializeField] GameObject square_gameboard = default;
     [SerializeField] TextMeshProUGUI score_text = default;
-    [SerializeField] TimerCountdown timer = default;
+    [SerializeField] TextMeshProUGUI highScore_text = default;
+    [SerializeField] TextMeshProUGUI totalPoints_text = default;
     private List<GameObject> completeList = new List<GameObject>();
     private bool completedListPass = true;
     [SerializeField] GameObject gameOver_text = default;
     [SerializeField] Button clearBlockerButton = default;
     [SerializeField] GameObject postLeaderboardButton = default;
     [SerializeField] Scoreboard scoreboard = default;
+    [SerializeField] NextBoardMechanics nextBoard = default;
+    [SerializeField] SwitchButton switchButton = default;
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
@@ -51,17 +55,96 @@ public class GameBoardMechanics : MonoBehaviour{
     
 
     private void Start() {
-        //SetUpCamera();
-        CreateGameBoardSquares();
-        SetGameBoardSquaresAdjescents();
+        SetBoardState();
     }
 
     private void Update() {
-        //SetUpCamera();
-        NewSetUp();
+        CameraSetup();
     }
 
-    private void NewSetUp() {
+    public void ResetBoardState() {
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZerOutSquareInfo();
+        }
+
+        blockerSquares.Clear();
+        clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = 0;
+        clearCounter = 1;
+        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearTextDisplay();
+
+        score = 0;
+        UpdateScoreDiplay();
+        ReduceMoveLimit();
+        moveCounter = 0;
+
+        nextBoard.ResetNextBoard();
+        
+        SaveBoardState();
+    }
+
+    private void SetBoardState() {
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number = GameDataManager.GDM.squares[i].number;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed = GameDataManager.GDM.squares[i].completed;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker = GameDataManager.GDM.squares[i].blocker;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections = GameDataManager.GDM.squares[i].adjescentConnections;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = GameDataManager.GDM.squares[i].luckyCoin;
+
+            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0) {
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SilentSquareDisplay();
+            }
+        }
+
+        SetBlockerSquaresList();
+
+        clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = GameDataManager.GDM.currentClears;
+        clearCounter = GameDataManager.GDM.currentClearCounter;
+        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearTextDisplay();
+
+        switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
+        switchButton.UpdateSwitchAmmountDisplay();
+
+        highScore = GameDataManager.GDM.HighScore_AllTime;
+        UpdateHighScoreDisplay();
+
+        totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
+        UpdateTotalPointsDisplay();
+
+        score = GameDataManager.GDM.currentPoints;
+        UpdateScoreDiplay();
+
+        moveCounter = GameDataManager.GDM.moveCounter;
+        ReduceMoveLimit();
+    }
+
+    public void SaveBoardState() {
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+            GameDataManager.GDM.squares[i].number = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number;
+            GameDataManager.GDM.squares[i].completed = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed;
+            GameDataManager.GDM.squares[i].blocker = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker;
+            GameDataManager.GDM.squares[i].adjescentConnections = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections;
+            GameDataManager.GDM.squares[i].luckyCoin = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin;
+        }
+        GameDataManager.GDM.currentPoints = score;
+        GameDataManager.GDM.TotalPoints_AllTime = totalPoints;
+        GameDataManager.GDM.HighScore_AllTime = highScore;
+        GameDataManager.GDM.currentClears = clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal;
+        GameDataManager.GDM.currentClearCounter = clearCounter;
+        GameDataManager.GDM.currentSwitches = switchButton.switchAmmount;
+        GameDataManager.GDM.moveCounter = moveCounter;
+        GameDataManager.GDM.SaveGameData();
+    }
+
+
+    private void SetBlockerSquaresList() {
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker == true) {
+                blockerSquares.Add(gameBoardSquares[i]);
+            }
+        }
+    }
+
+    private void CameraSetup() {
         float screenRatio = (float)Screen.width / ((float)Screen.height);
         //float targetRatio = ((float)gameBoardWidth / (float)gameBoardHeight);
         float targetRatio = (float)pic.bounds.size.x / (float)pic.bounds.size.y;
@@ -81,24 +164,6 @@ public class GameBoardMechanics : MonoBehaviour{
         //cameraHolder.transform.position = new Vector3((float)pic.bounds.size.x / 2f, pic.bounds.size.y / 2f, -10f);
     }
 
-    private void SetUpCamera() {
-        cameraHolder.transform.position = new Vector3((float)(gameBoardWidth - 1) / 2f, (float)(gameBoardHeight - 1) / 2f, -10f);
-
-        float aspectRatio = (float)Screen.width / (float)Screen.height;
-
-        float verticalSize = (float)gameBoardHeight / 2f + (borderSize);
-        float horizontalSize = ((float)gameBoardWidth / 2f + (borderSize)) / aspectRatio;
-
-        if (verticalSize > horizontalSize) {
-            Camera.main.orthographicSize = verticalSize;
-        }
-        else {
-            Camera.main.orthographicSize = horizontalSize;
-        }
-
-        //cameraHolder.transform.localPosition = cameraHolder.transform.localPosition + new Vector3(0f, -0.75f, 0f);
-    }
-
     public IEnumerator SetLuckyCoin() {
         Debug.Log("lucky coroutine started");
         yield return new WaitForSeconds(60);
@@ -113,12 +178,7 @@ public class GameBoardMechanics : MonoBehaviour{
 
     public void AddToMoveCounter() {
         moveCounter++;
-
-        //if timer is off blockers apear by movelimit;
-        if(GameSettings.GS.timerStatus == 0) {
-            CheckMoveLimit();
-        }
-
+        CheckMoveLimit();
     }
 
     private void CheckMoveLimit() {
@@ -132,7 +192,7 @@ public class GameBoardMechanics : MonoBehaviour{
         for (int i = 0; i < gameBoardSquares.Count; i++) {
             if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {
                 emptyCounter++;
-                Debug.Log("notgame ober");
+                //Debug.Log("not game over");
                 break;
             }
         }
@@ -147,10 +207,6 @@ public class GameBoardMechanics : MonoBehaviour{
             Debug.Log("Game Over");
             gameOver_text.SetActive(true);
             touchEnabled = false;
-
-            if (GameSettings.GS.timerStatus == 1) {
-                timer.StopTimer();
-            }
 
             postLeaderboardButton.SetActive(true);
         }
@@ -175,6 +231,8 @@ public class GameBoardMechanics : MonoBehaviour{
             blockerSquares[i].GetComponent<SquareMechanics_Gameboard>().ResetSquare_BlockerClear();
         }
         blockerSquares.Clear();
+        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+        SaveBoardState();
     }
 
     private void ResetLinkFromBoard() {
@@ -182,57 +240,72 @@ public class GameBoardMechanics : MonoBehaviour{
         for (int i = 0; i < completeList.Count; i++) {
             floatingTextNumber += completeList[i].GetComponent<SquareMechanics_Gameboard>().number;
             AddToScore(completeList[i]);
+            AddToTotalPoints(completeList[i]);
             ResetSquare(completeList[i]);
         }
 
-        ClearSFX();
+        ClearSFX(floatingTextNumber);
         UpdateScoreDiplay();
+        HighScoreCheck();
+        UpdateTotalPointsDisplay();
         ScoreDisplayFloatingText(floatingTextNumber);
         UpdateClearsTotal();
 
-        //if timer on/off reduce by timer duration/move limit
-        if (GameSettings.GS.timerStatus == 0) {
-            ReduceMoveLimit();
+        ReduceMoveLimit();
+    }
+
+    private void HighScoreCheck() {
+        if (score > highScore) {
+            highScore = score;
+            UpdateHighScoreDisplay();
+        }
+    }
+
+    private void ClearSFX(int clearNumber) { 
+        if(clearNumber <= 15) {
+            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard1");
+        }
+        else if (clearNumber > 15 && clearNumber <= 35) {
+            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard2");
         }
         else {
-            ReduceBlockerCountdownDuration();
+            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard3");
         }
+
     }
 
-    private void ClearSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard");
-    }
-
-    private void ReduceBlockerCountdownDuration() {
-        int blockerScore = reduceBlockerTimerCounter * reduceBlockerTimerEveryPts;
-        if (score > blockerScore) {
-            reduceBlockerTimerCounter++;
-            timer.ReduceBlockerCountdownDuration();
-        }
-    }
 
     private void ReduceMoveLimit() {
-        int moveLimitScore = reduceMoveLimitCounter * reduceMoveLimitEveryPts;
-        if (score > moveLimitScore) {
-            reduceMoveLimitCounter++;
-            moveLimit--;
-            if (moveLimit < moveLimitMin) {
-                moveLimit = moveLimitMin;
-            }
+        moveLimit = moveLimitStart - ( (int)(score / reduceMoveLimitEveryPts));
+
+        if (moveLimit < moveLimitMin) {
+            moveLimit = moveLimitMin;
         }
     }
 
     private void UpdateClearsTotal() {
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(score);
+
+        int clearScore = clearCounter * clearsEveryPts;
+        if (score > clearScore) {
+            clearCounter++;
+            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
+            UpdateClearsTotal();
+        }
     }
 
     private void UpdateScoreDiplay() {
+        Debug.Log("score updated to " + score);
         score_text.text = score.ToString();
+    }
 
+    private void UpdateHighScoreDisplay() {
+        highScore_text.text = highScore.ToString();
+    }
+    private void UpdateTotalPointsDisplay() {
+        totalPoints_text.text = totalPoints.ToString();
     }
 
     public void AddBlockerToBoard() {
-        blockersOnField++;
         emptySquares.Clear();
         for (int i = 0; i < gameBoardSquares.Count; i++) {
             if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {
@@ -280,7 +353,10 @@ public class GameBoardMechanics : MonoBehaviour{
     private void AddToScore(GameObject square) {
         score = score + square.GetComponent<SquareMechanics_Gameboard>().number;
     }
-
+    private void AddToTotalPoints(GameObject square) {
+        totalPoints = totalPoints + square.GetComponent<SquareMechanics_Gameboard>().number;
+    }
+    
     private void AddSquareToCompletedList(GameObject square) {
         completeList.Add(square);
 
@@ -301,11 +377,13 @@ public class GameBoardMechanics : MonoBehaviour{
 
     }
 
+    /*
     private void SetGameBoardSquaresAdjescents() {
         for(int i = 0; i < gameBoardSquares.Count; i++) {
             gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SetAdjescentSquares(gameObject.GetComponent<GameBoardMechanics>());
         }
     }
+
 
     private void CreateGameBoardSquares() {
         for (int x = 0; x < gameBoardWidth; x++) {
@@ -324,6 +402,7 @@ public class GameBoardMechanics : MonoBehaviour{
         newSquare.GetComponent<SquareMechanics_Gameboard>().gamePositionIndex = gameBoardSquares.Count;
         gameBoardSquares.Add(newSquare);
     }
+    */
 
     private void PrintCompletedLink() {
         for (int i = 0; i < completeList.Count; i++) {

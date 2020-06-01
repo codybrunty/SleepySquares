@@ -17,17 +17,20 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     public int gamePositionIndex=0;
     public List<SquareMechanics_Gameboard> adjescentSquares = new List<SquareMechanics_Gameboard>() { null, null, null, null };
     [Header("Game Objects")]
-    [SerializeField] SpriteRenderer numberSpriteRenderer = default;
-    [SerializeField] List<SpriteRenderer> connectionDisplaySpriteRenderers = default;
-    [SerializeField] GameObject connectionDisplayGRP = default;
-    [SerializeField] List<Sprite> numberSprites = new List<Sprite>();
-    [SerializeField] List<Sprite> completed_umberSprites = new List<Sprite>();
-    [SerializeField] GameObject completedImage = default;
+    [SerializeField] SpriteRenderer squareSprite = default;
+    [SerializeField] List<GameObject> faces = new List<GameObject>();
+    [SerializeField] List<Color> numberColors = new List<Color>();
     [SerializeField] GameObject blockerImage = default;
-    private GameBoardMechanics gameboard;
+    [SerializeField] GameBoardMechanics gameboard = default;
 
     public void SetSquareDisplay() {
         NumberDisplay();
+        SetBlockerDisplay();
+        ConnectionDisplay();
+    }
+
+    public void SilentSquareDisplay() {
+        SilentNumberDisplay();
         SetBlockerDisplay();
         ConnectionDisplay();
     }
@@ -41,27 +44,44 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     private void ConnectionDisplay() {
-        if (number < 5) { 
-            connectionDisplayGRP.SetActive(true);
+        // new EyeBallDisplay
+        if (number < 5) {
 
-            for (int i = 0; i < adjescentConnections.Count; i++) {
-                connectionDisplaySpriteRenderers[i].color = new Color(0f, 0f, 0f);
-            }
-
+            int eyeShutCounter = 0;
             for (int i = 0; i < adjescentConnections.Count; i++) {
                 if (adjescentConnections[i] == true) {
-                    connectionDisplaySpriteRenderers[i].color = new Color(1f, 0f, 0f);
+                    eyeShutCounter++;
                 }
             }
+
+            faces[number - 1].GetComponent<FacialAnimation>().ShutThisManyEyes(eyeShutCounter);
+
         }
+
+    }
+
+    private void SilentNumberDisplay() {
+        SetSquareColor();
+        SetSquareFace();
     }
 
     private void NumberDisplay() {
-        numberSpriteRenderer.gameObject.SetActive(true);
-        numberSpriteRenderer.sprite = numberSprites[number-1];
-        numberSpriteRenderer.sortingOrder = 5;
+        SetSquareColor();
+        SetSquareFace();
         PopSFX();
         Pop();
+    }
+
+    private void SetSquareFace() {
+        if (number < 5) { 
+            faces[number - 1].SetActive(true);
+            faces[number - 1].GetComponent<FacialAnimation>().StartFacialAnimation();
+        }
+            
+    }
+
+    private void SetSquareColor() {
+        squareSprite.color = numberColors[number - 1];
     }
 
     private void PopSFX() {
@@ -93,7 +113,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     private void PopDone() {
-        numberSpriteRenderer.sortingOrder = 2;
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
@@ -110,7 +129,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
 
-    internal void RecalculateAdjescentSquares() {
+    public void RecalculateAdjescentSquares() {
         for (int i = 0; i < adjescentSquares.Count; i++) {
             if (adjescentSquares[i] != null) {
                 if (adjescentSquares[i].completed == false && adjescentSquares[i].number > 0) {
@@ -181,22 +200,28 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     public void ResetSquare_BlockerClear() {
+        PopAway();
         ZerOutSquareInfo();
-        ZeroOutBlockerInfo();
-    }
-
-    private void ZeroOutBlockerInfo() {
-        blocker = false;
-        blockerImage.SetActive(false);
     }
 
     public void ZerOutSquareInfo() {
         number = 0;
         adjescentConnections = new List<bool> { false, false, false, false };
         completed = false;
-        completedImage.SetActive(false);
-        numberSpriteRenderer.gameObject.SetActive(false);
-        connectionDisplayGRP.gameObject.SetActive(false);
+        TurnOffFaces();
+        squareSprite.GetComponent<CollectionColor_Sprite>().GetColor();
+        blocker = false;
+        blockerImage.SetActive(false);
+    }
+
+    private void TurnOffFaces() {
+        for(int i = 0; i < faces.Count; i++) {
+            if (faces[i].activeSelf == true) {
+                faces[i].GetComponent<FacialAnimation>().StopFacialAnimation();
+                faces[i].GetComponent<FacialAnimation>().ResetEyes();
+                faces[i].SetActive(false);
+            }
+        }
     }
 
     private int GetOppositeRandomOrderNumber(int number) {
@@ -269,18 +294,18 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         
         if (connections == number) {
             completed = true;
-            completedImage.GetComponent<SpriteRenderer>().sprite = completed_umberSprites[number - 1];
-            completedImage.SetActive(true);
+            faces[number-1].GetComponent<FacialAnimation>().StopFacialAnimation();
             ConnectionDisplay();
             gameboard.CheckForCompleteLink(gameObject);
         }
         else {
             completed = false;
-            completedImage.SetActive(false);
+            faces[number-1].GetComponent<FacialAnimation>().StartFacialAnimation();
             ConnectionDisplay();
         }
     }
 
+    /*
     public void SetAdjescentSquares(GameBoardMechanics gb) {
         gameboard = gb;
         adjescentSquares[0] = SetTopSquare();
@@ -288,6 +313,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         adjescentSquares[2] = SetLeftSquare();
         adjescentSquares[3] = SetRightSquare();
     }
+    */
 
     private SquareMechanics_Gameboard SetTopSquare() {
         int topSquare_gamePositionY = gamePositionY + 1;

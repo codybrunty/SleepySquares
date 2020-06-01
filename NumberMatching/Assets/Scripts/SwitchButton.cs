@@ -11,11 +11,14 @@ public class SwitchButton : MonoBehaviour{
     [SerializeField] TextMeshProUGUI switchText = default;
     public bool activated = false;
 
+
+
     private void Start() {
+        switchAmmount = GameDataManager.GDM.currentSwitches;
         UpdateSwitchAmmountDisplay();
     }
 
-    private void UpdateSwitchAmmountDisplay() {
+    public void UpdateSwitchAmmountDisplay() {
         switchText.text = switchAmmount.ToString();
     }
 
@@ -31,6 +34,9 @@ public class SwitchButton : MonoBehaviour{
     }
 
     public void TurnOnSwitchMode() {
+        PopAnim();
+        PlayClickSFX();
+
         if (switchAmmount > 0) {
             activated = true;
             click.switchSquares = true;
@@ -42,10 +48,28 @@ public class SwitchButton : MonoBehaviour{
 
     }
 
+    private void PlayClickSFX() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+    }
+
+    private void PopAnim() {
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(.25f, .25f, 0f));
+        hash.Add("time", 0.5f);
+        hash.Add("oncomplete", "PopDone");
+        iTween.PunchScale(gameObject, hash);
+    }
+
+    private void PopDone() {
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
     public void TurnOffSwitchMode() {
+        PopAnim();
+        PlayClickSFX();
+
         activated = false;
         click.switchSquares = false;
-        //gameboard switch mode off
     }
 
     public void ReduceSwitchAmmount() {

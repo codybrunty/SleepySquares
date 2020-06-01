@@ -7,7 +7,6 @@ public class RaycastMouse : MonoBehaviour {
 
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] GameBoardMechanics gameboard = default;
-    [SerializeField] TimerCountdown timer = default;
     [SerializeField] SwitchButton switchButton = default;
 
     public bool switchSquares = false;
@@ -26,15 +25,19 @@ public class RaycastMouse : MonoBehaviour {
 
                 RaycastHit2D hit_onSquare = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_square);
                 if (hit_onSquare.collider != null) {
-                    //Debug.Log(hit_onSquare.collider.name);
+
                     GameSquareHit(hit_onSquare.collider.gameObject);
+
+                    gameboard.SaveBoardState();
                 }
 
                 int layerMask_square_next = LayerMask.NameToLayer(layerName: "Square_Next");
                 RaycastHit2D hit_onSquare_next = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_square_next);
                 if (hit_onSquare_next.collider != null) {
-                    //Debug.Log(hit_onSquare.collider.name);
+
                     NextSquareHit(hit_onSquare_next.collider.gameObject);
+
+                    gameboard.SaveBoardState();
                 }
 
             }
@@ -126,9 +129,7 @@ public class RaycastMouse : MonoBehaviour {
     }
 
     private void EmptySquareClicked(GameObject square) {
-        //First click on board starts game
         if (!gameStarted) {
-            CheckTimerSTatus();
             StartGame();
         }
         
@@ -149,20 +150,6 @@ public class RaycastMouse : MonoBehaviour {
     private void StartGame() {
         gameboard.StartGame();
         gameStarted = true;
-    }
-
-    private void CheckTimerSTatus() {
-        //if timer settings turned on start timer
-        if (GameSettings.GS.timerStatus == 1) {
-            StartTimer();
-        }
-
-    }
-
-    private void StartTimer() {
-        if (!timer.timerStarted) {
-            timer.StartTimerCountdown();
-        }
     }
     
 }

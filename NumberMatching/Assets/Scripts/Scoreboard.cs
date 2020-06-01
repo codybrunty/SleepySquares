@@ -8,10 +8,6 @@ public class Scoreboard : MonoBehaviour{
 
     [SerializeField] GameObject floatingText = default;
 
-    void Start() {
-        gameObject.GetComponent<TextMeshProUGUI>().text = "0";
-    }
-
     public void ScoreboardAdd(int number) {
         PopAnim();
         GameObject floatingText_GO = Instantiate(floatingText, gameObject.transform.position, Quaternion.identity, gameObject.transform.parent);

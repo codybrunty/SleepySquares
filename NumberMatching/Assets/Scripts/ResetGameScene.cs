@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class ResetGameScene : MonoBehaviour{
 
+    [SerializeField] ExitPanels exit = default;
+    [SerializeField] GameBoardMechanics gameBoard = default;
+
     public void ResetOnClick() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        exit.ExitOnClick();
+        gameBoard.ResetBoardState();
     }
 
 

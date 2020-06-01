@@ -6,12 +6,14 @@ public class GameSettings : MonoBehaviour {
 
     public static GameSettings GS;
 
-    public int timerStatus = 1;
+    public int timerStatus = 0;
 
     private void Awake() {
         if (GS == null) {
             GS = this;
-            timerStatus = PlayerPrefs.GetInt("TimerSettings", 1);
+            //timerStatus = PlayerPrefs.GetInt("TimerSettings", 1);
+            //force timer off
+            timerStatus = 0;
             DontDestroyOnLoad(gameObject);
         }
         else {

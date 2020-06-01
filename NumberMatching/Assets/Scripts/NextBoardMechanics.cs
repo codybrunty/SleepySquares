@@ -8,8 +8,11 @@ public class NextBoardMechanics : MonoBehaviour{
     public List<SquareMechanics_Next> nextSquares = new List<SquareMechanics_Next>();
     [SerializeField] GameBoardMechanics gameboard = default;
 
-
     private void Start() {
+        ResetNextBoard();
+    }
+
+    public void ResetNextBoard() {
         Set_NextSquare();
         FillNextBoard();
     }
@@ -62,27 +65,6 @@ public class NextBoardMechanics : MonoBehaviour{
         }
 
         return allZeros;
-    }
-
-    public void AddOneNextSquareNumber() {
-        bool squareAdded = false;
-        for (int i = 0; i < nextSquares.Count; i++) {
-            if (nextSquares[i].GetComponent<SquareMechanics_Next>().number == 0) {
-                if (!squareAdded) {
-                    nextSquares[i].GetComponent<SquareMechanics_Next>().SetRandomNumberAndDisplay();
-                    squareAdded = true;
-                }
-            }
-        }
-
-        if (!squareAdded) {
-            Debug.Log("No Square Added Next Board is Full");
-            NextBoardFull();
-        }
-    }
-
-    private void NextBoardFull() {
-        gameboard.GameOver();
     }
 
     private void ClearFirstNextSquare() {

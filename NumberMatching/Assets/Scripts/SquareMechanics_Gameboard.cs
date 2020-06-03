@@ -105,6 +105,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     private void Pop() {
+        squareSprite.sortingOrder = 1;
         Hashtable hash = new Hashtable();
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
@@ -114,9 +115,11 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
     private void PopDone() {
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        squareSprite.sortingOrder = 0;
     }
 
     private void PopAway() {
+        squareSprite.sortingOrder = 1;
         Hashtable hash = new Hashtable();
         hash.Add("amount", new Vector3(-0.5f, -0.5f, 0f));
         hash.Add("time", .5f);
@@ -125,6 +128,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     private void PopAwayDone() {
+        squareSprite.sortingOrder = 0;
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
@@ -305,7 +309,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         }
     }
 
-    /*
     public void SetAdjescentSquares(GameBoardMechanics gb) {
         gameboard = gb;
         adjescentSquares[0] = SetTopSquare();
@@ -313,7 +316,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         adjescentSquares[2] = SetLeftSquare();
         adjescentSquares[3] = SetRightSquare();
     }
-    */
 
     private SquareMechanics_Gameboard SetTopSquare() {
         int topSquare_gamePositionY = gamePositionY + 1;

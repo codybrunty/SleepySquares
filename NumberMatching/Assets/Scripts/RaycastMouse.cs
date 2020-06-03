@@ -12,6 +12,7 @@ public class RaycastMouse : MonoBehaviour {
     public bool switchSquares = false;
     private bool gameStarted = false;
 
+    public bool blockerMode = false;
 
     private void Update() {
         RayCastForSquare();
@@ -41,6 +42,10 @@ public class RaycastMouse : MonoBehaviour {
                 }
 
             }
+
+
+
+
         }
     }
 
@@ -96,7 +101,13 @@ public class RaycastMouse : MonoBehaviour {
 
     private void BlockerSquareClicked() {
         Debug.Log("Blocker Square Clicked");
-        //gameboard.GameOver();
+
+        if (blockerMode) {
+            blockerMode = false;
+        }
+        else {
+            blockerMode = true;
+        }
     }
 
     private void OccupiedSquareClicked(GameObject square) {

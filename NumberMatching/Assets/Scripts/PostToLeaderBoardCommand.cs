@@ -8,14 +8,10 @@ public class PostToLeaderBoardCommand : MonoBehaviour{
 
     [SerializeField] GameBoardMechanics gameboard = default;
 
-    public void PostToLeaderBoardOnClick() {
-        Debug.Log("Post To Leaderboard Clicked");
+    private void Start() {
+        Debug.Log("Post To Leaderboard");
         long scoreToPost = gameboard.score;
-
         Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
-        //Cloud.Leaderboards.SubmitScore("CgkI1a-4sNcXEAIQAQ", scoreToPost);
-
-        gameObject.GetComponent<Button>().interactable = false;
     }
 
     private void callbackCheck(CloudRequestResult<bool> result) {

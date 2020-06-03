@@ -10,7 +10,6 @@ public class EnterPanels : MonoBehaviour{
 
     public void EnterOnClick() {
         PlayClickSFX();
-        PopAnim();
 
         gameboard.touchEnabled = false;
         panelOn.SetActive(true);
@@ -21,16 +20,5 @@ public class EnterPanels : MonoBehaviour{
         FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
     }
 
-    private void PopAnim() {
-        Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(.25f, .25f, 0f));
-        hash.Add("time", 0.5f);
-        hash.Add("oncomplete", "PopDone");
-        iTween.PunchScale(gameObject, hash);
-    }
-
-    private void PopDone() {
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
 
 }

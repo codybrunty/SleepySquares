@@ -166,7 +166,7 @@ PlayerSettings:
     Android: com.BombChomp.SleepyHeadz
     Standalone: com.Company.ProductName
   buildNumber: {}
-  AndroidBundleVersionCode: 5
+  AndroidBundleVersionCode: 8
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0
@@ -279,7 +279,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 0afb49d79adea1b4d9ffaee791ca6479, type: 3}
+      m_Icon: {fileID: 2800000, guid: 76aa23bb0b9cbdd49b8517600cf93d8e, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

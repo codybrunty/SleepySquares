@@ -34,8 +34,7 @@ public class SwitchButton : MonoBehaviour{
     }
 
     public void TurnOnSwitchMode() {
-        PopAnim();
-        PlayClickSFX();
+        PlayPositiveSFX();
 
         if (switchAmmount > 0) {
             activated = true;
@@ -48,25 +47,16 @@ public class SwitchButton : MonoBehaviour{
 
     }
 
-    private void PlayClickSFX() {
+    private void PlayPositiveSFX() {
         FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
     }
 
-    private void PopAnim() {
-        Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(.25f, .25f, 0f));
-        hash.Add("time", 0.5f);
-        hash.Add("oncomplete", "PopDone");
-        iTween.PunchScale(gameObject, hash);
-    }
-
-    private void PopDone() {
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    private void PlayNegativeSFX() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("deselect1");
     }
 
     public void TurnOffSwitchMode() {
-        PopAnim();
-        PlayClickSFX();
+        PlayNegativeSFX();
 
         activated = false;
         click.switchSquares = false;

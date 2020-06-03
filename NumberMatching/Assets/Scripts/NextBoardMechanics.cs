@@ -8,22 +8,35 @@ public class NextBoardMechanics : MonoBehaviour{
     public List<SquareMechanics_Next> nextSquares = new List<SquareMechanics_Next>();
     [SerializeField] GameBoardMechanics gameboard = default;
 
-    private void Start() {
-        ResetNextBoard();
-    }
-
-    public void ResetNextBoard() {
-        Set_NextSquare();
+    public void SetNextBoard() {
+        SetNextBoardOnNextSquare();
         FillNextBoard();
     }
 
+    public void ResetNextBoard() {
+        SetNextBoardOnNextSquare();
+        FillNextBoardWithRandom();
+    }
+
+    public void SaveNextSquaresInGameData() {
+        List<int> savedNextBoardNums = new List<int> { nextSquares[0].number, nextSquares[1].number, nextSquares[2].number };
+        GameDataManager.GDM.savedNextSquares = savedNextBoardNums;
+    }
+
     private void FillNextBoard() {
+        List<int> savedNextBoardNums = GameDataManager.GDM.savedNextSquares;
+        for (int i = 0; i < nextSquares.Count; i++) {
+            nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberAndDisplay(savedNextBoardNums[i]);
+        }
+    }
+
+    private void FillNextBoardWithRandom() {
         for (int i = 0; i < nextSquares.Count; i++) {
             nextSquares[i].GetComponent<SquareMechanics_Next>().SetRandomNumberAndDisplay();
         }
     }
 
-    private void Set_NextSquare() {
+    private void SetNextBoardOnNextSquare() {
         for (int i = 0; i<nextSquares.Count;i++) {
             nextSquares[i].SetNextBoard();
         }

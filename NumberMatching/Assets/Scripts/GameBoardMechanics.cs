@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using CloudOnce;
 
 public class GameBoardMechanics : MonoBehaviour{
 
@@ -44,7 +45,7 @@ public class GameBoardMechanics : MonoBehaviour{
     private bool completedListPass = true;
     [SerializeField] GameObject gameOver_text = default;
     [SerializeField] Button clearBlockerButton = default;
-    [SerializeField] GameObject postLeaderboardButton = default;
+    [SerializeField] GameObject GameOverPopUp = default;
     [SerializeField] Scoreboard scoreboard = default;
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] SwitchButton switchButton = default;
@@ -55,6 +56,7 @@ public class GameBoardMechanics : MonoBehaviour{
     
 
     private void Start() {
+        SetGameBoardSquareInfo();
         SetBoardState();
     }
 
@@ -63,6 +65,7 @@ public class GameBoardMechanics : MonoBehaviour{
     }
 
     public void ResetBoardState() {
+        Debug.Log("reset board state");
         for (int i = 0; i < gameBoardSquares.Count; i++) {
             gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZerOutSquareInfo();
         }
@@ -78,46 +81,62 @@ public class GameBoardMechanics : MonoBehaviour{
         moveCounter = 0;
 
         nextBoard.ResetNextBoard();
+
+        touchEnabled = true;
+        gameOver = false;
         
         SaveBoardState();
     }
 
     private void SetBoardState() {
-        for (int i = 0; i < gameBoardSquares.Count; i++) {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number = GameDataManager.GDM.squares[i].number;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed = GameDataManager.GDM.squares[i].completed;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker = GameDataManager.GDM.squares[i].blocker;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections = GameDataManager.GDM.squares[i].adjescentConnections;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = GameDataManager.GDM.squares[i].luckyCoin;
+        Debug.Log("set board state");
+        if (GameDataManager.GDM.gameOver) {
+            Debug.Log("previous session ended in game over ");
+            ResetBoardState();
+        }
+        else {
+            Debug.Log("continue previous session");
+            for (int i = 0; i < gameBoardSquares.Count; i++) {
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number = GameDataManager.GDM.squares[i].number;
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed = GameDataManager.GDM.squares[i].completed;
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker = GameDataManager.GDM.squares[i].blocker;
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections = GameDataManager.GDM.squares[i].adjescentConnections;
+                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = GameDataManager.GDM.squares[i].luckyCoin;
 
-            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0) {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SilentSquareDisplay();
+                if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0) {
+                    gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SilentSquareDisplay();
+                }
             }
+
+            SetBlockerSquaresList();
+
+            clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = GameDataManager.GDM.currentClears;
+            clearCounter = GameDataManager.GDM.currentClearCounter;
+            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearTextDisplay();
+
+            switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
+            switchButton.UpdateSwitchAmmountDisplay();
+
+            highScore = GameDataManager.GDM.HighScore_AllTime;
+            UpdateHighScoreDisplay();
+
+            totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
+            UpdateTotalPointsDisplay();
+
+            score = GameDataManager.GDM.currentPoints;
+            UpdateScoreDiplay();
+
+            moveCounter = GameDataManager.GDM.moveCounter;
+            ReduceMoveLimit();
+
+            nextBoard.SetNextBoard();
         }
 
-        SetBlockerSquaresList();
 
-        clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = GameDataManager.GDM.currentClears;
-        clearCounter = GameDataManager.GDM.currentClearCounter;
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearTextDisplay();
-
-        switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
-        switchButton.UpdateSwitchAmmountDisplay();
-
-        highScore = GameDataManager.GDM.HighScore_AllTime;
-        UpdateHighScoreDisplay();
-
-        totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
-        UpdateTotalPointsDisplay();
-
-        score = GameDataManager.GDM.currentPoints;
-        UpdateScoreDiplay();
-
-        moveCounter = GameDataManager.GDM.moveCounter;
-        ReduceMoveLimit();
     }
 
     public void SaveBoardState() {
+        Debug.Log("save board state");
         for (int i = 0; i < gameBoardSquares.Count; i++) {
             GameDataManager.GDM.squares[i].number = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number;
             GameDataManager.GDM.squares[i].completed = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed;
@@ -132,6 +151,11 @@ public class GameBoardMechanics : MonoBehaviour{
         GameDataManager.GDM.currentClearCounter = clearCounter;
         GameDataManager.GDM.currentSwitches = switchButton.switchAmmount;
         GameDataManager.GDM.moveCounter = moveCounter;
+
+        nextBoard.SaveNextSquaresInGameData();
+
+        GameDataManager.GDM.gameOver = gameOver;
+        
         GameDataManager.GDM.SaveGameData();
     }
 
@@ -207,8 +231,21 @@ public class GameBoardMechanics : MonoBehaviour{
             Debug.Log("Game Over");
             gameOver_text.SetActive(true);
             touchEnabled = false;
+            PostToLeaderboard();
+            GameOverPopUp.SetActive(true);
+            SaveBoardState();
+        }
+    }
 
-            postLeaderboardButton.SetActive(true);
+    private void PostToLeaderboard() {
+        Debug.Log("Post To Leaderboard");
+        long scoreToPost = score;
+        Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+    }
+
+    private void callbackCheck(CloudRequestResult<bool> result) {
+        if (result.Result == false) {
+            Debug.Log(result.Error);
         }
     }
 
@@ -377,14 +414,25 @@ public class GameBoardMechanics : MonoBehaviour{
 
     }
 
-    /*
-    private void SetGameBoardSquaresAdjescents() {
-        for(int i = 0; i < gameBoardSquares.Count; i++) {
+    
+    private void SetGameBoardSquareInfo() {
+
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionIndex = i;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionX = i / gameBoardHeight;
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionY = i % gameBoardHeight;
+
+        }
+
+        for (int i = 0; i < gameBoardSquares.Count; i++) {
+
             gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SetAdjescentSquares(gameObject.GetComponent<GameBoardMechanics>());
+
         }
     }
 
-
+    /*
     private void CreateGameBoardSquares() {
         for (int x = 0; x < gameBoardWidth; x++) {
             for (int y = 0; y < gameBoardHeight; y++) {

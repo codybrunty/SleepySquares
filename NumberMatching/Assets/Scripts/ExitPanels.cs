@@ -8,11 +8,18 @@ public class ExitPanels : MonoBehaviour{
     [SerializeField] GameObject settingsPanel = default;
 
     public void ExitOnClick() {
-        gameboard.touchEnabled = true;
+        PlayClickSFX();
         settingsPanel.SetActive(false);
         gameObject.SetActive(false);
 
+        if (gameboard.gameOver != true) {
+            gameboard.touchEnabled = true;
+        }
+
     }
 
+    private void PlayClickSFX() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("deselect1");
+    }
 
 }

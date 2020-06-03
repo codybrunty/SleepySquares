@@ -18,6 +18,8 @@ public class GameDataManager : MonoBehaviour {
     public int currentClearCounter;
     public int currentSwitches;
     public int moveCounter;
+    public List<int> savedNextSquares;
+    public bool gameOver;
 
     private void Awake() {
         //Debug.Log(Application.persistentDataPath);
@@ -59,7 +61,10 @@ public class GameDataManager : MonoBehaviour {
         data.currentSwitches = currentSwitches;
         data.moveCounter = moveCounter;
         data.squares = squares;
-        
+        data.savedNextSquares = savedNextSquares;
+        data.gameOver = gameOver;
+
+
         bf.Serialize(file, data);
         file.Close();
         Debug.Log("Saved Game Data To Local File");
@@ -80,7 +85,9 @@ public class GameDataManager : MonoBehaviour {
             currentSwitches = data.currentSwitches;
             moveCounter = data.moveCounter;
             squares = data.squares;
-            
+            savedNextSquares = data.savedNextSquares;
+            gameOver = data.gameOver;
+
             Debug.Log("Loaded Game Data from Local File");
         }
         else {
@@ -113,6 +120,9 @@ public class GameDataManager : MonoBehaviour {
             data.squares[i].luckyCoin = false;
         }
 
+        data.savedNextSquares = new List<int> { UnityEngine.Random.Range(1,4), UnityEngine.Random.Range(1, 4), UnityEngine.Random.Range(1, 4) };
+        data.gameOver = false;
+
         bf.Serialize(file, data);
         file.Close();
         Debug.Log("Reset Game Data in Local File");
@@ -131,6 +141,8 @@ class GameData {
     public int currentSwitches;
     public int moveCounter;
     public List<SquareInfo> squares;
+    public List<int> savedNextSquares;
+    public bool gameOver;
 }
 
 [Serializable]

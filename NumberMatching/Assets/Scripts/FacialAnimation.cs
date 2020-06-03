@@ -18,7 +18,7 @@ public class FacialAnimation : MonoBehaviour{
 
             string squareName = gameObject.transform.parent.parent.name;
             string colorName  = gameObject.transform.name;
-            Debug.Log("tried to start facial animatino but it is already going on " + colorName + " " + squareName);
+            //Debug.Log("tried to start facial animatino but it is already going on " + colorName + " " + squareName);
         }
     }
 
@@ -29,7 +29,7 @@ public class FacialAnimation : MonoBehaviour{
         else {
             string squareName = gameObject.transform.parent.parent.name;
             string colorName = gameObject.transform.name;
-            Debug.Log("Tried to Stop facial animation but it isnt going on " + colorName + " " + squareName);
+            //Debug.Log("Tried to Stop facial animation but it isnt going on " + colorName + " " + squareName);
         }
     }
 
@@ -45,7 +45,7 @@ public class FacialAnimation : MonoBehaviour{
     public void ShutThisManyEyes(int shutNumber) {
         string squareName = gameObject.transform.parent.parent.name;
         string colorName = gameObject.transform.name;
-        Debug.Log("Shut " + shutNumber + " eyes of " + eyeballs.Count + " on " + colorName + " " + squareName);
+        //Debug.Log("Shut " + shutNumber + " eyes of " + eyeballs.Count + " on " + colorName + " " + squareName);
 
 
         List<int> needToBeShut = new List<int>();
@@ -108,7 +108,7 @@ public class FacialAnimation : MonoBehaviour{
     }
 
     public IEnumerator AnimateFace() {
-        Debug.Log("facial anim starting");
+        //Debug.Log("facial anim starting");
         float randomSeconds = UnityEngine.Random.Range(5f,25f);
         //Debug.Log("anim waiting "+ randomSeconds);
         yield return new WaitForSeconds(randomSeconds);

@@ -20,6 +20,11 @@ public class SquareMechanics_Next : MonoBehaviour{
         SetNumberDisplay();
     }
 
+    public void SetNumberAndDisplay(int num) {
+        number = num;
+        SetNumberDisplay();
+    }
+
     private int RandomSquareNumber() {
         int randomMax = 4;
         

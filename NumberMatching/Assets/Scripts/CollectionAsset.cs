@@ -9,5 +9,8 @@ public class CollectionAsset{
     public Color baseColor;
     public Color secondaryColor;
     public Color scoreTextColor;
-    
+    public Color trophy1Color;
+    public Color trophy2Color;
+    public Color trophy3Color;
+
 }

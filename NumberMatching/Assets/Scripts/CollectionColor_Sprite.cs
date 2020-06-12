@@ -6,10 +6,6 @@ public class CollectionColor_Sprite : MonoBehaviour{
 
     public string key;
 
-    private void Start() {
-        GetColor();
-    }
-
     public void GetColor() {
         gameObject.GetComponent<SpriteRenderer>().color = CollectionManager.CM.GetUIColor(key);
     }

@@ -22,6 +22,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     [SerializeField] List<Color> numberColors = new List<Color>();
     [SerializeField] GameObject blockerImage = default;
     [SerializeField] GameBoardMechanics gameboard = default;
+    [SerializeField] GameObject smoke = default;
 
     public void SetSquareDisplay() {
         NumberDisplay();
@@ -40,7 +41,12 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
             blocker = true;
             completed = true;
             blockerImage.SetActive(true);
+            SmokeEffect();
         }
+    }
+
+    private void SmokeEffect() {
+        Instantiate(smoke, gameObject.transform.position, Quaternion.identity,gameObject.transform);
     }
 
     private void ConnectionDisplay() {

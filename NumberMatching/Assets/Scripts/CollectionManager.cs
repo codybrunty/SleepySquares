@@ -10,7 +10,7 @@ public class CollectionManager : MonoBehaviour{
 
     public int assetIndex = 0;
     public CollectionAsset[] assets;
-
+    
 
     private void Awake() {
         if (CM == null) {
@@ -69,12 +69,18 @@ public class CollectionManager : MonoBehaviour{
 
     public Color GetUIColor(string name) {
         switch (name) {
-            case "Base":
+            case "First":
                 return assets[assetIndex].baseColor;
-            case "Secondary":
+            case "Second":
                 return assets[assetIndex].secondaryColor;
-            case "ScoreText":
+            case "Third":
                 return assets[assetIndex].scoreTextColor;
+            case "Trophy1":
+                return assets[assetIndex].trophy1Color;
+            case "Trophy2":
+                return assets[assetIndex].trophy2Color;
+            case "Trophy3":
+                return assets[assetIndex].trophy3Color;
             default:
                 return Color.red;
 

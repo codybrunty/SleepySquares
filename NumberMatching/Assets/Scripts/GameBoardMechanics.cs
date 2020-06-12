@@ -43,21 +43,33 @@ public class GameBoardMechanics : MonoBehaviour{
     [SerializeField] TextMeshProUGUI totalPoints_text = default;
     private List<GameObject> completeList = new List<GameObject>();
     private bool completedListPass = true;
-    [SerializeField] GameObject gameOver_text = default;
     [SerializeField] Button clearBlockerButton = default;
-    [SerializeField] GameObject GameOverPopUp = default;
+    [SerializeField] GameOverPanel gameOverPanel = default;
     [SerializeField] Scoreboard scoreboard = default;
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] SwitchButton switchButton = default;
+    [SerializeField] TrophySystem trophySystem = default;
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
     public SpriteRenderer pic;
-    
+
+    private void Awake() {
+        SetGameBoardSquareInfo();
+    }
 
     private void Start() {
-        SetGameBoardSquareInfo();
+        SetBoardBaseColor();
         SetBoardState();
+    }
+    
+    private void SetBoardBaseColor() {
+        CollectionColor_Sprite[] sprites = gameObject.GetComponentsInChildren<CollectionColor_Sprite>(true);
+
+        foreach(CollectionColor_Sprite sprite in sprites) {
+            sprite.GetColor();
+        }
+
     }
 
     private void Update() {
@@ -75,8 +87,18 @@ public class GameBoardMechanics : MonoBehaviour{
         clearCounter = 1;
         clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearTextDisplay();
 
+        switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
+        switchButton.UpdateSwitchAmmountDisplay();
+
         score = 0;
         UpdateScoreDiplay();
+
+        highScore = GameDataManager.GDM.HighScore_AllTime;
+        UpdateHighScoreDisplay();
+
+        totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
+        UpdateTotalPointsTrophyDisplay();
+
         ReduceMoveLimit();
         moveCounter = 0;
 
@@ -121,7 +143,7 @@ public class GameBoardMechanics : MonoBehaviour{
             UpdateHighScoreDisplay();
 
             totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
-            UpdateTotalPointsDisplay();
+            UpdateTotalPointsTrophyDisplay();
 
             score = GameDataManager.GDM.currentPoints;
             UpdateScoreDiplay();
@@ -145,7 +167,10 @@ public class GameBoardMechanics : MonoBehaviour{
             GameDataManager.GDM.squares[i].luckyCoin = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin;
         }
         GameDataManager.GDM.currentPoints = score;
+
         GameDataManager.GDM.TotalPoints_AllTime = totalPoints;
+        UpdateTotalPointsTrophyDisplay();
+
         GameDataManager.GDM.HighScore_AllTime = highScore;
         GameDataManager.GDM.currentClears = clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal;
         GameDataManager.GDM.currentClearCounter = clearCounter;
@@ -229,12 +254,18 @@ public class GameBoardMechanics : MonoBehaviour{
         if (!gameOver) {
             gameOver = true;
             Debug.Log("Game Over");
-            gameOver_text.SetActive(true);
             touchEnabled = false;
             PostToLeaderboard();
-            GameOverPopUp.SetActive(true);
+            RevealGameOverPanel();
             SaveBoardState();
         }
+    }
+
+    private void RevealGameOverPanel() {
+        gameOverPanel.gameObject.SetActive(true);
+        gameOverPanel.score = score;
+        gameOverPanel.highscore = highScore;
+        gameOverPanel.UpdateGameOverPanel();
     }
 
     private void PostToLeaderboard() {
@@ -255,7 +286,6 @@ public class GameBoardMechanics : MonoBehaviour{
         AddSquareToCompletedList(square);
         if (completedListPass) {
             Debug.Log("Completed Link");
-            //PrintCompletedLink();
             ResetLinkFromBoard();
         }
         else {
@@ -284,7 +314,7 @@ public class GameBoardMechanics : MonoBehaviour{
         ClearSFX(floatingTextNumber);
         UpdateScoreDiplay();
         HighScoreCheck();
-        UpdateTotalPointsDisplay();
+        UpdateTotalPointsTrophyDisplay();
         ScoreDisplayFloatingText(floatingTextNumber);
         UpdateClearsTotal();
 
@@ -338,8 +368,10 @@ public class GameBoardMechanics : MonoBehaviour{
     private void UpdateHighScoreDisplay() {
         highScore_text.text = highScore.ToString();
     }
-    private void UpdateTotalPointsDisplay() {
+
+    private void UpdateTotalPointsTrophyDisplay() {
         totalPoints_text.text = totalPoints.ToString();
+        trophySystem.UpdateTrophyPanel();
     }
 
     public void AddBlockerToBoard() {

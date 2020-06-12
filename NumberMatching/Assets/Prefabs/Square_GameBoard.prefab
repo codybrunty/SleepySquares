@@ -2982,9 +2982,10 @@ MonoBehaviour:
   - {r: 0.97647065, g: 0.4784314, b: 0.5647059, a: 1}
   - {r: 0.8588236, g: 0.57254905, b: 0.95294124, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.9176471, g: 0.9607844, b: 0.9450981, a: 0.39215687}
+  - {r: 0.7607844, g: 0.8196079, b: 0.909804, a: 1}
   blockerImage: {fileID: 1732786099993298715}
   gameboard: {fileID: 0}
+  smoke: {fileID: 3907104130174264720, guid: 5ce5d86d458c2334f9cfccb36de8cdd8, type: 3}
 --- !u!1 &7667073730247196814
 GameObject:
   m_ObjectHideFlags: 0
@@ -3171,7 +3172,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6d0cdadf4e237784dbdc2dd98aa8dd12, type: 3}
-  m_Color: {r: 0.9176471, g: 0.9607844, b: 0.9450981, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3193,7 +3194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd7ba20c30b01c4e81cfe13a0ea1837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: Secondary
+  key: Second
 --- !u!1 &7998993373775198607
 GameObject:
   m_ObjectHideFlags: 0

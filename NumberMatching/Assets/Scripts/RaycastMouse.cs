@@ -12,8 +12,6 @@ public class RaycastMouse : MonoBehaviour {
     public bool switchSquares = false;
     private bool gameStarted = false;
 
-    public bool blockerMode = false;
-
     private void Update() {
         RayCastForSquare();
     }
@@ -28,8 +26,7 @@ public class RaycastMouse : MonoBehaviour {
                 if (hit_onSquare.collider != null) {
 
                     GameSquareHit(hit_onSquare.collider.gameObject);
-
-                    gameboard.SaveBoardState();
+                    
                 }
 
                 int layerMask_square_next = LayerMask.NameToLayer(layerName: "Square_Next");
@@ -37,8 +34,6 @@ public class RaycastMouse : MonoBehaviour {
                 if (hit_onSquare_next.collider != null) {
 
                     NextSquareHit(hit_onSquare_next.collider.gameObject);
-
-                    gameboard.SaveBoardState();
                 }
 
             }
@@ -73,6 +68,7 @@ public class RaycastMouse : MonoBehaviour {
         if (square.GetComponent<SquareMechanics_Gameboard>().number == 0) {
             CheckIfEmptySquareLucky(square);
             EmptySquareClicked(square);
+            gameboard.SaveBoardState();//save board state on empty click
         }
         //blocker square
         else if(square.GetComponent<SquareMechanics_Gameboard>().number == 5 && square.GetComponent<SquareMechanics_Gameboard>().blocker == true) {
@@ -85,6 +81,7 @@ public class RaycastMouse : MonoBehaviour {
                 OccupiedSquareClicked(square);
                 switchButton.ReduceSwitchAmmount();
                 switchButton.TurnOffSwitchMode();
+                gameboard.SaveBoardState();//save board state on switch click
             }
         }
 
@@ -102,12 +99,6 @@ public class RaycastMouse : MonoBehaviour {
     private void BlockerSquareClicked() {
         Debug.Log("Blocker Square Clicked");
 
-        if (blockerMode) {
-            blockerMode = false;
-        }
-        else {
-            blockerMode = true;
-        }
     }
 
     private void OccupiedSquareClicked(GameObject square) {

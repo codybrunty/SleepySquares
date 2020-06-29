@@ -47,5 +47,5 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CoreColor: {r: 0, g: 0.87586236, b: 1, a: 0.5}
-    - _TintColor: {r: 0, g: 0.8758622, b: 1, a: 1}
+    - _CoreColor: {r: 0.36862746, g: 0.3372549, b: 0.5176471, a: 0.42745098}
+    - _TintColor: {r: 0.43903136, g: 0.39640442, b: 0.6415094, a: 1}

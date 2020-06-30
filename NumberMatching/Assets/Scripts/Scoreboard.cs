@@ -6,18 +6,20 @@ using System;
 
 public class Scoreboard : MonoBehaviour{
 
-    [SerializeField] GameObject floatingText = default;
+    [SerializeField] TextMeshProUGUI floatingText = default;
 
     public void ScoreboardAdd(int number) {
         PopAnim();
-        GameObject floatingText_GO = Instantiate(floatingText, gameObject.transform.position, Quaternion.identity, gameObject.transform.parent);
-        floatingText_GO.GetComponent<TextMeshProUGUI>().text = "+" + number;
+        floatingText.text = "+" + number;
+        floatingText.gameObject.GetComponent<FloatingText>().FlashText();
     }
 
     private void PopAnim() {
+        
         Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(1f, 1f, 0f));
-        hash.Add("time", 0.5f);
-        iTween.PunchScale(gameObject, hash);
+        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
+        hash.Add("time", .75f);
+        iTween.PunchScale(gameObject.transform.parent.gameObject, hash);
+        
     }
 }

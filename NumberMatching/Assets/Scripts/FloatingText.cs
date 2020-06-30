@@ -5,45 +5,54 @@ using TMPro;
 using System;
 
 public class FloatingText : MonoBehaviour{
-    public float moveTime = 0.5f;
+
+    Vector3 currentPos;
+    RectTransform rt;
 
     void Start() {
-        Hashtable hash = new Hashtable();
-        hash.Add("position", gameObject.transform.position + new Vector3(0f, 200f, 0f));
-        hash.Add("time", moveTime);
-        hash.Add("oncomplete", "AfterMove");
-        iTween.MoveTo(gameObject, hash);
+        //gameObject.GetComponent<TextMeshProUGUI>().color = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 0f);
+        rt = gameObject.GetComponent<RectTransform>();
+        currentPos = rt.anchoredPosition;
+    }
 
+    public void FlashText() {
         Color newColor = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 1f);
-        StartCoroutine(TweenAlpha(newColor, moveTime/5f));
 
+        StartCoroutine(TwenMove(currentPos + new Vector3(195f,0f,0f) , 0.15f));
+        StartCoroutine(TweenAlpha(newColor, 0.15f,true));
     }
 
-
-    private void AfterMove() {
-        Hashtable hash = new Hashtable();
-        hash.Add("scale", new Vector3(.1f, .1f, .1f));
-        hash.Add("time", moveTime/2f);
-        hash.Add("oncomplete", "DestroyFloatingText");
-        iTween.ScaleTo(gameObject, hash);
-        
+    IEnumerator TwenMove(Vector3 targetPos,float duration) {
+        for (float time = 0f; time < duration; time += Time.deltaTime) {
+            rt.anchoredPosition = Vector3.Lerp(currentPos, targetPos, time / duration);
+            yield return null;
+        }
+        rt.anchoredPosition = targetPos;
     }
 
-    private void DestroyFloatingText() {
-        Destroy(gameObject);
-    }
-
-    IEnumerator TweenAlpha(Color targetColor, float duration) {
+    IEnumerator TweenAlpha(Color targetColor, float duration,bool textOn) {
         TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
         Color orginalColor = text.color;
+
         for (float time = 0f; time < duration; time += Time.deltaTime) {
             text.color = Color.Lerp(orginalColor, targetColor, time / duration);
             yield return null;
         }
+
         text.color = targetColor;
+
+        if (textOn) {
+            yield return new WaitForSeconds(0.5f);
+
+            Color newColor = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 0f);
+            StartCoroutine(TweenAlpha(newColor, 0.25f,false));
+        }
+        else {
+            rt.anchoredPosition = currentPos;
+        }
     }
 
-    //private void DestroyFloatingText() {
-    //    Destroy(gameObject, destroyTime);
-    //}
+
+
+
 }

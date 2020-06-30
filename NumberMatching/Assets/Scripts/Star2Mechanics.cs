@@ -3,16 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Star1Mechanics : MonoBehaviour {
+public class Star2Mechanics : MonoBehaviour {
 
     [SerializeField] GameObject starEffect = default;
     public int starStatus; //0=off,1=on
     private CollectionColor_Image star;
 
-
     private void Start() {
         star = gameObject.GetComponent<CollectionColor_Image>();
-        starStatus = PlayerPrefs.GetInt("Star1_GoldStatus", 0);
+        starStatus = PlayerPrefs.GetInt("Star2_GoldStatus", 0);
         UpdateStarDisplay();
     }
 
@@ -26,22 +25,22 @@ public class Star1Mechanics : MonoBehaviour {
     }
 
     public void StarOn() {
-        starStatus = PlayerPrefs.GetInt("Star1_GoldStatus", 0);
+        starStatus = PlayerPrefs.GetInt("Star2_GoldStatus", 0);
 
         if (starStatus == 0) {
             starStatus = 1;
-            PlayerPrefs.SetInt("Star1_GoldStatus", starStatus);
+            PlayerPrefs.SetInt("Star2_GoldStatus", starStatus);
             PlayStarEffect();
             StartCoroutine(TurnGoldDelay());
         }
     }
 
     public void StarOff() {
-        starStatus = PlayerPrefs.GetInt("Star1_GoldStatus", 0);
+        starStatus = PlayerPrefs.GetInt("Star2_GoldStatus", 0);
 
         if (starStatus == 1) {
             starStatus = 0;
-            PlayerPrefs.SetInt("Star1_GoldStatus", starStatus);
+            PlayerPrefs.SetInt("Star2_GoldStatus", starStatus);
             StarNormal();
         }
     }
@@ -61,6 +60,7 @@ public class Star1Mechanics : MonoBehaviour {
         StartCoroutine(TurnOffStartEffect());
     }
 
+
     IEnumerator TurnOffStartEffect() {
         yield return new WaitForSeconds(1f);
         starEffect.SetActive(false);
@@ -73,6 +73,11 @@ public class Star1Mechanics : MonoBehaviour {
         hash.Add("time", .75f);
         iTween.PunchScale(gameObject, hash);
         StarGold();
+        PlayStarSFX();
+    }
+
+    private void PlayStarSFX() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("star");
     }
 
 }

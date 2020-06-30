@@ -66,4 +66,15 @@ public class SwitchButton : MonoBehaviour{
         switchAmmount--;
         UpdateSwitchAmmountDisplay();
     }
+
+    public void AddSwitches(int ammount) {
+        GameDataManager.GDM.currentSwitches+=ammount;
+        GameDataManager.GDM.SaveGameData();
+        switchAmmount = GameDataManager.GDM.currentSwitches;
+
+        //floating text ammount
+
+        UpdateSwitchAmmountDisplay();
+    }
+
 }

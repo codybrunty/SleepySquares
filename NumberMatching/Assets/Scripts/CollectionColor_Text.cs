@@ -12,6 +12,8 @@ public class CollectionColor_Text : MonoBehaviour{
     }
 
     public void GetColor() {
-        gameObject.GetComponent<TextMeshProUGUI>().color = CollectionManager.CM.GetUIColor(key);
+        Color TextColor = CollectionManager.CM.GetUIColor(key);
+        //take objects alpha
+        gameObject.GetComponent<TextMeshProUGUI>().color = new Color(TextColor.r, TextColor.g, TextColor.b, gameObject.GetComponent<TextMeshProUGUI>().color.a);
     }
 }

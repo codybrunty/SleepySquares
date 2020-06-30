@@ -314,7 +314,7 @@ public class GameBoardMechanics : MonoBehaviour{
         ClearSFX(floatingTextNumber);
         UpdateScoreDiplay();
         HighScoreCheck();
-        UpdateTotalPointsTrophyDisplay();
+        //UpdateTotalPointsTrophyDisplay();
         ScoreDisplayFloatingText(floatingTextNumber);
         UpdateClearsTotal();
 

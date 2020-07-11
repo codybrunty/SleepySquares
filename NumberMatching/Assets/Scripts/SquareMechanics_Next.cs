@@ -27,6 +27,7 @@ public class SquareMechanics_Next : MonoBehaviour{
 
     private int RandomSquareNumber() {
         int randomMax = 4;
+
         
         return UnityEngine.Random.Range(1, randomMax);
     }

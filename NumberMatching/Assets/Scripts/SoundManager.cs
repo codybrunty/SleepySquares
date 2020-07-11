@@ -6,7 +6,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour{
 
     public static SoundManager SM;
-
+    public int soundOn;
     public Sound[] sounds;
 
     private void Awake() {
@@ -27,22 +27,38 @@ public class SoundManager : MonoBehaviour{
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
         }
+
+        soundOn = PlayerPrefs.GetInt("UserSoundOn", 1);
     }
 
     public void PlayOneShotSound(string name) {
-        //int soundOn = FindObjectOfType<SoundButtonMechanics>().soundOn;
-        //if (soundOn == 1) {
-        //}
-
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null) {
-            Debug.LogWarning("Sound: " + name + " not found!");
-            return;
+        if (soundOn == 1) {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+            if (s == null) {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+            else {
+                s.source.PlayOneShot(s.source.clip);
+            }
         }
-        else {
-            s.source.PlayOneShot(s.source.clip);
-        }
+    }
 
+    public void TurnOffSound() {
+        Debug.Log("Turn Sound Off");
+        soundOn = 0;
+        PlayerPrefs.SetInt("UserSoundOn", soundOn);
+    }
+
+    public void TurnOnSound() {
+        Debug.Log("Turn Sound On");
+        soundOn = 1;
+        PlayerPrefs.SetInt("UserSoundOn", soundOn);
+        PlayClickSound();
+    }
+
+    private void PlayClickSound() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
     }
 
 }

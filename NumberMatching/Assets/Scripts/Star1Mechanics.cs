@@ -7,11 +7,9 @@ public class Star1Mechanics : MonoBehaviour {
 
     [SerializeField] GameObject starEffect = default;
     public int starStatus; //0=off,1=on
-    private CollectionColor_Image star;
-
+    [SerializeField] CollectionColor_Image star;
 
     private void Start() {
-        star = gameObject.GetComponent<CollectionColor_Image>();
         starStatus = PlayerPrefs.GetInt("Star1_GoldStatus", 0);
         UpdateStarDisplay();
     }

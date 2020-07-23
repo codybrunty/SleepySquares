@@ -168,7 +168,7 @@ PlayerSettings:
     Android: com.BombChomp.SleepyHeadz
     Standalone: com.Company.ProductName
   buildNumber: {}
-  AndroidBundleVersionCode: 14
+  AndroidBundleVersionCode: 22
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0

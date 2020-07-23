@@ -104,6 +104,10 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
                 //Debug.Log("sfx3");
                 FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
                 break;
+            case 4:
+                //Debug.Log("sfx3");
+                FindObjectOfType<SoundManager>().PlayOneShotSound("monster4");
+                break;
             default:
                 //Debug.Log("nosfx");
                 break;

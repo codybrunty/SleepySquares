@@ -8,9 +8,9 @@ public class RaycastMouse : MonoBehaviour {
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] GameBoardMechanics gameboard = default;
     [SerializeField] SwitchButton switchButton = default;
-
-    public bool switchSquares = false;
+    
     private bool gameStarted = false;
+    //public bool switchModeIsActive = false;
 
     private void Update() {
         RayCastForSquare();
@@ -20,27 +20,36 @@ public class RaycastMouse : MonoBehaviour {
         if (gameboard.touchEnabled) {
             if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                int layerMask_square = LayerMask.NameToLayer(layerName: "Square_Gameboard");
 
+
+
+                int layerMask_square = LayerMask.NameToLayer(layerName: "Square_Gameboard");
                 RaycastHit2D hit_onSquare = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_square);
                 if (hit_onSquare.collider != null) {
-
                     GameSquareHit(hit_onSquare.collider.gameObject);
-                    
                 }
+
+
 
                 int layerMask_square_next = LayerMask.NameToLayer(layerName: "Square_Next");
                 RaycastHit2D hit_onSquare_next = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_square_next);
                 if (hit_onSquare_next.collider != null) {
-
                     NextSquareHit(hit_onSquare_next.collider.gameObject);
                 }
 
+
+                
+                int layerMask_switchBG = LayerMask.NameToLayer(layerName: "SwitchBG");
+                RaycastHit2D hit_onSwitchBG = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_switchBG);
+                if (hit_onSwitchBG.collider != null) {
+                    if (switchButton.activated) {
+                        switchButton.TurnOffSwitchMode(true);
+                    }
+                }
+
+
+
             }
-
-
-
-
         }
     }
 
@@ -66,22 +75,35 @@ public class RaycastMouse : MonoBehaviour {
 
         //empty square non blocker
         if (square.GetComponent<SquareMechanics_Gameboard>().number == 0) {
-            CheckIfEmptySquareLucky(square);
-            EmptySquareClicked(square);
-            gameboard.SaveBoardState();//save board state on empty click
+
+            //check if in switch mode
+            if (!switchButton.activated) {
+                CheckIfEmptySquareLucky(square);
+                EmptySquareClicked(square);
+                gameboard.SaveBoardState();//save board state on empty click
+            }
+            else {
+                switchButton.TurnOffSwitchMode(true);
+            }
+
+
         }
+
         //blocker square
         else if(square.GetComponent<SquareMechanics_Gameboard>().number == 5 && square.GetComponent<SquareMechanics_Gameboard>().blocker == true) {
-            BlockerSquareClicked();
+            //check if in switch mode
+            if (!switchButton.activated) {
+                BlockerSquareClicked();
+            }
+            else {
+                switchButton.TurnOffSwitchMode(true);
+            }
         }
 
         //filled square
         else {
-            if (switchSquares) {
+            if (switchButton.activated) {
                 OccupiedSquareClicked(square);
-                switchButton.ReduceSwitchAmmount();
-                switchButton.TurnOffSwitchMode();
-                gameboard.SaveBoardState();//save board state on switch click
             }
         }
 
@@ -98,20 +120,21 @@ public class RaycastMouse : MonoBehaviour {
 
     private void BlockerSquareClicked() {
         Debug.Log("Blocker Square Clicked");
-
     }
 
     private void OccupiedSquareClicked(GameObject square) {
+        bool playSFX = true;
 
         if (square.GetComponent<SquareMechanics_Gameboard>().completed == false) {
 
             int number = nextBoard.GetFirstNumber();
             int clickedNumber = square.GetComponent<SquareMechanics_Gameboard>().number;
+            
 
             //blockers squares cant switch in from next board
             if (number != 0 && number != 5) {
                 //blockers squares cant switch out from gameboard
-                if (clickedNumber != 5) {
+                if (clickedNumber != 5 && number != clickedNumber) {
                     nextBoard.SetFirstNumber(clickedNumber);
                     square.GetComponent<SquareMechanics_Gameboard>().ResetSquare_OnClick();
                     square.GetComponent<SquareMechanics_Gameboard>().number = number;
@@ -119,15 +142,19 @@ public class RaycastMouse : MonoBehaviour {
                     square.GetComponent<SquareMechanics_Gameboard>().CalculateConnections();
                     square.GetComponent<SquareMechanics_Gameboard>().RecalculateAdjescentSquares();
 
-                    gameboard.AddToMoveCounter();
-                    gameboard.CheckIfBoardFull();
+                    //gameboard.AddToMoveCounter();
+                    //gameboard.CheckIfBoardFull();
+                    playSFX = false;
+                    switchButton.ReduceSwitchAmmount();
+                    gameboard.SaveBoardState();//save board state on switch click
                 }
             }
 
             
         }
-        
 
+
+        switchButton.TurnOffSwitchMode(playSFX);
     }
 
     private void EmptySquareClicked(GameObject square) {

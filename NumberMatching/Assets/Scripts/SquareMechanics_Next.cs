@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SquareMechanics_Next : MonoBehaviour{
-    
+
+    [SerializeField] GameBoardMechanics gameboard = default;
     public int number = 0;
     public List<Color> spriteColors = new List<Color>();
     private NextBoardMechanics nextBoard;
@@ -28,8 +29,22 @@ public class SquareMechanics_Next : MonoBehaviour{
     private int RandomSquareNumber() {
         int randomMax = 4;
 
-        
-        return UnityEngine.Random.Range(1, randomMax);
+        if (gameboard.hardModeOn == 1) {
+            randomMax = 5;
+        }
+
+        //decreasee the frequency of 4 getting picked
+        int resultNumbeer = UnityEngine.Random.Range(1, randomMax);
+        if (resultNumbeer == 4) {
+            int randomNumber = UnityEngine.Random.Range(1, 3);
+            if (randomNumber != 1) {
+                randomMax = 4;
+                resultNumbeer = UnityEngine.Random.Range(1, randomMax);
+            }
+        }
+
+
+        return resultNumbeer;
     }
 
     public void SetNumberDisplay() {

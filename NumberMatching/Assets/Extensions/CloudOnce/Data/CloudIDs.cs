@@ -46,6 +46,26 @@ namespace CloudOnce
 #endif
                 }
             }
+
+            public static string HardModeHighScore
+            {
+                get
+                {
+#if UNITY_ANDROID && !UNITY_EDITOR
+#if CLOUDONCE_GOOGLE
+                    return "CgkI1a-4sNcXEAIQAw";
+#else
+                    return string.Empty;
+#endif
+#elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
+                    return "";
+#elif UNITY_EDITOR
+                    return "HardModeHighScore";
+#else
+                    return string.Empty;
+#endif
+                }
+            }
         }
     }
 }

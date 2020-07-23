@@ -13,6 +13,7 @@ public class GameBoardMechanics : MonoBehaviour{
     public int highScore = 0;
     public int score = 0;
     public int luckyCoins = 1;
+    public int hardModeOn = 0;
 
     [Header("Clear Settings")]
     public int clearsEveryPts = 100;
@@ -49,6 +50,8 @@ public class GameBoardMechanics : MonoBehaviour{
     [SerializeField] NextBoardMechanics nextBoard = default;
     [SerializeField] SwitchButton switchButton = default;
     [SerializeField] TrophySystem trophySystem = default;
+    [SerializeField] ResetGameScene resetButton = default;
+    [SerializeField] HardModeTextMechanics hardText = default;
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
@@ -90,10 +93,10 @@ public class GameBoardMechanics : MonoBehaviour{
         switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
         switchButton.UpdateSwitchAmmountDisplay();
 
+        hardModeOn = GameDataManager.GDM.hardModeOn;
         score = 0;
         UpdateScoreDiplay();
-
-        highScore = GameDataManager.GDM.HighScore_AllTime;
+        GetHighScore();
         UpdateHighScoreDisplay();
 
         totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
@@ -106,10 +109,30 @@ public class GameBoardMechanics : MonoBehaviour{
 
         touchEnabled = true;
         gameOver = false;
-        
+
         SaveBoardState();
     }
 
+    private void GetHighScore() {
+        if (hardModeOn == 1) {
+            highScore = GameDataManager.GDM.HardModeHighScore_AllTime;
+        }
+        else {
+            highScore = GameDataManager.GDM.HighScore_AllTime;
+        }
+    }
+
+    private void SaveHighScore() {
+        if (hardModeOn == 1) {
+            GameDataManager.GDM.HardModeHighScore_AllTime=highScore;
+            Debug.LogWarning("HardMode HighScore Updated");
+        }
+        else {
+            GameDataManager.GDM.HighScore_AllTime=highScore;
+            Debug.LogWarning("Regular HighScore Updated");
+        }
+        GameDataManager.GDM.SaveGameData();
+    }
     private void SetBoardState() {
         Debug.Log("set board state");
         if (GameDataManager.GDM.gameOver) {
@@ -139,7 +162,9 @@ public class GameBoardMechanics : MonoBehaviour{
             switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
             switchButton.UpdateSwitchAmmountDisplay();
 
-            highScore = GameDataManager.GDM.HighScore_AllTime;
+            hardModeOn = GameDataManager.GDM.hardModeOn;
+
+            GetHighScore();
             UpdateHighScoreDisplay();
 
             totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
@@ -171,7 +196,9 @@ public class GameBoardMechanics : MonoBehaviour{
         GameDataManager.GDM.TotalPoints_AllTime = totalPoints;
         UpdateTotalPointsTrophyDisplay();
 
-        GameDataManager.GDM.HighScore_AllTime = highScore;
+
+        GameDataManager.GDM.hardModeOn = hardModeOn;
+        GetHighScore();
         GameDataManager.GDM.currentClears = clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal;
         GameDataManager.GDM.currentClearCounter = clearCounter;
         GameDataManager.GDM.currentSwitches = switchButton.switchAmmount;
@@ -180,7 +207,7 @@ public class GameBoardMechanics : MonoBehaviour{
         nextBoard.SaveNextSquaresInGameData();
 
         GameDataManager.GDM.gameOver = gameOver;
-        
+
         GameDataManager.GDM.SaveGameData();
     }
 
@@ -231,7 +258,8 @@ public class GameBoardMechanics : MonoBehaviour{
     }
 
     private void CheckMoveLimit() {
-        if (moveCounter % moveLimit == 0) {
+        //movecounter hits movelimit and hardmode is off
+        if (moveCounter % moveLimit == 0 && hardModeOn == 0) {
             AddBlockerToBoard();
         }
     }
@@ -271,7 +299,13 @@ public class GameBoardMechanics : MonoBehaviour{
     private void PostToLeaderboard() {
         Debug.Log("Post To Leaderboard");
         long scoreToPost = score;
-        Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+        if (hardModeOn == 1) {
+            Leaderboards.HardModeHighScore.SubmitScore(scoreToPost, callbackCheck);
+        }
+        else {
+            Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+        }
+       
     }
 
     private void callbackCheck(CloudRequestResult<bool> result) {
@@ -325,6 +359,7 @@ public class GameBoardMechanics : MonoBehaviour{
         if (score > highScore) {
             highScore = score;
             UpdateHighScoreDisplay();
+            SaveHighScore();
         }
     }
 
@@ -488,6 +523,25 @@ public class GameBoardMechanics : MonoBehaviour{
         for (int i = 0; i < completeList.Count; i++) {
             Debug.Log(completeList[i].name + ": "+completeList[i].GetComponent<SquareMechanics_Gameboard>().number);
         }
+    }
+
+    public void TurnOnHardMode() {
+        Debug.Log("Turn Hard Mode On");
+        hardModeOn = 1;
+        GameDataManager.GDM.hardModeOn = hardModeOn;
+        GameDataManager.GDM.SaveGameData();
+        hardText.UpdateHardText();
+        resetButton.ResetHardModeSwitch(0);
+    }
+
+    public void TurnOffHardMode() {
+        Debug.Log("Turn Hard Mode Off");
+        hardModeOn = 0;
+        GameDataManager.GDM.hardModeOn = hardModeOn;
+        GameDataManager.GDM.SaveGameData();
+        hardText.UpdateHardText();
+        resetButton.ResetHardModeSwitch(1);
+
     }
 
 }

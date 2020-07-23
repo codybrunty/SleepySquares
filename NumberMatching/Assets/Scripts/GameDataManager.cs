@@ -13,6 +13,7 @@ public class GameDataManager : MonoBehaviour {
     public List<SquareInfo> squares;
     public int TotalPoints_AllTime;
     public int HighScore_AllTime;
+    public int HardModeHighScore_AllTime;
     public int currentPoints;
     public int currentClears;
     public int currentClearCounter;
@@ -20,10 +21,11 @@ public class GameDataManager : MonoBehaviour {
     public int moveCounter;
     public List<int> savedNextSquares;
     public bool gameOver;
+    public int hardModeOn;
 
     private void Awake() {
         //Debug.Log(Application.persistentDataPath);
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         int firstTime = PlayerPrefs.GetInt("firstTime", 0);
         if (firstTime == 0) {
@@ -55,6 +57,7 @@ public class GameDataManager : MonoBehaviour {
 
         data.TotalPoints_AllTime = TotalPoints_AllTime;
         data.HighScore_AllTime = HighScore_AllTime;
+        data.HardModeHighScore_AllTime = HardModeHighScore_AllTime;
         data.currentPoints = currentPoints;
         data.currentClears = currentClears;
         data.currentClearCounter = currentClearCounter;
@@ -63,7 +66,7 @@ public class GameDataManager : MonoBehaviour {
         data.squares = squares;
         data.savedNextSquares = savedNextSquares;
         data.gameOver = gameOver;
-
+        data.hardModeOn = hardModeOn;
 
         bf.Serialize(file, data);
         file.Close();
@@ -79,6 +82,7 @@ public class GameDataManager : MonoBehaviour {
 
             TotalPoints_AllTime = data.TotalPoints_AllTime;
             HighScore_AllTime = data.HighScore_AllTime;
+            HardModeHighScore_AllTime = data.HardModeHighScore_AllTime;
             currentPoints = data.currentPoints;
             currentClears = data.currentClears;
             currentClearCounter = data.currentClearCounter;
@@ -87,6 +91,7 @@ public class GameDataManager : MonoBehaviour {
             squares = data.squares;
             savedNextSquares = data.savedNextSquares;
             gameOver = data.gameOver;
+            hardModeOn = data.hardModeOn;
 
             Debug.Log("Loaded Game Data from Local File");
         }
@@ -104,6 +109,7 @@ public class GameDataManager : MonoBehaviour {
 
         data.TotalPoints_AllTime = 0;
         data.HighScore_AllTime = 0;
+        data.HardModeHighScore_AllTime = 0;
         data.currentPoints = 0;
         data.currentClears = 0;
         data.currentClearCounter = 1;
@@ -122,6 +128,7 @@ public class GameDataManager : MonoBehaviour {
 
         data.savedNextSquares = new List<int> { UnityEngine.Random.Range(1,4), UnityEngine.Random.Range(1, 4), UnityEngine.Random.Range(1, 4) };
         data.gameOver = false;
+        data.hardModeOn = 0;
 
         bf.Serialize(file, data);
         file.Close();
@@ -135,6 +142,7 @@ public class GameDataManager : MonoBehaviour {
 class GameData {
     public int TotalPoints_AllTime;
     public int HighScore_AllTime;
+    public int HardModeHighScore_AllTime;
     public int currentPoints;
     public int currentClears;
     public int currentClearCounter;
@@ -143,6 +151,7 @@ class GameData {
     public List<SquareInfo> squares;
     public List<int> savedNextSquares;
     public bool gameOver;
+    public int hardModeOn;
 }
 
 [Serializable]

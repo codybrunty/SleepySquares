@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TrophySystem : MonoBehaviour{
 
@@ -11,7 +12,8 @@ public class TrophySystem : MonoBehaviour{
     [SerializeField] Image topBar = default;
     [SerializeField] Image bottomBar = default;
     [SerializeField] Star1Mechanics star1 = default;
-    [SerializeField] Star2Mechanics star2 = default;
+    [SerializeField] Star2Mechanics star2 = default; 
+    [SerializeField] TextMeshProUGUI levelText = default;
     public int trophyIndex = 0;
     public int trophyPanelMinScore = 0;
     public int trophyPanelMaxScore = 0;
@@ -32,20 +34,13 @@ public class TrophySystem : MonoBehaviour{
         Debug.Log("Updating Trophy Panel");
         totalPoints = GameDataManager.GDM.TotalPoints_AllTime;//50
 
-        /*
-        if  (totalPoints == 0) {
-            SetTrophyImage();
-            star1.StarOff();
-            star2.StarOff();
-        }
-        */
-
         if (totalPoints != savedTotalPoints) {
-            Debug.Log("saving total points");
-            SetTrophyImage();
+            //Debug.Log("saving total points");
+            
 
             savedTotalPoints = totalPoints;
             CalculateTrophyPanelMinAndMaxScore();
+            SetTrophyImage();
 
             topBarMax = trophyPanelMinScore + ((trophyPanelMaxScore - trophyPanelMinScore) / 2); //150
 
@@ -67,9 +62,11 @@ public class TrophySystem : MonoBehaviour{
     }
 
     private void FillBottomBar() {
-        Debug.Log("Fill Botom Bar");
         topBar.fillAmount = 1f;
-        star2.StarOn();
+
+        if (isStart) {
+            star2.StarOn();
+        }
 
         if (totalPoints < trophyPanelMaxScore) {
             float fillNumber = (float)((float)(totalPoints - topBarMax) / (float)(trophyPanelMaxScore - topBarMax));
@@ -98,13 +95,14 @@ public class TrophySystem : MonoBehaviour{
     }
 
     private void FillTopBar(bool botNext) {
-        Debug.Log("Fill Top Bar");
 
         float fillNumber = (float)((float)(totalPoints - trophyPanelMinScore) / (float)(topBarMax - trophyPanelMinScore));//0.33333f
 
         //on first time just populate the bars
         if (!isStart) {
-            isStart = true;
+            if (botNext == false) {
+                isStart = true;
+            }
             topBar.fillAmount = fillNumber;
         }
         else {
@@ -114,15 +112,22 @@ public class TrophySystem : MonoBehaviour{
         bottomBar.fillAmount = 0f;
 
         star1.StarOff();
-        star2.StarOff();
+
+        if (botNext==true && !isStart) {
+            FillBottomBar();
+        }
+        else {
+            star2.StarOff();
+        }
     }
 
     private void SetTrophyImage() {
+        //Debug.LogWarning(trophyIndex);
         trophy.sprite = trophies[trophyIndex];
         List<string> trophyColorList = new List<string> { "Trophy1", "Trophy2", "Trophy3" };
         trophy.GetComponent<CollectionColor_Image>().key = trophyColorList[trophyIndex % 3];
         trophy.GetComponent<CollectionColor_Image>().GetColor();
-
+        levelText.text = (trophyIndex + 1).ToString();
     }
 
     private void CalculateTrophyPanelMinAndMaxScore() {
@@ -145,14 +150,14 @@ public class TrophySystem : MonoBehaviour{
 
 
     IEnumerator MoveOverTime(Image bar, float targetFillNumber,bool botNext) {
-        Debug.Log(bar.name + " filling up");
+       // Debug.Log(bar.name + " filling up");
 
         float fillDuration = bar.fillAmount - targetFillNumber;
         if (fillDuration < 0.1f) {
             fillDuration = 0.1f;
         }
 
-        Debug.LogWarning(fillDuration);
+        //Debug.LogWarning(fillDuration);
 
 
 
@@ -170,7 +175,7 @@ public class TrophySystem : MonoBehaviour{
         bar.fillAmount = targetFillNumber;
 
         if (botNext) {
-            Debug.Log("Fill Bottom After Top");
+            //Debug.Log("Fill Bottom After Top");
             FillBottomBar();
         }
     }

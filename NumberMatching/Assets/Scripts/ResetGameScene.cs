@@ -10,6 +10,7 @@ public class ResetGameScene : MonoBehaviour{
     [SerializeField] ExitPanels exit = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
     [SerializeField] GameObject GameOverPanel = default;
+    private List<GameObject> emptySquares = new List<GameObject>();
 
     public void ResetHardModeSwitch(int hardModeOn) {
         OnResetPostToLeaderboard(hardModeOn);
@@ -18,16 +19,37 @@ public class ResetGameScene : MonoBehaviour{
         GameOverPanel.SetActive(false);
     }
 
-    public void ResetInGameOnClick() {
-        OnResetPostToLeaderboard(gameBoard.hardModeOn);
-        exit.ExitOnClick();
-        gameBoard.ResetBoardState();
-        GameOverPanel.SetActive(false);
+    public void InGameResetOnClick() {
+        StartCoroutine(FillBoard(true));
+    }
+
+    IEnumerator FillBoard(bool noWait) {
+        float waitTime = .1f;
+        if (noWait) {
+            waitTime = 0f;
+        }
+
+        yield return new WaitForSeconds(waitTime);
+
+        emptySquares.Clear();
+
+        for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++) {
+            if (gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {
+                emptySquares.Add(gameBoard.gameBoardSquares[i]);
+            }
+        }
+
+        if (emptySquares.Count > 0) {
+            int randomIndex = UnityEngine.Random.Range(0, emptySquares.Count);
+            FindObjectOfType<RaycastMouse>().GameSquareHit(emptySquares[randomIndex]);
+            StartCoroutine(FillBoard(false));
+        }
     }
 
     public void ResetGameOverOnClick() {
         exit.ExitOnClick();
         gameBoard.ResetBoardState();
+        GameOverPanel.GetComponent<GameOverPanel>().ResetGameOveerPanelScale();
         GameOverPanel.SetActive(false);
     }
 

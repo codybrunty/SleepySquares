@@ -29,6 +29,7 @@ public class SwitchButton : MonoBehaviour{
     [SerializeField] GameObject scoreboard = default;
     [SerializeField] GameObject trophyPanel = default;
 
+    [SerializeField] TextMeshProUGUI floatingText = default;
 
 
     private void Start() {
@@ -236,12 +237,24 @@ public class SwitchButton : MonoBehaviour{
         GameDataManager.GDM.currentSwitches+=ammount;
         GameDataManager.GDM.SaveGameData();
         switchAmmount = GameDataManager.GDM.currentSwitches;
-
-        //floating text ammount
-
+        AddSwitchAnimation(ammount);
         UpdateSwitchAmmountDisplay();
     }
 
+    private void AddSwitchAnimation(int number) {
+        floatingText.text = ("+" + number.ToString());
+        floatingText.gameObject.GetComponent<FloatingText>().FlashText();
+        PopAnim();
+    }
+
+    private void PopAnim() {
+
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
+        hash.Add("time", .75f);
+        iTween.PunchScale(gameObject, hash);
+
+    }
 
     private void ActiveColors() {
         switchButton.key = "Second";

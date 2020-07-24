@@ -71,7 +71,7 @@ public class RaycastMouse : MonoBehaviour {
         Debug.Log("empty next square clicked");
     }
 
-    private void GameSquareHit(GameObject square){
+    public void GameSquareHit(GameObject square){
 
         //empty square non blocker
         if (square.GetComponent<SquareMechanics_Gameboard>().number == 0) {

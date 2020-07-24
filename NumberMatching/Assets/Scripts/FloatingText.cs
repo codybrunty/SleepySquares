@@ -9,8 +9,10 @@ public class FloatingText : MonoBehaviour{
     Vector3 currentPos;
     RectTransform rt;
 
+    public float moveTime = 0.15f;
+    public Vector3 moveAmmount = new Vector3(195f, 0f, 0f);
+
     void Start() {
-        //gameObject.GetComponent<TextMeshProUGUI>().color = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 0f);
         rt = gameObject.GetComponent<RectTransform>();
         currentPos = rt.anchoredPosition;
     }
@@ -18,8 +20,8 @@ public class FloatingText : MonoBehaviour{
     public void FlashText() {
         Color newColor = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 1f);
 
-        StartCoroutine(TwenMove(currentPos + new Vector3(195f,0f,0f) , 0.15f));
-        StartCoroutine(TweenAlpha(newColor, 0.15f,true));
+        StartCoroutine(TwenMove(currentPos + moveAmmount, moveTime));
+        StartCoroutine(TweenAlpha(newColor, moveTime, true));
     }
 
     IEnumerator TwenMove(Vector3 targetPos,float duration) {

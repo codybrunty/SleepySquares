@@ -291,6 +291,8 @@ public class GameBoardMechanics : MonoBehaviour{
 
     private void RevealGameOverPanel() {
         gameOverPanel.gameObject.SetActive(true);
+        gameOverPanel.GameOverPanelAnimation();
+        FindObjectOfType<SoundManager>().PlayOneShotSound("GameOver");
         gameOverPanel.score = score;
         gameOverPanel.highscore = highScore;
         gameOverPanel.UpdateGameOverPanel();
@@ -527,6 +529,7 @@ public class GameBoardMechanics : MonoBehaviour{
 
     public void TurnOnHardMode() {
         Debug.Log("Turn Hard Mode On");
+        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
         hardModeOn = 1;
         GameDataManager.GDM.hardModeOn = hardModeOn;
         GameDataManager.GDM.SaveGameData();
@@ -536,6 +539,7 @@ public class GameBoardMechanics : MonoBehaviour{
 
     public void TurnOffHardMode() {
         Debug.Log("Turn Hard Mode Off");
+        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
         hardModeOn = 0;
         GameDataManager.GDM.hardModeOn = hardModeOn;
         GameDataManager.GDM.SaveGameData();

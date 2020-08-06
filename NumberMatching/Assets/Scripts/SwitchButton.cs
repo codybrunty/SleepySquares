@@ -122,7 +122,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = clearButton.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {
@@ -138,7 +140,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = clearButton.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {
@@ -154,7 +158,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = trophyPanel.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {
@@ -170,7 +176,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = trophyPanel.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {
@@ -187,7 +195,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = scoreboard.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {
@@ -204,7 +214,9 @@ public class SwitchButton : MonoBehaviour{
         TextMeshProUGUI[] texts = scoreboard.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
 
         for (int i = 0; i < imgs.Length; i++) {
-            imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            if (imgs[i].color.a != 0f) {
+                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
+            }
         }
 
         for (int i = 0; i < texts.Length; i++) {

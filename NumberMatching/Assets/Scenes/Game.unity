@@ -10103,6 +10103,32 @@ MonoBehaviour:
   starEffect: {fileID: 1692161666}
   starStatus: 0
   star: {fileID: 9027656139950566132}
+  switchButton: {fileID: 1591954444}
+  switchesText: {fileID: 459756969}
+  ease:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!222 &9027656139950566134
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10313,6 +10339,32 @@ MonoBehaviour:
   starEffect: {fileID: 642797789}
   starStatus: 0
   star: {fileID: 9027656140550618214}
+  switchButton: {fileID: 1591954444}
+  switchesText: {fileID: 459756969}
+  ease:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &9027656140550618234
 MonoBehaviour:
   m_ObjectHideFlags: 0

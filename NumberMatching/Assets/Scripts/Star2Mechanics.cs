@@ -13,6 +13,7 @@ public class Star2Mechanics : MonoBehaviour {
     [SerializeField] GameObject switchesText = default;
 
     public AnimationCurve ease = default;
+    public AnimationCurve ease2 = default;
 
     private void Start() {
         starStatus = PlayerPrefs.GetInt("Star2_GoldStatus", 0);
@@ -78,7 +79,7 @@ public class Star2Mechanics : MonoBehaviour {
 
 
     IEnumerator TurnOffStartEffect() {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         starEffect.SetActive(false);
     }
 
@@ -93,7 +94,7 @@ public class Star2Mechanics : MonoBehaviour {
         PlayStarSFX();
         yield return new WaitForSeconds(0.5f);
         FlyToSwitches();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
         switchButton.AddSwitches(2);
     }
@@ -103,7 +104,7 @@ public class Star2Mechanics : MonoBehaviour {
     }
 
     private void FlyToSwitches() {
-        StartCoroutine(TwenMove(0.2f));
+        StartCoroutine(TwenMove(0.5f));
     }
 
     IEnumerator TwenMove(float duration) {
@@ -111,13 +112,21 @@ public class Star2Mechanics : MonoBehaviour {
         Vector3 currentPos = gameObject.transform.position;
         Vector3 textPosition = switchesText.transform.position;
 
+        float startRotation = gameObject.GetComponent<RectTransform>().eulerAngles.z;
+        float endRotation = startRotation + 360.0f*3;
+
         for (float time = 0f; time < duration; time += Time.deltaTime) {
             gameObject.transform.position = Vector3.Lerp(currentPos, textPosition, ease.Evaluate(time / duration));
+            
+            float zRotation = Mathf.Lerp(startRotation, endRotation, ease2.Evaluate(time / duration)) % 360.0f;
+            gameObject.GetComponent<RectTransform>().eulerAngles = new Vector3(gameObject.GetComponent<RectTransform>().eulerAngles.x, gameObject.GetComponent<RectTransform>().eulerAngles.y, zRotation);
+
             yield return null;
         }
 
         gameObject.transform.position = textPosition;
         StarInvisible();
         gameObject.transform.position = currentPos;
+        gameObject.GetComponent<RectTransform>().eulerAngles = new Vector3(gameObject.GetComponent<RectTransform>().eulerAngles.x, gameObject.GetComponent<RectTransform>().eulerAngles.y, startRotation);
     }
 }

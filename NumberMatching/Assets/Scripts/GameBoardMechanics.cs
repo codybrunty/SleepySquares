@@ -389,17 +389,23 @@ public class GameBoardMechanics : MonoBehaviour{
 
     private void UpdateClearsTotal() {
 
-        int clearScore = clearCounter * clearsEveryPts;
+        int clearScore = GetClearScore();
         if (score > clearScore) {
             clearCounter++;
             clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
             UpdateClearsTotal();
         }
+
+    }
+
+    public int GetClearScore() {
+        return clearCounter * clearsEveryPts;
     }
 
     private void UpdateScoreDiplay() {
         Debug.Log("score updated to " + score);
         score_text.text = score.ToString();
+        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
     }
 
     private void UpdateHighScoreDisplay() {

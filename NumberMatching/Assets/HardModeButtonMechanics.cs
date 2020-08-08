@@ -8,6 +8,8 @@ public class HardModeButtonMechanics : MonoBehaviour{
 
     [SerializeField] TextMeshProUGUI hardModeTextDisplay = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
+    [SerializeField] GameObject hardSquare = default;
+    [SerializeField] GameObject easySquare = default;
 
     private void Start() {
         SetModeDisplay();
@@ -25,10 +27,14 @@ public class HardModeButtonMechanics : MonoBehaviour{
 
     private void SetModeDisplay() {
         if (gameBoard.hardModeOn == 1) {
-            hardModeTextDisplay.text = "E";
+            hardModeTextDisplay.text = "NormalMode";
+            hardSquare.SetActive(false);
+            easySquare.SetActive(true);
         }
         else {
-            hardModeTextDisplay.text = "H";
+            hardModeTextDisplay.text = "Hard Mode";
+            hardSquare.SetActive(true);
+            easySquare.SetActive(false);
         }
     }
 

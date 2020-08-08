@@ -12,8 +12,9 @@ public class TrophySystem : MonoBehaviour{
     [SerializeField] Image topBar = default;
     [SerializeField] Image bottomBar = default;
     [SerializeField] Star1Mechanics star1 = default;
-    [SerializeField] Star2Mechanics star2 = default; 
+    [SerializeField] Star2Mechanics star2 = default;
     [SerializeField] TextMeshProUGUI levelText = default;
+    [SerializeField] GameObject TrophyEffect = default;
     public int trophyIndex = 0;
     public int trophyPanelMinScore = 0;
     public int trophyPanelMaxScore = 0;
@@ -29,6 +30,7 @@ public class TrophySystem : MonoBehaviour{
     public AnimationCurve easeCurve;
 
     private bool isStart = false;
+
 
     public void UpdateTrophyPanel() {
         Debug.Log("Updating Trophy Panel");
@@ -181,7 +183,35 @@ public class TrophySystem : MonoBehaviour{
     }
 
     IEnumerator TrophyChangeAnimation() {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
+        
+
+
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(40f, 25f, 0f));
+        hash.Add("time", 1f);
+        iTween.ShakePosition(gameObject, hash);
+
+        yield return new WaitForSeconds(0.4f);
+
+        TrophyEffect.SetActive(true);
+        yield return new WaitForSeconds(0.35f);
+        FindObjectOfType<SoundManager>().PlayOneShotSound("newTrophy");
+        SwitchTrophyDisplay();
+        Hashtable hash2 = new Hashtable();
+        hash2.Add("amount", new Vector3(1.5f, 1.5f, 0f));
+        hash2.Add("time", .75f);
+        hash2.Add("oncomplete", "TurnStarEffectOff");
+        hash2.Add("onCompleteTarget", gameObject);
+        iTween.PunchScale(gameObject.transform.GetChild(0).gameObject, hash2);
+
+    }
+
+    public void TurnStarEffectOff() {
+        TrophyEffect.SetActive(false);
+    }
+
+    private void SwitchTrophyDisplay() {
         SetTrophyImage();
         star1.StarOff();
         star2.StarOff();

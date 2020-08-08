@@ -125,11 +125,11 @@ public class GameBoardMechanics : MonoBehaviour{
     private void SaveHighScore() {
         if (hardModeOn == 1) {
             GameDataManager.GDM.HardModeHighScore_AllTime=highScore;
-            Debug.LogWarning("HardMode HighScore Updated");
+            Debug.Log("HardMode HighScore Updated");
         }
         else {
             GameDataManager.GDM.HighScore_AllTime=highScore;
-            Debug.LogWarning("Regular HighScore Updated");
+            Debug.Log("Regular HighScore Updated");
         }
         GameDataManager.GDM.SaveGameData();
     }

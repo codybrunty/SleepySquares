@@ -92,19 +92,19 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
         if (String.Equals(args.purchasedProduct.definition.id, switches30, StringComparison.Ordinal)) {
             Debug.Log("purchase 30 switches");
-            FindObjectOfType<SettingsPanels>().ExitSettings();
+            FindObjectOfType<ExitPanels>().ExitOnClick();
             FindObjectOfType<SwitchButton>().AddSwitches(30);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
         }
         else if (String.Equals(args.purchasedProduct.definition.id, switches75, StringComparison.Ordinal)) {
             Debug.Log("purchase 75 switches");
-            FindObjectOfType<SettingsPanels>().ExitSettings();
+            FindObjectOfType<ExitPanels>().ExitOnClick();
             FindObjectOfType<SwitchButton>().AddSwitches(75);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
         }
         else if (String.Equals(args.purchasedProduct.definition.id, switches120, StringComparison.Ordinal)) {
             Debug.Log("purchase 120 switches");
-            FindObjectOfType<SettingsPanels>().ExitSettings();
+            FindObjectOfType<ExitPanels>().ExitOnClick();
             FindObjectOfType<SwitchButton>().AddSwitches(120);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
         }

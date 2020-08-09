@@ -389,17 +389,12 @@ public class GameBoardMechanics : MonoBehaviour{
 
     private void UpdateClearsTotal() {
 
-        if (hardModeOn!=1) {
-            int clearScore = GetClearScore();
-            if (score > clearScore) {
-                clearCounter++;
-                clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
-                UpdateClearsTotal();
-            }
+        int clearScore = GetClearScore();
+        if (score > clearScore) {
+            clearCounter++;
+            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
+            UpdateClearsTotal();
         }
-
-
-
 
     }
 
@@ -410,11 +405,7 @@ public class GameBoardMechanics : MonoBehaviour{
     private void UpdateScoreDiplay() {
         Debug.Log("score updated to " + score);
         score_text.text = score.ToString();
-
-        if (hardModeOn != 1) {
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
-        }
-
+        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
     }
 
     private void UpdateHighScoreDisplay() {
@@ -550,7 +541,6 @@ public class GameBoardMechanics : MonoBehaviour{
         GameDataManager.GDM.SaveGameData();
         hardText.UpdateHardText();
         resetButton.ResetHardModeSwitch(0);
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
     }
 
     public void TurnOffHardMode() {
@@ -561,7 +551,7 @@ public class GameBoardMechanics : MonoBehaviour{
         GameDataManager.GDM.SaveGameData();
         hardText.UpdateHardText();
         resetButton.ResetHardModeSwitch(1);
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+
     }
 
 }

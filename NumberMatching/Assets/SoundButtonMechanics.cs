@@ -6,7 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 
 public class SoundButtonMechanics : MonoBehaviour {
-    
+
+    [SerializeField] Image soundImage = default;
     [SerializeField] Sprite soundOnImage = default;
     [SerializeField] Sprite soundOffImage = default;
 
@@ -26,14 +27,10 @@ public class SoundButtonMechanics : MonoBehaviour {
 
     private void SetSoundImages() {
         if (FindObjectOfType<SoundManager>().soundOn == 1) {
-            gameObject.GetComponent<Image>().sprite = soundOnImage;
-            Color originalColor = gameObject.GetComponent<Image>().color;
-            gameObject.GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
+            soundImage.sprite = soundOnImage;
         }
         else {
-            gameObject.GetComponent<Image>().sprite = soundOffImage;
-            Color originalColor = gameObject.GetComponent<Image>().color;
-            gameObject.GetComponent<Image>().color = new Color(originalColor.r, originalColor.g, originalColor.b,0.5f);
+            soundImage.sprite = soundOffImage;
         }
     }
 }

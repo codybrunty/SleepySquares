@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class OpenStore : MonoBehaviour{
 
-    [SerializeField] SettingsPanels settings = default;
+    [SerializeField] GameObject store = default;
 
     public void OpenStoreDisplay() {
         FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
-        settings.ShowStore();
+        store.SetActive(true);
     }
 
 }

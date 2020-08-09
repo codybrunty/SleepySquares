@@ -1,46 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using CloudOnce;
 
 public class ResetGameScene : MonoBehaviour{
 
-    [SerializeField] SettingsPanels settings = default;
+    [SerializeField] ExitPanels exit = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
     [SerializeField] GameObject GameOverPanel = default;
     private List<GameObject> emptySquares = new List<GameObject>();
-    private List<Button> disabledButtons = new List<Button>();
 
     public void ResetHardModeSwitch(int hardModeOn) {
         OnResetPostToLeaderboard(hardModeOn);
-        settings.ExitSettings();
+        exit.ExitOnClick();
         gameBoard.ResetBoardState();
         GameOverPanel.SetActive(false);
     }
 
     public void InGameResetOnClick() {
-        DisableAllButtonsBeforeFill();
         StartCoroutine(FillBoard(true));
-    }
-
-    private void DisableAllButtonsBeforeFill() {
-        disabledButtons.Clear();
-        Button[] buttons = gameObject.transform.parent.GetComponentsInChildren<Button>();
-        foreach (Button b in buttons) {
-            disabledButtons.Add(b);
-            b.interactable = false;
-            b.GetComponent<Image>().raycastTarget = false;
-        }
-    }
-
-    private void EnableAllButtonsAfterFill() {
-        foreach (Button b in disabledButtons) {
-            b.interactable = true;
-            b.GetComponent<Image>().raycastTarget = true;
-        }
     }
 
     IEnumerator FillBoard(bool noWait) {
@@ -64,13 +44,10 @@ public class ResetGameScene : MonoBehaviour{
             FindObjectOfType<RaycastMouse>().GameSquareHit(emptySquares[randomIndex]);
             StartCoroutine(FillBoard(false));
         }
-        else {
-            EnableAllButtonsAfterFill();
-        }
     }
 
     public void ResetGameOverOnClick() {
-        settings.ExitSettings();
+        exit.ExitOnClick();
         gameBoard.ResetBoardState();
         GameOverPanel.GetComponent<GameOverPanel>().ResetGameOveerPanelScale();
         GameOverPanel.SetActive(false);

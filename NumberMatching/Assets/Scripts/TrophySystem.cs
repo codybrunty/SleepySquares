@@ -125,7 +125,7 @@ public class TrophySystem : MonoBehaviour{
 
     private void SetTrophyImage() {
         //Debug.LogWarning(trophyIndex);
-        trophy.sprite = trophies[trophyIndex % trophies.Count];
+        trophy.sprite = trophies[trophyIndex];
         List<string> trophyColorList = new List<string> { "Trophy1", "Trophy2", "Trophy3" };
         trophy.GetComponent<CollectionColor_Image>().key = trophyColorList[trophyIndex % 3];
         trophy.GetComponent<CollectionColor_Image>().GetColor();

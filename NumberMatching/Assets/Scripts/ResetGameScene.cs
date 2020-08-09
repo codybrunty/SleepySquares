@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using CloudOnce;
+using System;
 
 public class ResetGameScene : MonoBehaviour{
 
@@ -11,6 +13,7 @@ public class ResetGameScene : MonoBehaviour{
     [SerializeField] GameBoardMechanics gameBoard = default;
     [SerializeField] GameObject GameOverPanel = default;
     private List<GameObject> emptySquares = new List<GameObject>();
+    private List<Button> disabledButtons = new List<Button>();
 
     public void ResetHardModeSwitch(int hardModeOn) {
         OnResetPostToLeaderboard(hardModeOn);
@@ -20,7 +23,25 @@ public class ResetGameScene : MonoBehaviour{
     }
 
     public void InGameResetOnClick() {
+        DisableButtonsBeforeFill();
         StartCoroutine(FillBoard(true));
+    }
+
+    private void EnableButtonsAfterFill() {
+        foreach (Button b in disabledButtons) {
+            b.interactable = true;
+            b.GetComponent<Image>().raycastTarget = true;
+        }
+    }
+
+    private void DisableButtonsBeforeFill() {
+        disabledButtons.Clear();
+        Button[] buttons = gameObject.transform.parent.GetComponentsInChildren<Button>();
+        foreach (Button b in buttons) {
+            disabledButtons.Add(b);
+            b.interactable = false;
+            b.GetComponent<Image>().raycastTarget = false;
+        }
     }
 
     IEnumerator FillBoard(bool noWait) {
@@ -43,6 +64,9 @@ public class ResetGameScene : MonoBehaviour{
             int randomIndex = UnityEngine.Random.Range(0, emptySquares.Count);
             FindObjectOfType<RaycastMouse>().GameSquareHit(emptySquares[randomIndex]);
             StartCoroutine(FillBoard(false));
+        }
+        else {
+            EnableButtonsAfterFill();
         }
     }
 

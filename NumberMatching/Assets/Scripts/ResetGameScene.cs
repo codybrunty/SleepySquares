@@ -7,14 +7,14 @@ using CloudOnce;
 
 public class ResetGameScene : MonoBehaviour{
 
-    [SerializeField] ExitPanels exit = default;
+    [SerializeField] SettingsMenu settings = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
     [SerializeField] GameObject GameOverPanel = default;
     private List<GameObject> emptySquares = new List<GameObject>();
 
     public void ResetHardModeSwitch(int hardModeOn) {
         OnResetPostToLeaderboard(hardModeOn);
-        exit.ExitOnClick();
+        settings.ExitSettings();
         gameBoard.ResetBoardState();
         GameOverPanel.SetActive(false);
     }
@@ -47,7 +47,7 @@ public class ResetGameScene : MonoBehaviour{
     }
 
     public void ResetGameOverOnClick() {
-        exit.ExitOnClick();
+        settings.ExitSettings();
         gameBoard.ResetBoardState();
         GameOverPanel.GetComponent<GameOverPanel>().ResetGameOveerPanelScale();
         GameOverPanel.SetActive(false);

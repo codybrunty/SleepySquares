@@ -25,7 +25,7 @@ public class GameDataManager : MonoBehaviour {
 
     private void Awake() {
         //Debug.Log(Application.persistentDataPath);
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         int firstTime = PlayerPrefs.GetInt("firstTime", 0);
         if (firstTime == 0) {

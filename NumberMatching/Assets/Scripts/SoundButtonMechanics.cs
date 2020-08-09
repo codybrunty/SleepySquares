@@ -28,9 +28,13 @@ public class SoundButtonMechanics : MonoBehaviour {
     private void SetSoundImages() {
         if (FindObjectOfType<SoundManager>().soundOn == 1) {
             soundImage.sprite = soundOnImage;
+            Color newColor = soundImage.color;
+            soundImage.color = new Color(newColor.r, newColor.g, newColor.b,1f);
         }
         else {
             soundImage.sprite = soundOffImage;
+            Color newColor = soundImage.color;
+            soundImage.color = new Color(newColor.r, newColor.g, newColor.b, .5f);
         }
     }
 }

@@ -12,7 +12,8 @@ public class CollectionColor_Image : MonoBehaviour{
     }
 
     public void GetColor() {
-        gameObject.GetComponent<Image>().color = CollectionManager.CM.GetUIColor(key);
+        Color ImageColor = CollectionManager.CM.GetUIColor(key);
+        gameObject.GetComponent<Image>().color = new Color(ImageColor.r, ImageColor.g, ImageColor.b, gameObject.GetComponent<Image>().color.a);
     }
 
 }

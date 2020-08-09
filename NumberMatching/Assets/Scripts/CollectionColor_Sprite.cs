@@ -7,6 +7,7 @@ public class CollectionColor_Sprite : MonoBehaviour{
     public string key;
 
     public void GetColor() {
-        gameObject.GetComponent<SpriteRenderer>().color = CollectionManager.CM.GetUIColor(key);
+        Color spriteColor = CollectionManager.CM.GetUIColor(key);
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, gameObject.GetComponent<SpriteRenderer>().color.a);
     }
 }

@@ -9,6 +9,7 @@ public class SettingsMenu : MonoBehaviour{
     [SerializeField] GameObject StorePanel = default;
     [SerializeField] GameObject LanguagePanel = default;
     [SerializeField] GameObject CreditsPanel = default;
+    [SerializeField] GameObject Back = default;
     [SerializeField] GameObject Exit = default;
     [SerializeField] GameObject bg = default;
     [SerializeField] GameBoardMechanics gameboard = default;
@@ -20,6 +21,7 @@ public class SettingsMenu : MonoBehaviour{
         LanguagePanel.SetActive(false);
         CreditsPanel.SetActive(false);
         Exit.SetActive(true);
+        Back.SetActive(false);
         bg.SetActive(true);
         DisableGameboardTouch();
         PlayPositiveSFX();
@@ -31,6 +33,7 @@ public class SettingsMenu : MonoBehaviour{
         LanguagePanel.SetActive(false);
         CreditsPanel.SetActive(false);
         Exit.SetActive(true);
+        Back.SetActive(true);
         bg.SetActive(true);
         DisableGameboardTouch();
         PlayPositiveSFX();
@@ -42,6 +45,7 @@ public class SettingsMenu : MonoBehaviour{
         LanguagePanel.SetActive(true);
         CreditsPanel.SetActive(false);
         Exit.SetActive(true);
+        Back.SetActive(true);
         bg.SetActive(true);
         DisableGameboardTouch();
         PlayPositiveSFX();
@@ -53,6 +57,7 @@ public class SettingsMenu : MonoBehaviour{
         LanguagePanel.SetActive(false);
         CreditsPanel.SetActive(true);
         Exit.SetActive(true);
+        Back.SetActive(true);
         bg.SetActive(true);
         DisableGameboardTouch();
         PlayPositiveSFX();
@@ -64,6 +69,7 @@ public class SettingsMenu : MonoBehaviour{
         LanguagePanel.SetActive(false);
         CreditsPanel.SetActive(false);
         Exit.SetActive(false);
+        Back.SetActive(false);
         bg.SetActive(false);
         EnableGameboardTouch();
         PlayNegativeSFX();

@@ -11,7 +11,6 @@ public class CollectionManager : MonoBehaviour{
     public int assetIndex = 0;
     public CollectionAsset[] assets;
     
-
     private void Awake() {
         if (CM == null) {
             CM = this;
@@ -32,7 +31,6 @@ public class CollectionManager : MonoBehaviour{
         }
 
         PlayerPrefs.SetInt("CollectionAssetIndex", assetIndex);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         UpdateAllCollectionAssets();
     }
 

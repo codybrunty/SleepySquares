@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour{
 
@@ -16,13 +17,17 @@ public class TutorialManager : MonoBehaviour{
     public void UpdateTutorialDisplay() {
         tutorialIndex++;
         if (tutorialIndex == tutorial_UI.Count) {
-            tutorialIndex = 0;
+            SceneManager.LoadScene("Game");
         }
-        for (int i =0; i < tutorial_UI.Count; i++) {
-            tutorial_UI[i].SetActive(false);
-            tutorial_Game[i].SetActive(false);
+        else {
+            for (int i = 0; i < tutorial_UI.Count; i++) {
+                tutorial_UI[i].SetActive(false);
+                tutorial_Game[i].SetActive(false);
+            }
+            tutorial_UI[tutorialIndex].SetActive(true);
+            tutorial_Game[tutorialIndex].SetActive(true);
+
         }
-        tutorial_UI[tutorialIndex].SetActive(true);
-        tutorial_Game[tutorialIndex].SetActive(true);
+
     }
 }

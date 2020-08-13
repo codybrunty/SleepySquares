@@ -52,10 +52,3 @@ MonoBehaviour:
     trophy1Color: {r: 0.9725491, g: 0.8117648, b: 0.5921569, a: 1}
     trophy2Color: {r: 0.8745099, g: 0.9568628, b: 0.9607844, a: 1}
     trophy3Color: {r: 0.98823535, g: 0.89019614, b: 0.28235295, a: 1}
-  - background: {fileID: 0}
-    baseColor: {r: 0, g: 0, b: 0, a: 1}
-    secondaryColor: {r: 0, g: 0, b: 0, a: 1}
-    scoreTextColor: {r: 0, g: 0, b: 0, a: 1}
-    trophy1Color: {r: 0, g: 0, b: 0, a: 1}
-    trophy2Color: {r: 0, g: 0, b: 0, a: 1}
-    trophy3Color: {r: 0, g: 0, b: 0, a: 1}

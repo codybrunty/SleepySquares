@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9217591259088696707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9217591259088696705}
+  - component: {fileID: 9217591259088696704}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9217591259088696705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9217591259088696707}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9217591259088696704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9217591259088696707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c54e693c9a2a34eac5c368703611e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundOn: 0
+  sounds:
+  - name: monster1
+    clip: {fileID: 8300000, guid: 29d7af8a92c82d84f8a9cd9ba390afce, type: 3}
+    volume: 0.65
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: monster2
+    clip: {fileID: 8300000, guid: 4ecd5da5e33fd7343bf43a4f9bdd2e9c, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: monster3
+    clip: {fileID: 8300000, guid: 89a9952d3c5d1db45afb14eb6daf448b, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: clearboard1
+    clip: {fileID: 8300000, guid: bc4aac43b05c22b49a695ee57f604db3, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: yahoo
+    clip: {fileID: 8300000, guid: e2527857a71324444b57ab25d65741ce, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: select1
+    clip: {fileID: 8300000, guid: 6624d5b8a6454914ab78869823e1e0b0, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: clearboard2
+    clip: {fileID: 8300000, guid: dd22d68979575a948a218651315e23e6, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: clearboard3
+    clip: {fileID: 8300000, guid: 8f8f26f4f339ff3498fc94bd2256a9ba, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: clearBlockers
+    clip: {fileID: 8300000, guid: e63871bcec25a974b9db8b82d95a9617, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: deselect1
+    clip: {fileID: 8300000, guid: 9624041399325da40b8cb170b934a70b, type: 3}
+    volume: 0.4
+    pitch: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: star
+    clip: {fileID: 8300000, guid: b31b5635ac89ebd4191b52226844c339, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: monster4
+    clip: {fileID: 8300000, guid: 89a9952d3c5d1db45afb14eb6daf448b, type: 3}
+    volume: 0.3
+    pitch: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: switchModeOn
+    clip: {fileID: 8300000, guid: 78ba21a1c0c3ef8428656d9f8c714071, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: switchModeNegative
+    clip: {fileID: 8300000, guid: 9624041399325da40b8cb170b934a70b, type: 3}
+    volume: 0.2
+    pitch: 0.6
+    loop: 0
+    source: {fileID: 0}
+  - name: GameOver
+    clip: {fileID: 8300000, guid: 7bbcc688a36d75b469a174fe0d59e066, type: 3}
+    volume: 1
+    pitch: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: newTrophy
+    clip: {fileID: 8300000, guid: 8e3c582770f9570479a8c791f2f00213, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

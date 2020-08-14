@@ -141,3 +141,21 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: poof
+    clip: {fileID: 8300000, guid: 892db32584919e64e82f294fb5694f03, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: clearReady1
+    clip: {fileID: 8300000, guid: 0390d085a083f96489fc0c9971aaf7d0, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: swoosh
+    clip: {fileID: 8300000, guid: b48ecc3ebe9213d478285ccb9ae46e60, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

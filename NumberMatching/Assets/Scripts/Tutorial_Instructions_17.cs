@@ -34,6 +34,7 @@ public class Tutorial_Instructions_17 : MonoBehaviour{
     [SerializeField] AnimationCurve ease = default;
     [SerializeField] TextMeshProUGUI clearsText = default;
     [SerializeField] GameObject flashyButton = default;
+    [SerializeField] GameObject clearButton = default;
 
 
     private void OnEnable() {
@@ -61,6 +62,13 @@ public class Tutorial_Instructions_17 : MonoBehaviour{
         flashyButton.SetActive(true);
     }
 
+    private void PopClearButton() {
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
+        hash.Add("time", .75f);
+        iTween.PunchScale(clearButton, hash);
+    }
+
     IEnumerator FillClearButton() {
 
         float currentFillNumber = fill.fillAmount;
@@ -74,7 +82,8 @@ public class Tutorial_Instructions_17 : MonoBehaviour{
 
         fill.fillAmount = 0f;
         clearsText.text = "1";
-
+        PopClearButton();
+        FindObjectOfType<SoundManager>().PlayOneShotSound("clearReady1");
 
     }
 

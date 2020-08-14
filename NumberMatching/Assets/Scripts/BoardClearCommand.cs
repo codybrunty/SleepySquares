@@ -34,6 +34,15 @@ public class BoardClearCommand : MonoBehaviour{
         clearsTotal += number;
         UpdateClearTextDisplay();
         UpdateClearFill();
+        PopAnim();
+        FindObjectOfType<SoundManager>().PlayOneShotSound("clearReady1");
+    }
+
+    private void PopAnim() {
+        Hashtable hash = new Hashtable();
+        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
+        hash.Add("time", .75f);
+        iTween.PunchScale(gameObject, hash);
     }
 
     public void UpdateClearTextDisplay() {
@@ -43,11 +52,9 @@ public class BoardClearCommand : MonoBehaviour{
     public void UpdateClearFill() {
         int clearScore = gameboard.GetClearScore();
 
-        //Debug.LogWarning(clearScore + " "+gameboard.score + " "+gameboard.clearsEveryPts);
-        //Debug.LogWarning(gameboard.score % gameboard.clearsEveryPts);
-
         if (clearsTotal == 0) {
             clearButtonFill.UpdateFillDisplay((1f - ((float)(gameboard.score % gameboard.clearsEveryPts) / (float)gameboard.clearsEveryPts)));
+
         }
         else {
             clearButtonFill.UpdateFillDisplay(0f);

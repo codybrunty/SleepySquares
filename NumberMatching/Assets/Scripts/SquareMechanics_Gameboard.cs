@@ -42,6 +42,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
             completed = true;
             blockerImage.SetActive(true);
             SmokeEffect();
+            FindObjectOfType<SoundManager>().PlayOneShotSound("poof");
         }
     }
 

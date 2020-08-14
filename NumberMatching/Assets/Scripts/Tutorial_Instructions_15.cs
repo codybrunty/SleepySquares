@@ -148,6 +148,7 @@ public class Tutorial_Instructions_15 : MonoBehaviour{
     private void BreakSquare(SpriteRenderer square, GameObject smoke) {
         smoke.SetActive(true);
         square.color = brokenColor;
+        FindObjectOfType<SoundManager>().PlayOneShotSound("poof");
     }
 
 
@@ -286,6 +287,7 @@ public class Tutorial_Instructions_15 : MonoBehaviour{
     }
 
     private void MoveSmallBoard() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("swoosh");
         Vector3 hidePosition = new Vector3(smallBoard.transform.position.x+10f, smallBoard.transform.position.y, smallBoard.transform.position.z);
         Hashtable hash = new Hashtable();
         hash.Add("position", hidePosition);

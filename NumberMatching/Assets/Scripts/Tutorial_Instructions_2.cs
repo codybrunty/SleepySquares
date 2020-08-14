@@ -59,6 +59,7 @@ public class Tutorial_Instructions_2 : MonoBehaviour{
     }
 
     private void MoveSquaresOffScreen() {
+        FindObjectOfType<SoundManager>().PlayOneShotSound("swoosh");
         Hashtable hash = new Hashtable();
         hash.Add("position", new Vector3(15f, 4.12f, 5f));
         hash.Add("time", 1f);

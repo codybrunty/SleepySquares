@@ -142,7 +142,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: poof
-    clip: {fileID: 8300000, guid: 892db32584919e64e82f294fb5694f03, type: 3}
+    clip: {fileID: 8300000, guid: d474a0ad9c03d9148a5ff423df8eee1a, type: 3}
     volume: 0.2
     pitch: 1
     loop: 0

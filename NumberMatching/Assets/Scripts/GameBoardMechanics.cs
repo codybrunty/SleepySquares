@@ -296,6 +296,7 @@ public class GameBoardMechanics : MonoBehaviour{
         gameOverPanel.score = score;
         gameOverPanel.highscore = highScore;
         gameOverPanel.UpdateGameOverPanel();
+        MusicManager.MM.FadeOutCurrentMusic();
     }
 
     private void PostToLeaderboard() {

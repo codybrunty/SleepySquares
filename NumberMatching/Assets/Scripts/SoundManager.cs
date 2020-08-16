@@ -31,6 +31,7 @@ public class SoundManager : MonoBehaviour{
         soundOn = PlayerPrefs.GetInt("UserSoundOn", 1);
     }
 
+
     public void PlayOneShotSound(string name) {
         if (soundOn == 1) {
             Sound s = Array.Find(sounds, sound => sound.name == name);

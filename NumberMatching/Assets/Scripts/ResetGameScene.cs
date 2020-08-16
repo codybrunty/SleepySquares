@@ -75,6 +75,7 @@ public class ResetGameScene : MonoBehaviour{
         gameBoard.ResetBoardState();
         GameOverPanel.GetComponent<GameOverPanel>().ResetGameOveerPanelScale();
         GameOverPanel.SetActive(false);
+        MusicManager.MM.FadeInNewMusic();
     }
 
     public void OnResetPostToLeaderboard(int hardModeOn) {

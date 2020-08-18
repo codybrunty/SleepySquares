@@ -8,8 +8,8 @@ public class PurchaseButton : MonoBehaviour{
 
     public enum PurchaseType { switches30, switches75, switches120};
     public PurchaseType purchaseType;
-    [SerializeField] TextMeshProUGUI priceText;
-    [SerializeField] TextMeshProUGUI ammountText;
+    [SerializeField] TextMeshProUGUI priceText=default;
+    [SerializeField] TextMeshProUGUI ammountText=default;
 
     private void Start() {
         UpdateSwitchAmmountDisplay();

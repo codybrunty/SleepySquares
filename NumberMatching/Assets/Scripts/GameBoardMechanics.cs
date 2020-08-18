@@ -37,8 +37,6 @@ public class GameBoardMechanics : MonoBehaviour{
     [Header("Game Objects")]
     public List<GameObject> gameBoardSquares = new List<GameObject>();
     public List<GameObject> blockerSquares = new List<GameObject>();
-    [SerializeField] GameObject cameraHolder = default;
-    [SerializeField] GameObject square_gameboard = default;
     [SerializeField] TextMeshProUGUI score_text = default;
     [SerializeField] TextMeshProUGUI highScore_text = default;
     [SerializeField] TextMeshProUGUI totalPoints_text = default;
@@ -82,7 +80,7 @@ public class GameBoardMechanics : MonoBehaviour{
     public void ResetBoardState() {
         Debug.Log("reset board state");
         for (int i = 0; i < gameBoardSquares.Count; i++) {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZerOutSquareInfo();
+            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZeroOutSquareInfo();
         }
 
         blockerSquares.Clear();
@@ -236,8 +234,7 @@ public class GameBoardMechanics : MonoBehaviour{
             //Camera.main.orthographicSize = (float)gameBoardHeight / 2f*differenceInSize;
             Camera.main.orthographicSize = (float)pic.bounds.size.y / 2f*differenceInSize;
         }
-
-        //cameraHolder.transform.position = new Vector3((float)pic.bounds.size.x / 2f, pic.bounds.size.y / 2f, -10f);
+        
     }
 
     public IEnumerator SetLuckyCoin() {
@@ -391,7 +388,7 @@ public class GameBoardMechanics : MonoBehaviour{
     private void UpdateClearsTotal() {
         if (hardModeOn!=1) { 
             int clearScore = GetClearScore();
-            if (score > clearScore) {
+            if (score >= clearScore) {
                 clearCounter++;
                 clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
                 UpdateClearsTotal();
@@ -509,26 +506,6 @@ public class GameBoardMechanics : MonoBehaviour{
 
         }
     }
-
-    /*
-    private void CreateGameBoardSquares() {
-        for (int x = 0; x < gameBoardWidth; x++) {
-            for (int y = 0; y < gameBoardHeight; y++) {
-                Generate_GameboardSquare(x, y);
-            }
-        }
-    }
-
-    private void Generate_GameboardSquare(float x, float y) {
-        Vector3 squareSpawnPoint = new Vector3(x, y, 0);
-        GameObject newSquare = Instantiate(square_gameboard, squareSpawnPoint, Quaternion.identity, gameObject.transform);
-        newSquare.name = "Square_" + (Convert.ToInt32(x)).ToString() + "," + (Convert.ToInt32(y)).ToString();
-        newSquare.GetComponent<SquareMechanics_Gameboard>().gamePositionX = Convert.ToInt32(x);
-        newSquare.GetComponent<SquareMechanics_Gameboard>().gamePositionY = Convert.ToInt32(y);
-        newSquare.GetComponent<SquareMechanics_Gameboard>().gamePositionIndex = gameBoardSquares.Count;
-        gameBoardSquares.Add(newSquare);
-    }
-    */
 
     private void PrintCompletedLink() {
         for (int i = 0; i < completeList.Count; i++) {

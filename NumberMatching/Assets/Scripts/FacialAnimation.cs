@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class FacialAnimation : MonoBehaviour{
 
+    public float currentSeconds;
     public List<GameObject> eyeballs = new List<GameObject>();
     public List<GameObject> eyelids = new List<GameObject>();
     private List<string> anims = new List<string>{"Blink"};
     private bool startAnimating = false;
     private Coroutine coroutine;
+
 
     public void StartFacialAnimation() {
         if (coroutine == null) {
@@ -25,11 +27,7 @@ public class FacialAnimation : MonoBehaviour{
     public void StopFacialAnimation() {
         if (coroutine != null) {
             StopCoroutine(coroutine);
-        }
-        else {
-            string squareName = gameObject.transform.parent.parent.name;
-            string colorName = gameObject.transform.name;
-            //Debug.Log("Tried to Stop facial animation but it isnt going on " + colorName + " " + squareName);
+            coroutine = null;
         }
     }
 
@@ -110,6 +108,7 @@ public class FacialAnimation : MonoBehaviour{
     public IEnumerator AnimateFace() {
         //Debug.Log("facial anim starting");
         float randomSeconds = UnityEngine.Random.Range(5f,25f);
+        currentSeconds = randomSeconds;
         //Debug.Log("anim waiting "+ randomSeconds);
         yield return new WaitForSeconds(randomSeconds);
         int randomAnimationNumber = UnityEngine.Random.Range(0, anims.Count);

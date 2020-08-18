@@ -12,8 +12,6 @@ public class MusicManager : MonoBehaviour{
     public Sound[] songs;
     public bool fadeOut = false;
 
-    private bool audioBlendInprogress = false;
-
     private void Awake() {
         if (MM == null) {
             MM = this;
@@ -68,13 +66,17 @@ public class MusicManager : MonoBehaviour{
     }
 
     public void FadeOutCurrentMusic() {
-        StartCoroutine(FadeOut(songs[songIndex].source, 1f));
+        if (musicOn == 1) {
+            StartCoroutine(FadeOut(songs[songIndex].source, 1f));
+        }
     }
 
     public void FadeInNewMusic() {
-        IterateMusicIndex();
-        StartCoroutine(FadeIn(songs[songIndex].source, 1f));
-        fadeOut = false;
+        if (musicOn == 1) {
+            IterateMusicIndex();
+            StartCoroutine(FadeIn(songs[songIndex].source, 1f));
+            fadeOut = false;
+        }
     }
 
 

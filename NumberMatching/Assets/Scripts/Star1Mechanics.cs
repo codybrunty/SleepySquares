@@ -8,7 +8,7 @@ public class Star1Mechanics : MonoBehaviour {
 
     [SerializeField] GameObject starEffect = default;
     public int starStatus; //0=off,1=on
-    [SerializeField] CollectionColor_Image star;
+    [SerializeField] CollectionColor_Image star = default;
     [SerializeField] SwitchButton switchButton = default;
     [SerializeField] GameObject switchesText = default;
 

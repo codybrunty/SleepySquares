@@ -16,6 +16,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     public int gamePositionY=0;
     public int gamePositionIndex=0;
     public List<SquareMechanics_Gameboard> adjescentSquares = new List<SquareMechanics_Gameboard>() { null, null, null, null };
+    public List<GameObject> connections = new List<GameObject>();
+    public GameObject connection_group = default;
     [Header("Game Objects")]
     [SerializeField] SpriteRenderer squareSprite = default;
     [SerializeField] List<GameObject> faces = new List<GameObject>();
@@ -27,13 +29,13 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     public void SetSquareDisplay() {
         NumberDisplay();
         SetBlockerDisplay();
-        ConnectionDisplay();
+        EyeballDisplay();
     }
 
     public void SilentSquareDisplay() {
         SilentNumberDisplay();
         SetBlockerDisplay();
-        ConnectionDisplay();
+        EyeballDisplay();
     }
 
     private void SetBlockerDisplay() {
@@ -51,7 +53,18 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
     }
 
     private void ConnectionDisplay() {
-        // new EyeBallDisplay
+        connection_group.SetActive(true);
+        for (int i = 0; i < adjescentConnections.Count; i++) {
+            if (adjescentConnections[i] == true) {
+                connections[i].SetActive(true);
+            }
+            else {
+                connections[i].SetActive(false);
+            }
+        }
+    }
+
+    private void EyeballDisplay() {
         if (number < 5) {
 
             int eyeShutCounter = 0;
@@ -65,6 +78,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
         }
 
+        ConnectionDisplay();
     }
 
     private void SilentNumberDisplay() {
@@ -156,7 +170,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
     public void CalculateConnections() {
         if (blocker==false) {
-            //Debug.Log("CalculateConnections " + gameObject.name);
             List<bool> adjescentSquaresEligible = GetAdjescentSquaresEligible();
             List<int> randomOrder = GetRandomOrder();
             int currentConnections = GetCurrentTotalConnections();
@@ -180,7 +193,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
     public void ResetSquare_OnClick() {
         RemoveConnectionsOnAdjescentSquareInfo();
-        ZerOutSquareInfo();
+        ZeroOutSquareInfo();
     }
 
 
@@ -211,15 +224,16 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
 
     public void ResetSquare_OnCompletion() {
         PopAway();
-        ZerOutSquareInfo();
+        ZeroOutSquareInfo();
     }
 
     public void ResetSquare_BlockerClear() {
         PopAway();
-        ZerOutSquareInfo();
+        ZeroOutSquareInfo();
     }
 
-    public void ZerOutSquareInfo() {
+    public void ZeroOutSquareInfo() {
+        connection_group.SetActive(false);
         number = 0;
         adjescentConnections = new List<bool> { false, false, false, false };
         completed = false;
@@ -310,13 +324,13 @@ public class SquareMechanics_Gameboard : MonoBehaviour{
         if (connections == number) {
             completed = true;
             faces[number-1].GetComponent<FacialAnimation>().StopFacialAnimation();
-            ConnectionDisplay();
+            EyeballDisplay();
             gameboard.CheckForCompleteLink(gameObject);
         }
         else {
             completed = false;
             faces[number-1].GetComponent<FacialAnimation>().StartFacialAnimation();
-            ConnectionDisplay();
+            EyeballDisplay();
         }
     }
 

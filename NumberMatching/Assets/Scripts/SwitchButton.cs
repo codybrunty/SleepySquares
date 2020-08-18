@@ -8,7 +8,6 @@ using TMPro;
 public class SwitchButton : MonoBehaviour{
 
     public int switchAmmount = 3;
-    [SerializeField] RaycastMouse click = default;
     [SerializeField] TextMeshProUGUI switchText = default;
     public bool activated = false;
 

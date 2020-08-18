@@ -6,7 +6,6 @@ using UnityEngine;
 public class NextBoardMechanics : MonoBehaviour{
     
     public List<SquareMechanics_Next> nextSquares = new List<SquareMechanics_Next>();
-    [SerializeField] GameBoardMechanics gameboard = default;
 
     public void SetNextBoard() {
         SetNextBoardOnNextSquare();

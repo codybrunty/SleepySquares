@@ -1,16 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FacialAnimation : MonoBehaviour{
 
     public float currentSeconds;
+    public List<bool> eyeShutStatus = new List<bool>();
     public List<GameObject> eyeballs = new List<GameObject>();
     public List<GameObject> eyelids = new List<GameObject>();
+    public List<EyeBlink> eyeblinks = new List<EyeBlink>();
     private List<string> anims = new List<string>{"Blink"};
     private bool startAnimating = false;
     private Coroutine coroutine;
-
+    public float blinkSpeed = .25f;
+    private Coroutine dimBlinkCo;
+    //[SerializeField] Color dimColor = default;
+    //[SerializeField] Color orgColor = default;
+    [SerializeField] Sprite awakeMouth = default;
+    [SerializeField] Sprite sleepingMouth = default;
+    [SerializeField] SpriteRenderer mouth = default;
 
     public void StartFacialAnimation() {
         if (coroutine == null) {
@@ -18,8 +27,8 @@ public class FacialAnimation : MonoBehaviour{
         }
         else {
 
-            string squareName = gameObject.transform.parent.parent.name;
-            string colorName  = gameObject.transform.name;
+            //string squareName = gameObject.transform.parent.parent.name;
+            //string colorName  = gameObject.transform.name;
             //Debug.Log("tried to start facial animatino but it is already going on " + colorName + " " + squareName);
         }
     }
@@ -34,22 +43,25 @@ public class FacialAnimation : MonoBehaviour{
     public void ResetEyes() {
 
         for (int i = 0; i < eyeballs.Count; i++) {
+            eyeShutStatus[i] = false;
             eyeballs[i].SetActive(true);
             eyelids[i].SetActive(false);
+            OpenEyeAt(i);
+        }
+        for (int i=0; i < eyeblinks.Count; i++)
+        {
+            ResetEyeBlinkSquare(i);
         }
 
     }
 
     public void ShutThisManyEyes(int shutNumber) {
-        string squareName = gameObject.transform.parent.parent.name;
-        string colorName = gameObject.transform.name;
-        //Debug.Log("Shut " + shutNumber + " eyes of " + eyeballs.Count + " on " + colorName + " " + squareName);
-
 
         List<int> needToBeShut = new List<int>();
         int alreadyShut = 0;
+
         for (int i = 0; i < eyeballs.Count; i++) {
-            if (eyeballs[i].activeSelf == true) {
+            if (eyeShutStatus[i] == false) {
                 needToBeShut.Add(i);
             }
             else {
@@ -57,10 +69,7 @@ public class FacialAnimation : MonoBehaviour{
             }
         }
 
-        //Debug.Log(alreadyShut);
-
         if (shutNumber > alreadyShut) {
-            //Debug.Log("more");
             int difference = shutNumber - alreadyShut;
 
             for (int i = 0; i < difference; i++) {
@@ -68,18 +77,16 @@ public class FacialAnimation : MonoBehaviour{
                 int eyeIndex = needToBeShut[randomIndex];
 
                 needToBeShut.RemoveAt(randomIndex);
-                eyeballs[eyeIndex].SetActive(false);
-                eyelids[eyeIndex].SetActive(true);
-
+                eyeShutStatus[eyeIndex] = true;
+                StartCoroutine(ShutEyeAt(eyeIndex));
             }
         }
         else if (shutNumber < alreadyShut) {
-            //Debug.Log("less");
             int difference = alreadyShut - shutNumber;
 
             List<int> needToBeOpen = new List<int>();
             for (int i = 0; i < eyeballs.Count; i++) {
-                if (eyeballs[i].activeSelf == false) {
+                if (eyeShutStatus[i] == true) {
                     needToBeOpen.Add(i);
                 }
             }
@@ -88,11 +95,46 @@ public class FacialAnimation : MonoBehaviour{
                 int randomIndex = UnityEngine.Random.Range(0, needToBeOpen.Count);
                 int eyeIndex = needToBeOpen[randomIndex];
                 needToBeOpen.RemoveAt(randomIndex);
-                eyeballs[eyeIndex].SetActive(true);
-                eyelids[eyeIndex].SetActive(false);
 
+                OpenEyeAt(eyeIndex);
             }
         }
+
+    }
+
+    private void ResetEyeBlinkSquare(int eyeIndex)
+    {
+        eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localPosition = eyeblinks[eyeIndex].startPosition;
+        eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localScale = eyeblinks[eyeIndex].startScale;
+        eyeblinks[eyeIndex].eyeBlink.gameObject.SetActive(false);
+    }
+
+    IEnumerator ShutEyeAt(int eyeIndex)
+    {
+        ResetEyeBlinkSquare(eyeIndex);
+        eyeblinks[eyeIndex].eyeBlink.gameObject.SetActive(true);
+
+        for (float t = 0; t < blinkSpeed; t += Time.deltaTime)
+        {
+            eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localPosition = Vector3.Lerp(eyeblinks[eyeIndex].startPosition, eyeblinks[eyeIndex].endPosition, t / .25f);
+            eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localScale = Vector3.Lerp(eyeblinks[eyeIndex].startScale, eyeblinks[eyeIndex].endScale, t / .25f);
+            yield return null;
+        }
+
+        eyeblinks[eyeIndex].eyeBlink.gameObject.SetActive(false);
+        eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localPosition = eyeblinks[eyeIndex].startPosition;
+        eyeblinks[eyeIndex].eyeBlink.gameObject.transform.localScale = eyeblinks[eyeIndex].startScale;
+
+        eyeballs[eyeIndex].SetActive(false);
+        eyelids[eyeIndex].SetActive(true);
+    }
+
+    private void OpenEyeAt(int eyeIndex)
+    {
+        eyeShutStatus[eyeIndex] = false;
+        eyeballs[eyeIndex].transform.localScale = new Vector3(1f,1f,1f);
+        eyeballs[eyeIndex].SetActive(true);
+        eyelids[eyeIndex].SetActive(false);
 
     }
 
@@ -115,7 +157,72 @@ public class FacialAnimation : MonoBehaviour{
         gameObject.GetComponent<Animator>().SetTrigger(anims[randomAnimationNumber]);
         startAnimating = true;
     }
+    /*
+    public void DimBlinks(float duration)
+    {
+        if (dimBlinkCo == null)
+        {
+            dimBlinkCo = StartCoroutine(DimAllBlinks(duration));
+        }
+        else
+        {
+            StopCoroutine(dimBlinkCo);
+            dimBlinkCo = StartCoroutine(DimAllBlinks(duration));
+        }
+    }
+    
+    IEnumerator DimAllBlinks(float duration)
+    {
+        mouth.sprite = sleepingMouth;
 
+        //Color normalColor = eyeblinks[0].eyeBlink.color;
+        //Color dimColor = new Color(normalColor.r, normalColor.g, normalColor.b, 100f / 255f);
 
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            for (int i = 0; i < eyeblinks.Count; i++)
+            {
+                eyeblinks[i].eyeBlink.color = Color.Lerp(orgColor, dimColor, t / duration);
+            }
+            yield return null;
+        }
+
+        for (int i = 0; i < eyeblinks.Count; i++)
+        {
+            eyeblinks[i].eyeBlink.color = dimColor;
+        }
+    }
+
+    public void UnDimBlinks()
+    {
+        
+
+        if (dimBlinkCo == null)
+        {
+            UnDimAllBlinks();
+        }
+        else
+        {
+            StopCoroutine(dimBlinkCo);
+            UnDimAllBlinks();
+        }
+    }
+
+    private void UnDimAllBlinks()
+    {
+        mouth.sprite = awakeMouth;
+
+        //Color normalColor = eyeblinks[0].eyeBlink.color;
+        //Color dimColor = new Color(normalColor.r, normalColor.g, normalColor.b, 1f);
+
+        for (int i = 0; i < eyeblinks.Count; i++)
+        {
+            eyeblinks[i].eyeBlink.color = orgColor;
+        }
+    }
+
+    */
 
 }
+
+

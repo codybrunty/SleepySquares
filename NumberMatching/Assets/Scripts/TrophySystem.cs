@@ -8,9 +8,8 @@ using TMPro;
 public class TrophySystem : MonoBehaviour{
 
     [SerializeField] List<Sprite> trophies = new List<Sprite>();
-    [SerializeField] Image trophy = default;
-    [SerializeField] Image topBar = default;
-    [SerializeField] Image bottomBar = default;
+    [SerializeField] public  Image trophy = default;
+    [SerializeField] Image bar = default;
     [SerializeField] Star1Mechanics star1 = default;
     [SerializeField] Star2Mechanics star2 = default;
     [SerializeField] TextMeshProUGUI levelText = default;
@@ -31,96 +30,111 @@ public class TrophySystem : MonoBehaviour{
 
     private bool isStart = false;
 
+    private Vector3 startPosition;
+    public float moveDuration = 1f;
+
+    private Coroutine coroutine;
+    public float fillNumber;
+
+    private Coroutine fillCoroutine;
+
+    public void GetStartPosition() {
+        startPosition = gameObject.transform.position;
+    }
+
+    public void MoveOnScreen() {
+        if (coroutine != null) {
+            StopCoroutine(coroutine);
+        }
+        gameObject.transform.position = startPosition;
+    }
+
+    public void MoveOffScreen() {
+        coroutine = StartCoroutine(MoveOverTime());
+    }
+
+    IEnumerator MoveOverTime() {
+
+        Vector3 endPosition = new Vector3(startPosition.x, startPosition.y+500f, startPosition.z);
+
+        for (float t = 0f; t < moveDuration; t += Time.deltaTime) {
+            float normalizedTime = t / moveDuration;
+            gameObject.transform.position = Vector3.Lerp(startPosition, endPosition, easeCurve.Evaluate(normalizedTime));
+            yield return null;
+        }
+
+        gameObject.transform.position = endPosition;
+
+    }
 
     public void UpdateTrophyPanel() {
         Debug.Log("Updating Trophy Panel");
-        totalPoints = GameDataManager.GDM.TotalPoints_AllTime;//50
+        totalPoints = GameDataManager.GDM.TotalPoints_AllTime;
 
         if (totalPoints != savedTotalPoints) {
-            //Debug.Log("saving total points");
             
-
             savedTotalPoints = totalPoints;
             CalculateTrophyPanelMinAndMaxScore();
             SetTrophyImage();
 
-            topBarMax = trophyPanelMinScore + ((trophyPanelMaxScore - trophyPanelMinScore) / 2); //150
+            GetFillNumber();
+            FillBar();
+            StarEffects();
 
-            if (totalPoints < topBarMax) {//50<150
-                FillTopBar(false);
-            }
-
-
-            else {
-                if (topBar.fillAmount != 1) {
-                    FillTopBar(true);
-                }
-                else {
-                    FillBottomBar();
-                }
-            }
         }
         
     }
 
-    private void FillBottomBar() {
-        topBar.fillAmount = 1f;
+    private void GetFillNumber(){
+        fillNumber = (float)((float)(totalPoints - trophyPanelMinScore) / (float)(trophyPanelMaxScore - trophyPanelMinScore));
+    }
 
-        if (isStart) {
+    private void StarEffects(){
+
+        if (fillNumber < .25f){
+            star1.StarOff();
+            star2.StarOff();
+        }
+
+        if (fillNumber > .25f && fillNumber < .75f){
+            star1.StarOn();
+            star2.StarOff();
+        }
+
+        if (fillNumber > .75f){
+            star1.StarOn();
             star2.StarOn();
         }
 
-        if (totalPoints < trophyPanelMaxScore) {
-            float fillNumber = (float)((float)(totalPoints - topBarMax) / (float)(trophyPanelMaxScore - topBarMax));
 
-
-            //on first time just populate the bars
-            if (!isStart) {
-                isStart = true;
-                bottomBar.fillAmount = fillNumber;
-            }
-            else {
-                StartCoroutine(MoveOverTime(bottomBar, fillNumber,false));
-            }
-            star1.StarOff();
-
-
-
-        }
-        else {
-            StartCoroutine(MoveOverTime(bottomBar, 1f, false));
-            star1.StarOn();
-            trophyIndex++;
-            PlayerPrefs.SetInt("TrophyIndex", trophyIndex);
-            StartCoroutine(TrophyChangeAnimation());
-        }
     }
 
-    private void FillTopBar(bool botNext) {
+    private void FillBar(){
 
-        float fillNumber = (float)((float)(totalPoints - trophyPanelMinScore) / (float)(topBarMax - trophyPanelMinScore));//0.33333f
-
-        //on first time just populate the bars
-        if (!isStart) {
-            if (botNext == false) {
-                isStart = true;
+        if (!isStart){
+            bar.fillAmount = fillNumber;
+            isStart = true;
+        }
+        else{
+            if (totalPoints < trophyPanelMaxScore){
+                if (fillCoroutine != null){
+                    StopCoroutine(fillCoroutine);
+                }
+                fillCoroutine = StartCoroutine(FillOverTime(fillNumber));
             }
-            topBar.fillAmount = fillNumber;
-        }
-        else {
-            StartCoroutine(MoveOverTime(topBar, fillNumber,botNext));
+            else{
+                if (fillCoroutine != null){
+                    StopCoroutine(fillCoroutine);
+                }
+
+                fillCoroutine = StartCoroutine(FillOverTime(1f));
+                trophyIndex++;
+                PlayerPrefs.SetInt("TrophyIndex", trophyIndex);
+                StartCoroutine(TrophyChangeAnimation());
+            }
         }
 
-        bottomBar.fillAmount = 0f;
 
-        star1.StarOff();
-
-        if (botNext==true && !isStart) {
-            FillBottomBar();
-        }
-        else {
-            star2.StarOff();
-        }
     }
 
     private void SetTrophyImage() {
@@ -150,23 +164,10 @@ public class TrophySystem : MonoBehaviour{
 
     }
 
+    IEnumerator FillOverTime(float targetFillNumber) {
 
-    IEnumerator MoveOverTime(Image bar, float targetFillNumber,bool botNext) {
-       // Debug.Log(bar.name + " filling up");
-
-        float fillDuration = bar.fillAmount - targetFillNumber;
-        if (fillDuration < 0.1f) {
-            fillDuration = 0.1f;
-        }
-
-        //Debug.LogWarning(fillDuration);
-
-
-
+        float fillDuration = 0.5f;
         float currentFillNumber = bar.fillAmount;
-        if (currentFillNumber == 1) {
-            currentFillNumber = 0;
-        }
 
         for (float t = 0f; t < fillDuration; t += Time.deltaTime) {
             float normalizedTime = t / fillDuration;
@@ -176,24 +177,15 @@ public class TrophySystem : MonoBehaviour{
 
         bar.fillAmount = targetFillNumber;
 
-        if (botNext) {
-            //Debug.Log("Fill Bottom After Top");
-            FillBottomBar();
-        }
     }
 
     IEnumerator TrophyChangeAnimation() {
-        yield return new WaitForSeconds(2.5f);
-        
-
-
+        yield return new WaitForSeconds(1f);
         Hashtable hash = new Hashtable();
         hash.Add("amount", new Vector3(40f, 25f, 0f));
         hash.Add("time", 1f);
         iTween.ShakePosition(gameObject, hash);
-
         yield return new WaitForSeconds(0.4f);
-
         TrophyEffect.SetActive(true);
         yield return new WaitForSeconds(0.35f);
         FindObjectOfType<SoundManager>().PlayOneShotSound("newTrophy");
@@ -216,7 +208,7 @@ public class TrophySystem : MonoBehaviour{
         star1.StarOff();
         star2.StarOff();
         CalculateTrophyPanelMinAndMaxScore();
-        topBar.fillAmount = 0;
-        bottomBar.fillAmount = 0;
+        bar.fillAmount = 0;
+        //bottomBar.fillAmount = 0;
     }
 }

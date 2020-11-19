@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class HardModeLockMechanics : MonoBehaviour{
 
-    [SerializeField] TrophySystem trophies = default;
     [SerializeField] GameObject HardModeLocked = default;
     [SerializeField] GameObject HardModeUnlocked = default;
 
 
     private void OnEnable() {
-        
-        if (trophies.trophyIndex+1 >=5) {
+
+        int trophyIndex = PlayerPrefs.GetInt("TrophyIndex", 0);
+
+        if (trophyIndex+1 >= 3) {
             HardModeLocked.SetActive(false);
             HardModeUnlocked.SetActive(true);
         }

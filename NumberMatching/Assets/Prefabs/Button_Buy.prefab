@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 295.21, y: 62.3}
+  m_AnchoredPosition: {x: 295.21, y: 67.30003}
   m_SizeDelta: {x: 230.4161, y: 160.20007}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3649348903005240564
@@ -77,8 +77,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287191650
-  m_fontColor: {r: 0.38431376, g: 0.3529412, b: 0.5372549, a: 1}
+    rgba: 4287126624
+  m_fontColor: {r: 0.3764706, g: 0.36078432, b: 0.53333336, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 3649348903820188555}
   - component: {fileID: 3649348903820188548}
   - component: {fileID: 3629423686379513054}
+  - component: {fileID: 1701380182952483869}
   m_Layer: 5
   m_Name: Image_SwitchIcon
   m_TagString: Untagged
@@ -232,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431376, g: 0.3529412, b: 0.5372549, a: 1}
+  m_Color: {r: 0.3764706, g: 0.36078432, b: 0.53333336, a: 1}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -261,6 +262,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: First
+--- !u!114 &1701380182952483869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649348903820188550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b48afbd8c435547a68e51f2c03bae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalAlpha: 1
 --- !u!1 &3649348903993931930
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +287,7 @@ GameObject:
   - component: {fileID: 3649348903993931935}
   - component: {fileID: 3649348903993931928}
   - component: {fileID: 5056136106145914582}
+  - component: {fileID: 478345182630087285}
   m_Layer: 5
   m_Name: Image_BuyInfoBG
   m_TagString: Untagged
@@ -321,7 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.91764706, g: 0.9607843, b: 0.94509804, a: 1}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -350,6 +365,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: Second
+--- !u!114 &478345182630087285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649348903993931930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b48afbd8c435547a68e51f2c03bae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalAlpha: 1
 --- !u!1 &3649348904589099688
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +403,7 @@ RectTransform:
   m_GameObject: {fileID: 3649348904589099688}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.02, y: 1.02, z: 1.02}
   m_Children:
   - {fileID: 3649348903993931929}
   - {fileID: 3649348903005240566}
@@ -386,7 +414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -30.657, y: -7.3254}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3649348904735303369
@@ -424,7 +452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00016212, y: 62.299984}
+  m_AnchoredPosition: {x: 15.2, y: 67.3}
   m_SizeDelta: {x: 359.99963, y: 160.20007}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3649348904735303374
@@ -464,8 +492,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294047210
+  m_fontColor: {r: 0.91764706, g: 0.9607843, b: 0.94509804, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -574,6 +602,7 @@ GameObject:
   - component: {fileID: 3649348904856773126}
   - component: {fileID: 1677979455121467600}
   - component: {fileID: 3799195406104278767}
+  - component: {fileID: 4359895522535160587}
   m_Layer: 5
   m_Name: Button_Buy
   m_TagString: Untagged
@@ -590,15 +619,15 @@ RectTransform:
   m_GameObject: {fileID: 3649348904856773120}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.98, y: 0.98, z: 0.98}
   m_Children: []
   m_Father: {fileID: 3649348904589099695}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 62.3}
-  m_SizeDelta: {x: 360, y: 200}
+  m_AnchoredPosition: {x: 15.200195, y: 62.3}
+  m_SizeDelta: {x: 360, y: 165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3649348904856773124
 CanvasRenderer:
@@ -621,7 +650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431376, g: 0.3529412, b: 0.5372549, a: 1}
+  m_Color: {r: 0.3764706, g: 0.36078432, b: 0.53333336, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -719,3 +748,16 @@ MonoBehaviour:
   purchaseType: 0
   priceText: {fileID: 3649348904735303375}
   ammountText: {fileID: 3649348903005240565}
+--- !u!114 &4359895522535160587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649348904856773120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b48afbd8c435547a68e51f2c03bae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalAlpha: 1

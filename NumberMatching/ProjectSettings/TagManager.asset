@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CollectionAsset
   - Effects
+  - Square
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Background
   - SwitchBG
   - TutorialClickArea
-  - 
-  - 
+  - EyePickingBG
+  - instructionsHitBox
   - 
   - 
   - 
@@ -48,4 +49,7 @@ TagManager:
     locked: 0
   - name: GameView
     uniqueID: 2751922643
+    locked: 0
+  - name: UI
+    uniqueID: 30922741
     locked: 0

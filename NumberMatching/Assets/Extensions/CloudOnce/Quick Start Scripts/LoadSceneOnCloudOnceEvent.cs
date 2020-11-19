@@ -44,9 +44,6 @@ namespace CloudOnce.QuickStart
 
         private void Awake()
         {
-
-            CheckTutorialStatus();
-
             switch (cloudOnceEvent)
             {
                 case CloudOnceEvent.OnInitializeComplete:
@@ -66,16 +63,6 @@ namespace CloudOnce.QuickStart
         #endregion /Unity methods
 
         #region Private methods
-
-        private void CheckTutorialStatus() {
-            int tutorialStatus = PlayerPrefs.GetInt("TutorialComplete", 0);
-            if (tutorialStatus == 0) {
-                sceneName = "Tutorial";
-            }
-            else {
-                sceneName = "Game";
-            }
-        }
 
         private void OnInitializeComplete()
         {

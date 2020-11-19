@@ -7,19 +7,27 @@ using System;
 public class Scoreboard : MonoBehaviour{
 
     [SerializeField] TextMeshProUGUI floatingText = default;
-
+    private Coroutine co = null;
     public void ScoreboardAdd(int number) {
-        PopAnim();
-        floatingText.text = "+" + number;
-        floatingText.gameObject.GetComponent<FloatingText>().FlashText();
+
+        if (co != null) {
+            StopCoroutine(co);
+        }
+        co = StartCoroutine(PopAnim(number));
+
     }
 
-    private void PopAnim() {
-        
+    IEnumerator PopAnim(int number)
+    {
+
+        yield return new WaitForSeconds(0.1f);
+
+        floatingText.text = "+" + number.ToString();
+        floatingText.gameObject.GetComponent<FloatingText>().FlashText();
+
         Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
-        hash.Add("time", .75f);
-        iTween.PunchScale(gameObject.transform.parent.gameObject, hash);
-        
+        hash.Add("amount", new Vector3(2, 2f, 0f));
+        hash.Add("time", 1.5f);
+        iTween.PunchScale(gameObject.transform.parent.parent.gameObject, hash);
     }
 }

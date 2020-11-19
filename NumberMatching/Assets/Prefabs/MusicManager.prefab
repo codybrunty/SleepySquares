@@ -46,21 +46,9 @@ MonoBehaviour:
   musicOn: 0
   songIndex: 0
   songs:
-  - name: milky
-    clip: {fileID: 8300000, guid: 4d7756dfdaacb944e8cd8a6f37a9cc6b, type: 3}
-    volume: 0.2
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: moon
-    clip: {fileID: 8300000, guid: 8e5b47559926d83418ecbaa5413fa8e9, type: 3}
-    volume: 0.2
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: spacey
-    clip: {fileID: 8300000, guid: 0481b8d3ce3a72643a0337a4bd501eef, type: 3}
-    volume: 0.2
+  - name: song1
+    clip: {fileID: 8300000, guid: 71bee4bb9205d824d944d99f820cdfbe, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}

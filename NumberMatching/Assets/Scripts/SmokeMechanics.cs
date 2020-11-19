@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SmokeMechanics : MonoBehaviour{
 
+    public float destroyTime = 1f;
+
     private void Start() {
-        Destroy(gameObject,1f);
+        Destroy(gameObject, destroyTime);
     }
 
 }

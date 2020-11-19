@@ -46,116 +46,176 @@ MonoBehaviour:
   soundOn: 0
   sounds:
   - name: monster1
-    clip: {fileID: 8300000, guid: 29d7af8a92c82d84f8a9cd9ba390afce, type: 3}
-    volume: 0.65
+    clip: {fileID: 8300000, guid: 410769c0146894d7099d60d8cbf4f05a, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: monster2
-    clip: {fileID: 8300000, guid: 4ecd5da5e33fd7343bf43a4f9bdd2e9c, type: 3}
+    clip: {fileID: 8300000, guid: c6bee1b48d3bf4675927891ed4f5d300, type: 3}
     volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: monster3
-    clip: {fileID: 8300000, guid: 89a9952d3c5d1db45afb14eb6daf448b, type: 3}
-    volume: 0.3
+    clip: {fileID: 8300000, guid: 0c170e4fa1f6c43e1b8e6f34d91dd304, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: clearboard1
-    clip: {fileID: 8300000, guid: bc4aac43b05c22b49a695ee57f604db3, type: 3}
-    volume: 0.5
+    clip: {fileID: 8300000, guid: 57719c459bd3e44f9a5c4c0cc343645d, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: yahoo
-    clip: {fileID: 8300000, guid: e2527857a71324444b57ab25d65741ce, type: 3}
-    volume: 0.3
+    clip: {fileID: 8300000, guid: be1f4f5f7e36c43769dd7c6add4195e5, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: select1
-    clip: {fileID: 8300000, guid: 6624d5b8a6454914ab78869823e1e0b0, type: 3}
-    volume: 0.4
+    clip: {fileID: 8300000, guid: 6aad83996899c4431aafda14e48975b5, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: clearboard2
-    clip: {fileID: 8300000, guid: dd22d68979575a948a218651315e23e6, type: 3}
-    volume: 0.3
+    clip: {fileID: 8300000, guid: db66f6c03888e492c901dfeca69aa935, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: clearboard3
-    clip: {fileID: 8300000, guid: 8f8f26f4f339ff3498fc94bd2256a9ba, type: 3}
-    volume: 0.3
+    clip: {fileID: 8300000, guid: 881fa8f24cd3c4487afd2c6be1dcb808, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: clearBlockers
-    clip: {fileID: 8300000, guid: e63871bcec25a974b9db8b82d95a9617, type: 3}
-    volume: 0.5
+    clip: {fileID: 8300000, guid: f1c2584a5429a4b2094dcbb886579696, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: deselect1
-    clip: {fileID: 8300000, guid: 9624041399325da40b8cb170b934a70b, type: 3}
-    volume: 0.4
-    pitch: 0.5
+    clip: {fileID: 8300000, guid: fdc45cf8d1cb54843a5fe5628ee6fb13, type: 3}
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: star
-    clip: {fileID: 8300000, guid: b31b5635ac89ebd4191b52226844c339, type: 3}
-    volume: 0.5
+    clip: {fileID: 8300000, guid: e8a53eb33e28445bf951c069882ae414, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: monster4
-    clip: {fileID: 8300000, guid: 89a9952d3c5d1db45afb14eb6daf448b, type: 3}
-    volume: 0.3
-    pitch: 0.5
+    clip: {fileID: 8300000, guid: 655bebc97ff0b4f8d8b7d701943c14b5, type: 3}
+    volume: 0.5
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: switchModeOn
-    clip: {fileID: 8300000, guid: 78ba21a1c0c3ef8428656d9f8c714071, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 442a905adf66c4cba9be01ce0d0272b2, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: switchModeNegative
-    clip: {fileID: 8300000, guid: 9624041399325da40b8cb170b934a70b, type: 3}
-    volume: 0.2
-    pitch: 0.6
+    clip: {fileID: 8300000, guid: 9d10c7c3a0b5945bbaabb1c0d61b4f75, type: 3}
+    volume: 0.75
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: GameOver
-    clip: {fileID: 8300000, guid: 7bbcc688a36d75b469a174fe0d59e066, type: 3}
-    volume: 1
-    pitch: 0.5
+    clip: {fileID: 8300000, guid: 22eff37df1c28437e874b2babdaef0e6, type: 3}
+    volume: 0.75
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: newTrophy
-    clip: {fileID: 8300000, guid: 8e3c582770f9570479a8c791f2f00213, type: 3}
-    volume: 0.4
+    clip: {fileID: 8300000, guid: 020d950d3945c4cc38f32dd35ab44f21, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: poof
-    clip: {fileID: 8300000, guid: d474a0ad9c03d9148a5ff423df8eee1a, type: 3}
-    volume: 0.2
+    clip: {fileID: 8300000, guid: 9d2df0f56def9411392495115f3d1924, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: clearReady1
-    clip: {fileID: 8300000, guid: 0390d085a083f96489fc0c9971aaf7d0, type: 3}
-    volume: 0.5
+    clip: {fileID: 8300000, guid: 69cac138ab194457aa2d84485b08fa0a, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: swoosh
     clip: {fileID: 8300000, guid: b48ecc3ebe9213d478285ccb9ae46e60, type: 3}
-    volume: 0.25
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: pop
+    clip: {fileID: 8300000, guid: 27903f22ece204a5dab39c59d930d42d, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: connect
+    clip: {fileID: 8300000, guid: d474a0ad9c03d9148a5ff423df8eee1a, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: luckyCoin
+    clip: {fileID: 8300000, guid: 208d6276cf1394b9c8982e13c75d6f8d, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: kazoo
+    clip: {fileID: 8300000, guid: cca7413147be6483596230726762062a, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: ResetGame
+    clip: {fileID: 8300000, guid: cfc6f81fc2aeb46ccb8f832646584dd6, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: EyeModeOn
+    clip: {fileID: 8300000, guid: 397661ad546814aeab9e5bc72a81ef70, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: EyeModeOff
+    clip: {fileID: 8300000, guid: cbe3f8f77ea304074b72b1f7abf74e3e, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Begin
+    clip: {fileID: 8300000, guid: 08395c7c20d8c4d99b4e217cfe8e413c, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: LuckyPoints
+    clip: {fileID: 8300000, guid: db2fbcbcae1256c4d90f13f9466ef696, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Bonus
+    clip: {fileID: 8300000, guid: 29d7af8a92c82d84f8a9cd9ba390afce, type: 3}
+    volume: 0.75
     pitch: 1
     loop: 0
     source: {fileID: 0}

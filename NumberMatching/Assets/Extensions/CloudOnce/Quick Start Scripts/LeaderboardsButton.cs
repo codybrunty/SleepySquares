@@ -33,6 +33,8 @@ namespace CloudOnce.QuickStart
 
         private void OnButtonClicked()
         {
+            SoundManager.SM.PlayOneShotSound("select1");
+
             if (Cloud.IsSignedIn)
             {
                 Cloud.Leaderboards.ShowOverlay();

@@ -10,9 +10,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     private static IExtensionProvider m_StoreExtensionProvider;
 
     //Products
-    public string switches30 = "switches30";
-    public string switches75 = "switches75";
-    public string switches120 = "switches120";
+    public string swap_30 = "swap_30";
+    public string swap_75 = "swap_75";
+    public string swap_200 = "swap_200";
 
     private void Awake() {
         instance = this;
@@ -30,9 +30,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
         }
 
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct(switches30, ProductType.Consumable);
-        builder.AddProduct(switches75, ProductType.Consumable);
-        builder.AddProduct(switches120, ProductType.Consumable);
+        builder.AddProduct(swap_30, ProductType.Consumable);
+        builder.AddProduct(swap_75, ProductType.Consumable);
+        builder.AddProduct(swap_200, ProductType.Consumable);
         UnityPurchasing.Initialize(this, builder);
     }
 
@@ -41,15 +41,15 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     }
     
     public void BuySwitches30() {
-        BuyProductID(switches30);
+        BuyProductID(swap_30);
     }
 
     public void BuySwitches75() {
-        BuyProductID(switches75);
+        BuyProductID(swap_75);
     }
 
     public void BuySwitches120() {
-        BuyProductID(switches120);
+        BuyProductID(swap_200);
     }
 
     public string GetProductPriceFromStore(string id) {
@@ -90,23 +90,40 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
-        if (String.Equals(args.purchasedProduct.definition.id, switches30, StringComparison.Ordinal)) {
+        if (String.Equals(args.purchasedProduct.definition.id, swap_30, StringComparison.Ordinal)) {
             Debug.Log("purchase 30 switches");
             FindObjectOfType<SettingsMenu>().ExitSettings();
             FindObjectOfType<SwitchButton>().AddSwitches(30);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Purchase_30", 0);
+            counter++;
+            PlayerPrefs.SetInt("Purchase_30", counter);
+
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, switches75, StringComparison.Ordinal)) {
+        else if (String.Equals(args.purchasedProduct.definition.id, swap_75, StringComparison.Ordinal)) {
             Debug.Log("purchase 75 switches");
             FindObjectOfType<SettingsMenu>().ExitSettings();
             FindObjectOfType<SwitchButton>().AddSwitches(75);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Purchase_75", 0);
+            counter++;
+            PlayerPrefs.SetInt("Purchase_75", counter);
+
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, switches120, StringComparison.Ordinal)) {
-            Debug.Log("purchase 120 switches");
+        else if (String.Equals(args.purchasedProduct.definition.id, swap_200, StringComparison.Ordinal)) {
+            Debug.Log("purchase 200 switches");
             FindObjectOfType<SettingsMenu>().ExitSettings();
-            FindObjectOfType<SwitchButton>().AddSwitches(120);
+            FindObjectOfType<SwitchButton>().AddSwitches(200);
             FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Purchase_200", 0);
+            counter++;
+            PlayerPrefs.SetInt("Purchase_200", counter);
         }
         else {
             Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));

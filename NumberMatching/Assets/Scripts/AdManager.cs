@@ -68,5 +68,10 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
         FindObjectOfType<SettingsMenu>().ExitSettings();
         FindObjectOfType<SwitchButton>().AddSwitches(2);
         FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+
+        //for playfab tracking
+        int counter = PlayerPrefs.GetInt("Ads_Watched", 0);
+        counter++;
+        PlayerPrefs.SetInt("Ads_Watched", counter);
     }
 }

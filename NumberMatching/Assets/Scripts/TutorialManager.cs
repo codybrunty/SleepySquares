@@ -8,6 +8,8 @@ public class TutorialManager : MonoBehaviour{
     public int tutorialIndex = -1;
     public List<GameObject> tutorial_UI = default;
     public List<GameObject> tutorial_Game = default;
+    public bool animationDone = false;
+    [SerializeField] SplashScreenTransition splash = default;
 
     private void Start() {
         tutorialIndex = -1;
@@ -17,7 +19,9 @@ public class TutorialManager : MonoBehaviour{
     public void UpdateTutorialDisplay() {
         tutorialIndex++;
         if (tutorialIndex == tutorial_UI.Count) {
-            SceneManager.LoadScene("Game");
+            FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+            splash.FadeInSplash();
+            StartCoroutine(LoadGame());
         }
         else {
             for (int i = 0; i < tutorial_UI.Count; i++) {
@@ -29,5 +33,11 @@ public class TutorialManager : MonoBehaviour{
 
         }
 
+    }
+
+    IEnumerator LoadGame()
+    {
+        yield return new WaitForSeconds(.2f);
+        SceneManager.LoadScene("Game");
     }
 }

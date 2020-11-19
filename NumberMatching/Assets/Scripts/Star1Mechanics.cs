@@ -58,7 +58,7 @@ public class Star1Mechanics : MonoBehaviour {
 
     private void StarInvisible() {
         Color invis = star.GetComponent<Image>().color;
-        star.GetComponent<Image>().color = new Color(invis.r, invis.g, invis.b, 0f);
+        star.GetComponent<Image>().color = new Color(invis.r, invis.g, invis.b, 1f);
     }
 
     private void StarVisible() {

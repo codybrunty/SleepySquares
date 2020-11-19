@@ -38,7 +38,7 @@ namespace CloudOnce
                     return string.Empty;
 #endif
 #elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
-                    return "";
+                    return "highscore.001";
 #elif UNITY_EDITOR
                     return "HighScore";
 #else
@@ -58,7 +58,7 @@ namespace CloudOnce
                     return string.Empty;
 #endif
 #elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
-                    return "";
+                    return "hardhighscore.001";
 #elif UNITY_EDITOR
                     return "HardModeHighScore";
 #else

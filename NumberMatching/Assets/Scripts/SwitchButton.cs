@@ -25,10 +25,22 @@ public class SwitchButton : MonoBehaviour{
     [SerializeField] Button resetButton = default;
     [SerializeField] Button clearButton = default;
 
-    [SerializeField] GameObject scoreboard = default;
-    [SerializeField] GameObject trophyPanel = default;
+    //[SerializeField] TextMeshProUGUI floatingText = default;
+    [SerializeField] SettingsMenu settings = default;
 
-    [SerializeField] TextMeshProUGUI floatingText = default;
+    [SerializeField] TweenMovement nextSquareTween = default;
+
+    [SerializeField] GameObject repair_UI_Dim = default;
+    [SerializeField] GameObject score_UI_Dim = default;
+    [SerializeField] GameObject best_UI_Dim = default;
+    [SerializeField] GameObject best_crown_dim = default;
+    
+    [SerializeField] GameObject switchEffect = default;
+    [SerializeField] ParticleSystem repairEffect = default;
+    [SerializeField] Color orgColor = default;
+    [SerializeField] Color dimColor = default;
+    public bool ready = true;
+    private bool addSwitches = true;
 
 
     private void Start() {
@@ -41,14 +53,20 @@ public class SwitchButton : MonoBehaviour{
     }
 
     public void SwitchButtonOnClick() {
-
+        ready = false;
         if (!activated) {
             TurnOnSwitchMode();
         }
         else {
             TurnOffSwitchMode(true);
         }
+        StartCoroutine(SwapReady());
+    }
 
+    IEnumerator SwapReady()
+    {
+        yield return new WaitForSeconds(0.25f);
+        ready = true;
     }
 
     public void TurnOnSwitchMode() {
@@ -59,15 +77,20 @@ public class SwitchButton : MonoBehaviour{
             switchBG.SetActive(true);
             HighlightSwitchableSquares();
             DisableUIButtons();
-            DisableUIColors();
+            Disable_UI_Colors();
+            nextSquareTween.StartSwitchNextSquareMovement();
+            switchEffect.SetActive(true);
         }
         else {
-            //open store
-            Debug.Log("you outta switches sucka");
+            settings.ShowStorePanel();
         }
 
     }
 
+    public void TurnOffEffect()
+    {
+        switchEffect.SetActive(false);
+    }
     private void PlayPositiveSFX() {
         FindObjectOfType<SoundManager>().PlayOneShotSound("switchModeOn");
     }
@@ -76,12 +99,16 @@ public class SwitchButton : MonoBehaviour{
     }
 
     public void TurnOffSwitchMode(bool playSFX) {
+        Debug.Log("Turn Off Switch Mode");
+
         InactiveColors();
         switchBG.SetActive(false);
         DisableHighlightOnSwitchableSquares();
         activated = false;
         EnableUIButtons();
-        EnableUIColors();
+        Enable_UI_Colors();
+        nextSquareTween.StopSwitchNextSquareMovement();
+        TurnOffEffect();
 
         if (playSFX) {
             PlayNegativeSFX();
@@ -103,130 +130,7 @@ public class SwitchButton : MonoBehaviour{
         yield return new WaitForSeconds(.5f);
         button.GetComponent<Image>().raycastTarget = true;
     }
-
-    private void DisableUIColors() {
-        DisableScoreBoardAlpha();
-        DisableTrophyPanelAlpha();
-        DisableClearButtonAlpha();
-    }
-
-    private void EnableUIColors() {
-        EnableScoreBoardAlpha();
-        EnableTrophyPanelAlpha();
-        EnableCleearButtonAlpha();
-    }
-
-    private void DisableClearButtonAlpha() {
-        Image[] imgs = clearButton.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = clearButton.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 128f / 255f);
-            }
-        }
-    }
-
-    private void EnableCleearButtonAlpha() {
-        Image[] imgs = clearButton.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = clearButton.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 1f);
-            }
-        }
-    }
-
-    private void DisableTrophyPanelAlpha() {
-        Image[] imgs = trophyPanel.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = trophyPanel.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 128f / 255f);
-            }
-        }
-    }
-
-    private void EnableTrophyPanelAlpha() {
-        Image[] imgs = trophyPanel.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = trophyPanel.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 1f);
-            }
-
-        }
-    }
-
-    private void DisableScoreBoardAlpha() {
-        Image[] imgs = scoreboard.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = scoreboard.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 128f / 255f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 128f / 255f);
-            }
-
-        }
-    }
-
-    private void EnableScoreBoardAlpha() {
-        Image[] imgs = scoreboard.transform.GetComponentsInChildren<Image>(true);
-        TextMeshProUGUI[] texts = scoreboard.transform.GetComponentsInChildren<TextMeshProUGUI>(true);
-
-        for (int i = 0; i < imgs.Length; i++) {
-            if (imgs[i].color.a != 0f) {
-                imgs[i].color = new Color(imgs[i].color.r, imgs[i].color.g, imgs[i].color.b, 1f);
-            }
-        }
-
-        for (int i = 0; i < texts.Length; i++) {
-
-            if (texts[i].color.a != 0f) {
-                texts[i].color = new Color(texts[i].color.r, texts[i].color.g, texts[i].color.b, 1f);
-            }
-        }
-
-    }
-
+    
     private void DisableUIButtons() {
         resetButton.interactable = false;
         settingsButton.interactable = false;
@@ -242,35 +146,68 @@ public class SwitchButton : MonoBehaviour{
     public void ReduceSwitchAmmount() {
         switchAmmount--;
         UpdateSwitchAmmountDisplay();
+
+        //for playfab tracking
+        int counter = PlayerPrefs.GetInt("Swaps_Used", 0);
+        counter++;
+        PlayerPrefs.SetInt("Swaps_Used", counter);
     }
 
-    public void AddSwitches(int ammount) {
-        GameDataManager.GDM.currentSwitches+=ammount;
-        GameDataManager.GDM.SaveGameData();
-        switchAmmount = GameDataManager.GDM.currentSwitches;
-        AddSwitchAnimation(ammount);
-        UpdateSwitchAmmountDisplay();
+    public void AddSwitches(int ammount)
+    {
+        if (addSwitches)
+        {
+            addSwitches = false;
+            GameDataManager.GDM.currentSwitches += ammount;
+            GameDataManager.GDM.SaveGameData();
+            switchAmmount = GameDataManager.GDM.currentSwitches;
+            AddSwitchAnimation(ammount);
+            UpdateSwitchAmmountDisplay();
+        }
+        //weird bug was happening where add switches was getting triggered twice.
+        StartCoroutine(StopDoublePayouts());
+    }
+
+    public void AddSwitchesNoAnimation(int ammount)
+    {
+        if (addSwitches)
+        {
+            addSwitches = false;
+            GameDataManager.GDM.currentSwitches += ammount;
+            GameDataManager.GDM.SaveGameData();
+            switchAmmount = GameDataManager.GDM.currentSwitches;
+            //AddSwitchAnimation(ammount);
+            UpdateSwitchAmmountDisplay();
+        }
+        //weird bug was happening where add switches was getting triggered twice.
+        StartCoroutine(StopDoublePayouts());
+    }
+
+    IEnumerator StopDoublePayouts()
+    {
+        yield return new WaitForSeconds(.25f);
+        addSwitches = true;
     }
 
     private void AddSwitchAnimation(int number) {
-        floatingText.text = ("+" + number.ToString());
-        floatingText.gameObject.GetComponent<FloatingText>().FlashText();
+        //floatingText.text = ("+" + number.ToString());
+        //floatingText.gameObject.GetComponent<FloatingText>().FlashText();
         PopAnim();
     }
 
     private void PopAnim() {
 
         Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(0.5f, 0.5f, 0f));
-        hash.Add("time", .75f);
-        iTween.PunchScale(gameObject, hash);
+        hash.Add("amount", new Vector3(2f, 2f, 0f));
+        hash.Add("time", 1.5f);
+        iTween.PunchScale(gameObject.transform.parent.gameObject, hash);
 
     }
 
     private void ActiveColors() {
         switchButton.key = "Second";
-        switchIcon.key = "First";
-        switchNumberBG.key = "First";
+        switchIcon.key = "Button1";
+        switchNumberBG.key = "Button1";
         switchNumberNum.key = "Second";
         switchButton.GetColor();
         switchIcon.GetColor();
@@ -279,7 +216,7 @@ public class SwitchButton : MonoBehaviour{
     }
 
     private void InactiveColors() {
-        switchButton.key = "First";
+        switchButton.key = "Button1";
         switchIcon.key = "Second";
         switchNumberBG.key = "Second";
         switchNumberNum.key = "First";
@@ -311,7 +248,7 @@ public class SwitchButton : MonoBehaviour{
     }
 
     private void HighlightSquare(GameObject square) {
-        square.transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 11;
+        square.transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 11;
         HighlightGreenFace(square);
         HighlightRedFace(square);
         HighlightPurpleFace(square);
@@ -321,7 +258,7 @@ public class SwitchButton : MonoBehaviour{
 
 
     private void UnHilightSquare(GameObject square) {
-        square.transform.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 0;
+        square.transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 0;
         UnHighlightGreenFace(square);
         UnHighlightRedFace(square);
         UnHighlightPurpleFace(square);
@@ -330,161 +267,226 @@ public class SwitchButton : MonoBehaviour{
 
     private void HighlightOrangeFace(GameObject square) {
         //Face Orange LeftEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Orange LeftEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange LeftEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange RightEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Orange RightEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange RightEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange LeftTopEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Orange LeftTopEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange LeftTopEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange RightTopEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(6).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(6).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Orange RightTopEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(6).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(6).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange RightTopEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(7).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(7).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Orange Mouth mouth
-        square.transform.GetChild(0).GetChild(3).GetChild(8).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(8).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
     }
 
     private void UnHighlightOrangeFace(GameObject square) {
         //Face Orange LeftEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Orange LeftEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange LeftEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange RightEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Orange RightEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange RightEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange LeftTopEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Orange LeftTopEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange LeftTopEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange RightTopEye Iris
-        square.transform.GetChild(0).GetChild(3).GetChild(6).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(6).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Orange RightTopEye white
-        square.transform.GetChild(0).GetChild(3).GetChild(6).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(6).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange RightTopEyeLid eyelid
-        square.transform.GetChild(0).GetChild(3).GetChild(7).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(7).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Orange Mouth mouth
-        square.transform.GetChild(0).GetChild(3).GetChild(8).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(3).GetChild(8).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     private void HighlightPurpleFace(GameObject square) {
         //Face Purple LeftEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Purple LeftEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple LeftEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple CenterEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Purple CenterEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple CenterEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple RightEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Purple RightEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple RightEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Purple Mouth mouth
-        square.transform.GetChild(0).GetChild(2).GetChild(6).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(6).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
     }
 
     private void UnHighlightPurpleFace(GameObject square) {
         //Face Purple LeftEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Purple LeftEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple LeftEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple CenterEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Purple CenterEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple CenterEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple RightEye Iris
-        square.transform.GetChild(0).GetChild(2).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(4).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Purple RightEye white
-        square.transform.GetChild(0).GetChild(2).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(4).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple RightEyeLid eyelid
-        square.transform.GetChild(0).GetChild(2).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(5).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Purple Mouth mouth
-        square.transform.GetChild(0).GetChild(2).GetChild(6).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(6).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     private void HighlightRedFace(GameObject square) {
         //Face Red LeftEye Iris
-        square.transform.GetChild(0).GetChild(1).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Red LeftEye white
-        square.transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Red LeftEyeLid number_2_eyelid
-        square.transform.GetChild(0).GetChild(1).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Red RightEye Iris
-        square.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Red RightEye white
-        square.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Red RightEyeLid number_2_eyelid
-        square.transform.GetChild(0).GetChild(1).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Red Mouth mouth
-        square.transform.GetChild(0).GetChild(1).GetChild(4).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(4).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
     }
 
     private void UnHighlightRedFace(GameObject square) {
         //Face Red LeftEye Iris
-        square.transform.GetChild(0).GetChild(1).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Red LeftEye white
-        square.transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Red LeftEyeLid number_2_eyelid
-        square.transform.GetChild(0).GetChild(1).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Red RightEye Iris
-        square.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(2).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Red RightEye white
-        square.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(2).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Red RightEyeLid number_2_eyelid
-        square.transform.GetChild(0).GetChild(1).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(3).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Red Mouth mouth
-        square.transform.GetChild(0).GetChild(1).GetChild(4).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(4).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
     }
 
     private void HighlightGreenFace(GameObject square) {
         //Face Green Eye Iris
-        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 16;
         //Face Green Eye white
-        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Green Eyelid eyelid
-        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
         //Face Green Mouth eyelid
-        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 15;
     }
 
     private void UnHighlightGreenFace(GameObject square) {
         //Face Green Eye Iris
-        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = 6;
         //Face Green Eye white
-        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Green Eyelid eyelid
-        square.transform.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
         //Face Green Mouth eyelid
-        square.transform.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+        square.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
+    }
+
+
+    private void Disable_UI_Colors()
+    {
+        Disable_Score();
+        Disable_Repair();
+        Disable_Hard();
+    }
+
+    private void Enable_UI_Colors()
+    {
+        Enable_Score();
+        Enable_Repair();
+        Enable_Hard();
+    }
+
+    private void Enable_Repair() {
+        repair_UI_Dim.SetActive(false);
+        RepairEffectOriginalColor();
+    }
+
+    private void RepairEffectOriginalColor() {
+        Gradient grad = new Gradient();
+        grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.white, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, .25f), new GradientAlphaKey(1.0f, .75f), new GradientAlphaKey(0.0f, 1.0f) });
+
+        var col = repairEffect.colorOverLifetime;
+        col.color = grad;
+    }
+
+    private void RepairEffectDimColor() {
+        Gradient grad = new Gradient();
+        grad.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color(140f / 255f, 140f / 255f, 140f / 255f), 0.0f), new GradientColorKey(new Color(140f / 255f, 140f / 255f, 140f / 255f), 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(1.0f, .25f), new GradientAlphaKey(1.0f, .75f), new GradientAlphaKey(0.0f, 1.0f) });
+        var col = repairEffect.colorOverLifetime;
+        col.color = grad;
+    }
+
+    private void Disable_Repair()
+    {
+        RepairEffectDimColor();
+        repair_UI_Dim.SetActive(true);
+    }
+
+    private void Enable_Score()
+    {
+        score_UI_Dim.SetActive(false);
+        best_UI_Dim.SetActive(false);
+        best_crown_dim.SetActive(false);
+    }
+
+    private void Disable_Score()
+    {
+        score_UI_Dim.SetActive(true);
+        best_UI_Dim.SetActive(true);
+        best_crown_dim.SetActive(true);
+    }
+
+    private void Enable_Hard()
+    {
+        //.SetActive(false);
+    }
+
+    private void Disable_Hard()
+    {
+        //.SetActive(true);
     }
 }

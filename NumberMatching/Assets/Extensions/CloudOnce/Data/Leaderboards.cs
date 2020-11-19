@@ -16,7 +16,7 @@ namespace CloudOnce
     {
         private static readonly UnifiedLeaderboard s_highScore = new UnifiedLeaderboard("HighScore",
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
-            ""
+            "highscore.001"
 #elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
             "CgkI1a-4sNcXEAIQAQ"
 #else
@@ -31,7 +31,7 @@ namespace CloudOnce
 
         private static readonly UnifiedLeaderboard s_hardModeHighScore = new UnifiedLeaderboard("HardModeHighScore",
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
-            ""
+            "hardhighscore.001"
 #elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
             "CgkI1a-4sNcXEAIQAw"
 #else

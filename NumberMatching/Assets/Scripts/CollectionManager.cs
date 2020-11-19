@@ -79,6 +79,16 @@ public class CollectionManager : MonoBehaviour{
                 return assets[assetIndex].trophy2Color;
             case "Trophy3":
                 return assets[assetIndex].trophy3Color;
+            case "Button1":
+                return assets[assetIndex].button1;
+            case "Button2":
+                return assets[assetIndex].button2;
+            case "Button3":
+                return assets[assetIndex].button3;
+            case "Button4":
+                return assets[assetIndex].button4;
+            case "Button5":
+                return assets[assetIndex].button5;
             default:
                 return Color.red;
 

@@ -6,12 +6,12 @@ using TMPro;
 
 public class HardModeButtonMechanics : MonoBehaviour{
 
-    [SerializeField] TextMeshProUGUI hardModeTextDisplay = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
-    [SerializeField] GameObject square_4 = default;
-    [SerializeField] GameObject square_1 = default;
+    [SerializeField] GameObject hard = default;
+    [SerializeField] GameObject normal = default;
 
-    private void Start() {
+    private void OnEnable()
+    {
         SetModeDisplay();
     }
 
@@ -26,15 +26,15 @@ public class HardModeButtonMechanics : MonoBehaviour{
     }
 
     private void SetModeDisplay() {
-        if (gameBoard.hardModeOn == 1) {
-            hardModeTextDisplay.text = "Normal Mode";
-            square_1.SetActive(true);
-            square_4.SetActive(false);
+        if (gameBoard.hardModeOn == 1)
+        {
+            hard.SetActive(true);
+            normal.SetActive(false);
         }
-        else {
-            hardModeTextDisplay.text = "Hard Mode";
-            square_1.SetActive(false);
-            square_4.SetActive(true);
+        else
+        {
+            hard.SetActive(false);
+            normal.SetActive(true);
         }
     }
 

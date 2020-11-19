@@ -255,3 +255,208 @@ MonoBehaviour:
   savedNextSquares: 
   gameOver: 0
   hardModeOn: 0
+  firstClear: 0
+  HM_squares:
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  - number: 0
+    completed: 0
+    blocker: 0
+    adjescentConnections: 
+    luckyCoin: 0
+  HM_currentPoints: 0
+  HM_savedNextSquares: 
+  HM_gameOver: 0

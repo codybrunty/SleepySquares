@@ -6,104 +6,91 @@ using UnityEngine.UI;
 
 public class Tutorial_Instructions_4 : MonoBehaviour{
 
-    [SerializeField] GameObject square_GO = default;
-    [SerializeField] SpriteRenderer square_body = default;
-    [SerializeField] GameObject face = default;
-    [SerializeField] Color redColor = default;
+    [SerializeField] List<GameObject> invisiblieWhites = default;
+    [SerializeField] GameObject raycastGO = default;
+    [SerializeField] GameObject nextBoard = default;
+    [SerializeField] GameObject nextBoard_bg = default;
+    [SerializeField] GameObject gameboard_bg = default;
 
-    [SerializeField] GameObject square1eyelid_closing = default;
-    [SerializeField] GameObject square1eyelid = default;
-    [SerializeField] GameObject closeEye = default;
-
-    [SerializeField] GameObject square1eyelid_closing2 = default;
-    [SerializeField] GameObject square1eyelid2 = default;
-
-    [SerializeField] GameObject instruct1 = default;
-    [SerializeField] GameObject instruct2 = default;
-    [SerializeField] GameObject closeEye2 = default;
-
-    [SerializeField] GameObject nextSquare = default;
-
-
-    [SerializeField] GameObject clickNext = default;
-    [SerializeField] GameObject flashyButton = default;
+    [SerializeField] List<MoveToNextSquarePosition> point4s = new List<MoveToNextSquarePosition>();
 
     private void OnEnable() {
-        clickNext.SetActive(false);
         StartCoroutine(Tutorial4_Animations());
     }
 
-    IEnumerator Tutorial4_Animations() {
+    IEnumerator Tutorial4_Animations()
+    {
+        yield return new WaitForSeconds(0.25f);
+        StartCoroutine(MoveNextBoard());
+        StartCoroutine(MoveNextBoardBG());
+        PopWhiteBoard();
+        PopBG();
+        yield return new WaitForSeconds(0.5f);
+        raycastGO.SetActive(true);
 
-        PunchRed();
-        PunchNextSquare();
-        yield return new WaitForSeconds(1f);
-        CloseEyelid1();
-        yield return new WaitForSeconds(.1f);
-        CloseEyelid2();
-        yield return new WaitForSeconds(5f);
-        instruct1.SetActive(false);
-        instruct2.SetActive(true);
-        yield return new WaitForSeconds(3f);
-        MoveAndScaleClickNext();
-        clickNext.SetActive(true);
-        flashyButton.SetActive(true);
     }
 
-    private void PunchNextSquare() {
+    IEnumerator MoveNextBoard()
+    {
+
+        Vector3 newPos = nextBoard.transform.localPosition;
+        Vector3 oldPos = new Vector3(newPos.x, newPos.y + 500f, newPos.z);
+        nextBoard.transform.localPosition = oldPos;
+        nextBoard.SetActive(true);
+
+        for (float t = 0; t < 0.5f; t += Time.deltaTime)
+        {
+            nextBoard.transform.localPosition = Vector3.Lerp(oldPos, newPos, t / 0.5f);
+            yield return null;
+        }
+        nextBoard.transform.localPosition = newPos;
+        ReAdjust4Points();
+    }
+
+    IEnumerator MoveNextBoardBG()
+    {
+
+        Vector3 newPos = nextBoard_bg.transform.localPosition;
+        Vector3 oldPos = new Vector3(newPos.x, newPos.y + 500f, newPos.z);
+        nextBoard_bg.transform.localPosition = oldPos;
+        nextBoard_bg.SetActive(true);
+
+        for (float t = 0; t < 0.5f; t += Time.deltaTime)
+        {
+            nextBoard_bg.transform.localPosition = Vector3.Lerp(oldPos, newPos, t / 0.5f);
+            yield return null;
+        }
+        nextBoard_bg.transform.localPosition = newPos;
+    }
+
+    private void ReAdjust4Points()
+    {
+        for (int i = 0; i < point4s.Count; i++)
+        {
+            point4s[i].AdjustPosition();
+        }
+    }
+
+    private void PopBG()
+    {
+        gameboard_bg.SetActive(true);
+    }
+
+    private void PopWhiteBoard()
+    {
+        for (int i = 0; i < invisiblieWhites.Count; i++)
+        {
+            Pop(invisiblieWhites[i]);
+        }
+        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+    }
+
+    private void Pop(GameObject go)
+    {
+        go.SetActive(true);
         Hashtable hash = new Hashtable();
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
-        iTween.PunchScale(nextSquare, hash);
+        iTween.PunchScale(go, hash);
     }
-
-    private void MoveAndScaleClickNext() {
-        clickNext.transform.localPosition = new Vector3(3.816f, 1.634f, 5f);
-        clickNext.transform.localScale = new Vector3(.6956572f, .9876481f, 3.987f);
-    }
-
-    private void CloseEyelid2() {
-        square1eyelid_closing2.SetActive(true);
-
-        Hashtable hash = new Hashtable();
-        hash.Add("position", new Vector3(3.41116f, 3.439575f, 0f));
-        hash.Add("time", 0.25f);
-        hash.Add("oncomplete", "SwitchEyelidGraphics2");
-        hash.Add("oncompletetarget", gameObject);
-        iTween.MoveTo(square1eyelid_closing2, hash);
-    }
-
-    private void SwitchEyelidGraphics2() {
-        closeEye2.SetActive(false);
-        square1eyelid_closing2.SetActive(false);
-        square1eyelid2.SetActive(true);
-    }
-
-    private void CloseEyelid1() {
-        square1eyelid_closing.SetActive(true);
-
-        Hashtable hash = new Hashtable();
-        hash.Add("position", new Vector3(2.384856f, 3.439575f, 0f));
-        hash.Add("time", 0.25f);
-        hash.Add("oncomplete", "SwitchEyelidGraphics");
-        hash.Add("oncompletetarget", gameObject);
-        iTween.MoveTo(square1eyelid_closing, hash);
-    }
-
-    private void SwitchEyelidGraphics() {
-        closeEye.SetActive(false);
-        square1eyelid_closing.SetActive(false);
-        square1eyelid.SetActive(true);
-    }
-
-    private void PunchRed() {
-        square_body.color = redColor;
-        face.SetActive(true);
-        Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(1f, 1f, 0f));
-        hash.Add("time", 0.5f);
-        iTween.PunchScale(square_GO, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
-    }
-
 }

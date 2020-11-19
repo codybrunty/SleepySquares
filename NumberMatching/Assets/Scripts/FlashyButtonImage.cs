@@ -8,7 +8,7 @@ public class FlashyButtonImage : MonoBehaviour{
     [SerializeField] ParticleSystem effect = default;
     [SerializeField] AnimationCurve ease = default;
     int counter = 0;
-
+    public Vector3 scaleMax;
 
     private void OnEnable() {
         StartCoroutine(AlphaTweenSprite());
@@ -32,7 +32,7 @@ public class FlashyButtonImage : MonoBehaviour{
 
     private void PunchButton() {
         Hashtable hash = new Hashtable();
-        hash.Add("scale", new Vector3(1f, 1f, 1f));
+        hash.Add("scale", scaleMax);
         hash.Add("looptype", "pingPong ");
         hash.Add("easetyp", "easeOutQuad");
         hash.Add("oncomplete", "PlayEffect");

@@ -6,6 +6,7 @@ using UnityEngine;
 public class TutorialGoNext : MonoBehaviour{
 
     [SerializeField] TutorialManager tutorialManager = default;
+    public bool animationDone = false;
 
     private void Update() {
         RaycastForClickArea();
@@ -16,6 +17,7 @@ public class TutorialGoNext : MonoBehaviour{
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             int layerMask_clickArea = LayerMask.NameToLayer(layerName: "TutorialClickArea");
             RaycastHit2D hit_onClickArea = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_clickArea);
+
             if (hit_onClickArea.collider != null) {
                 GoToNextOnClick();
             }
@@ -23,6 +25,7 @@ public class TutorialGoNext : MonoBehaviour{
     }
 
     public void GoToNextOnClick() {
+        animationDone = false;
         tutorialManager.UpdateTutorialDisplay();
     }
 

@@ -5,9 +5,14 @@ using UnityEngine;
 public class CollectionColor_Sprite : MonoBehaviour{
 
     public string key;
+    private SpriteRenderer mainSprite;
+
+    private void Awake() {
+        mainSprite = gameObject.GetComponent<SpriteRenderer>();
+    }
 
     public void GetColor() {
         Color spriteColor = CollectionManager.CM.GetUIColor(key);
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, gameObject.GetComponent<SpriteRenderer>().color.a);
+        mainSprite.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, mainSprite.color.a);
     }
 }

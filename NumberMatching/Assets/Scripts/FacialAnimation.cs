@@ -14,22 +14,15 @@ public class FacialAnimation : MonoBehaviour{
     private bool startAnimating = false;
     private Coroutine coroutine;
     public float blinkSpeed = .25f;
-    private Coroutine dimBlinkCo;
-    //[SerializeField] Color dimColor = default;
-    //[SerializeField] Color orgColor = default;
-    [SerializeField] Sprite awakeMouth = default;
-    [SerializeField] Sprite sleepingMouth = default;
-    [SerializeField] SpriteRenderer mouth = default;
+    private Animator anim;
+
+    private void Awake() {
+        anim = gameObject.GetComponent<Animator>();
+    }
 
     public void StartFacialAnimation() {
         if (coroutine == null) {
             startAnimating = true;
-        }
-        else {
-
-            //string squareName = gameObject.transform.parent.parent.name;
-            //string colorName  = gameObject.transform.name;
-            //Debug.Log("tried to start facial animatino but it is already going on " + colorName + " " + squareName);
         }
     }
 
@@ -154,75 +147,9 @@ public class FacialAnimation : MonoBehaviour{
         //Debug.Log("anim waiting "+ randomSeconds);
         yield return new WaitForSeconds(randomSeconds);
         int randomAnimationNumber = UnityEngine.Random.Range(0, anims.Count);
-        gameObject.GetComponent<Animator>().SetTrigger(anims[randomAnimationNumber]);
+        anim.SetTrigger(anims[randomAnimationNumber]);
         startAnimating = true;
     }
-    /*
-    public void DimBlinks(float duration)
-    {
-        if (dimBlinkCo == null)
-        {
-            dimBlinkCo = StartCoroutine(DimAllBlinks(duration));
-        }
-        else
-        {
-            StopCoroutine(dimBlinkCo);
-            dimBlinkCo = StartCoroutine(DimAllBlinks(duration));
-        }
-    }
-    
-    IEnumerator DimAllBlinks(float duration)
-    {
-        mouth.sprite = sleepingMouth;
-
-        //Color normalColor = eyeblinks[0].eyeBlink.color;
-        //Color dimColor = new Color(normalColor.r, normalColor.g, normalColor.b, 100f / 255f);
-
-        for (float t = 0; t < duration; t += Time.deltaTime)
-        {
-            for (int i = 0; i < eyeblinks.Count; i++)
-            {
-                eyeblinks[i].eyeBlink.color = Color.Lerp(orgColor, dimColor, t / duration);
-            }
-            yield return null;
-        }
-
-        for (int i = 0; i < eyeblinks.Count; i++)
-        {
-            eyeblinks[i].eyeBlink.color = dimColor;
-        }
-    }
-
-    public void UnDimBlinks()
-    {
-        
-
-        if (dimBlinkCo == null)
-        {
-            UnDimAllBlinks();
-        }
-        else
-        {
-            StopCoroutine(dimBlinkCo);
-            UnDimAllBlinks();
-        }
-    }
-
-    private void UnDimAllBlinks()
-    {
-        mouth.sprite = awakeMouth;
-
-        //Color normalColor = eyeblinks[0].eyeBlink.color;
-        //Color dimColor = new Color(normalColor.r, normalColor.g, normalColor.b, 1f);
-
-        for (int i = 0; i < eyeblinks.Count; i++)
-        {
-            eyeblinks[i].eyeBlink.color = orgColor;
-        }
-    }
-
-    */
-
 }
 
 

@@ -210,12 +210,12 @@ public class Tutorial_SwapButton : MonoBehaviour
 
     private void PlayPositiveSFX()
     {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("switchModeOn");
+        SoundManager.SM.PlayOneShotSound("switchModeOn");
     }
 
     private void PlayNegativeSFX()
     {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("switchModeNegative");
+        SoundManager.SM.PlayOneShotSound("switchModeNegative");
     }
 
     private void HighlightSwitchableSquares()

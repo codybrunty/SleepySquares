@@ -23,17 +23,17 @@ public class SoundButtonMechanics : MonoBehaviour {
     }
 
     public void SoundButtonOnClick() {
-        if (FindObjectOfType<SoundManager>().soundOn == 1) {
-            FindObjectOfType<SoundManager>().TurnOffSound();
+        if (SoundManager.SM.soundOn == 1) {
+            SoundManager.SM.TurnOffSound();
         }
         else {
-            FindObjectOfType<SoundManager>().TurnOnSound();
+            SoundManager.SM.TurnOnSound();
         }
         SetSoundImages();
     }
 
     private void SetSoundImages() {
-        if (FindObjectOfType<SoundManager>().soundOn == 1) {
+        if (SoundManager.SM.soundOn == 1) {
             soundImage.sprite = soundOnImage;
             Color newColor = new Color(soundImage.color.r, soundImage.color.g, soundImage.color.b, 1f);
             StartCoroutine(FadeIn(newColor));

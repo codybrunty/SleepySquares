@@ -183,11 +183,11 @@ public class SettingsMenu : MonoBehaviour{
     }
 
     private void PlayNegativeSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("deselect1");
+        SoundManager.SM.PlayOneShotSound("deselect1");
     }
 
     private void PlayPositiveSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+        SoundManager.SM.PlayOneShotSound("select1");
     }
 
     IEnumerator EnableGameboardTouch() {

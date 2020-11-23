@@ -14,6 +14,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     public string swap_75 = "swap_75";
     public string swap_200 = "swap_200";
 
+    [SerializeField] SettingsMenu settingsMenu = default;
+    [SerializeField] SwitchButton switchButton = default;
+
     private void Awake() {
         instance = this;
     }
@@ -92,9 +95,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
         if (String.Equals(args.purchasedProduct.definition.id, swap_30, StringComparison.Ordinal)) {
             Debug.Log("purchase 30 switches");
-            FindObjectOfType<SettingsMenu>().ExitSettings();
-            FindObjectOfType<SwitchButton>().AddSwitches(30);
-            FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+            settingsMenu.ExitSettings();
+            switchButton.AddSwitches(30);
+            SoundManager.SM.PlayOneShotSound("yahoo");
 
             //for playfab tracking
             int counter = PlayerPrefs.GetInt("Purchase_30", 0);
@@ -104,9 +107,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
         }
         else if (String.Equals(args.purchasedProduct.definition.id, swap_75, StringComparison.Ordinal)) {
             Debug.Log("purchase 75 switches");
-            FindObjectOfType<SettingsMenu>().ExitSettings();
-            FindObjectOfType<SwitchButton>().AddSwitches(75);
-            FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+            settingsMenu.ExitSettings();
+            switchButton.AddSwitches(75);
+            SoundManager.SM.PlayOneShotSound("yahoo");
 
             //for playfab tracking
             int counter = PlayerPrefs.GetInt("Purchase_75", 0);
@@ -116,9 +119,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
         }
         else if (String.Equals(args.purchasedProduct.definition.id, swap_200, StringComparison.Ordinal)) {
             Debug.Log("purchase 200 switches");
-            FindObjectOfType<SettingsMenu>().ExitSettings();
-            FindObjectOfType<SwitchButton>().AddSwitches(200);
-            FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+            settingsMenu.ExitSettings();
+            switchButton.AddSwitches(200);
+            SoundManager.SM.PlayOneShotSound("yahoo");
 
             //for playfab tracking
             int counter = PlayerPrefs.GetInt("Purchase_200", 0);

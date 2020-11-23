@@ -9,14 +9,18 @@ public class ClearButtonFill : MonoBehaviour{
     public float fillDuration = 0.25f;
     public AnimationCurve easeCurve;
     bool fillAtStart = false;
+    private Image mainImage;
 
+    private void Awake() {
+        mainImage = gameObject.GetComponent<Image>();
+    }
     public void UpdateFillDisplay(float percentageFill) {
         if (!fillAtStart) {
             fillAtStart = true;
-            gameObject.GetComponent<Image>().fillAmount = percentageFill;
+            mainImage.fillAmount = percentageFill;
         }
         else {
-            if (percentageFill == 0f && gameObject.GetComponent<Image>().fillAmount == 0f) {
+            if (percentageFill == 0f && mainImage.fillAmount == 0f) {
 
             }
             else {
@@ -27,15 +31,15 @@ public class ClearButtonFill : MonoBehaviour{
 
     IEnumerator FillOverTime(float targetFillNumber) {
 
-        float currentFillNumber = gameObject.GetComponent<Image>().fillAmount;
+        float currentFillNumber = mainImage.fillAmount;
 
         for (float t = 0f; t < fillDuration; t += Time.deltaTime) {
             float normalizedTime = t / fillDuration;
-            gameObject.GetComponent<Image>().fillAmount = Mathf.Lerp(currentFillNumber, targetFillNumber, easeCurve.Evaluate(normalizedTime));
+            mainImage.fillAmount = Mathf.Lerp(currentFillNumber, targetFillNumber, easeCurve.Evaluate(normalizedTime));
             yield return null;
         }
 
-        gameObject.GetComponent<Image>().fillAmount = targetFillNumber;
+        mainImage.fillAmount = targetFillNumber;
 
 
     }

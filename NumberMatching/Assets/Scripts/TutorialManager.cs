@@ -19,7 +19,7 @@ public class TutorialManager : MonoBehaviour{
     public void UpdateTutorialDisplay() {
         tutorialIndex++;
         if (tutorialIndex == tutorial_UI.Count) {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+            SoundManager.SM.PlayOneShotSound("select1");
             splash.FadeInSplash();
             StartCoroutine(LoadGame());
         }

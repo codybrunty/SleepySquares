@@ -155,7 +155,7 @@ public class ResultsTrophyDisplay : MonoBehaviour{
         //yield return new WaitForSeconds(0.4f);
         trophyEffect.SetActive(true);
         yield return new WaitForSeconds(0.35f);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("newTrophy");
+        SoundManager.SM.PlayOneShotSound("newTrophy");
         SetTrophyDisplay();
         PunchScaleGroup();
     }

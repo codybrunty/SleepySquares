@@ -92,10 +92,10 @@ public class SwitchButton : MonoBehaviour{
         switchEffect.SetActive(false);
     }
     private void PlayPositiveSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("switchModeOn");
+        SoundManager.SM.PlayOneShotSound("switchModeOn");
     }
     private void PlayNegativeSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("switchModeNegative");
+        SoundManager.SM.PlayOneShotSound("switchModeNegative");
     }
 
     public void TurnOffSwitchMode(bool playSFX) {

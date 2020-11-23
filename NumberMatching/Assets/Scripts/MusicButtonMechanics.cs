@@ -21,17 +21,17 @@ public class MusicButtonMechanics : MonoBehaviour{
     }
 
     public void MusicButtonOnClick() {
-        if (FindObjectOfType<MusicManager>().musicOn == 1) {
-            FindObjectOfType<MusicManager>().StopMusic();
+        if (MusicManager.MM.musicOn == 1) {
+            MusicManager.MM.StopMusic();
         }
         else {
-            FindObjectOfType<MusicManager>().StartMusic();
+            MusicManager.MM.StartMusic();
         }
         SetMusicToggleImage();
     }
 
     private void SetMusicToggleImage() {
-        if (FindObjectOfType<MusicManager>().musicOn == 1) {
+        if (MusicManager.MM.musicOn == 1) {
             musicImage.sprite = musicOnSprite;
             Color newColor = new Color(musicImage.color.r, musicImage.color.g, musicImage.color.b, 1f);
             StartCoroutine(FadeIn(newColor));

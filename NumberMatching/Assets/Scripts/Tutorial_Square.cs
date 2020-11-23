@@ -175,20 +175,16 @@ public class Tutorial_Square : MonoBehaviour
         switch (number)
         {
             case 1:
-                //Debug.Log("sfx1");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
+                SoundManager.SM.PlayOneShotSound("monster1");
                 break;
             case 2:
-                //Debug.Log("sfx2");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
+                SoundManager.SM.PlayOneShotSound("monster2");
                 break;
             case 3:
-                //Debug.Log("sfx3");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
+                SoundManager.SM.PlayOneShotSound("monster3");
                 break;
             case 4:
-                //Debug.Log("sfx3");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster4");
+                SoundManager.SM.PlayOneShotSound("monster4");
                 break;
             default:
                 //Debug.Log("nosfx");

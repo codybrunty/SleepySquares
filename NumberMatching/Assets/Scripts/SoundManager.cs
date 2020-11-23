@@ -59,7 +59,7 @@ public class SoundManager : MonoBehaviour{
     }
 
     private void PlayClickSound() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+        SoundManager.SM.PlayOneShotSound("select1");
     }
 
 }

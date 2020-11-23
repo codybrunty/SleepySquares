@@ -486,15 +486,15 @@ public class TutorialGameboard : MonoBehaviour
     {
         if (clearNumber <= 4)
         {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard1");
+            SoundManager.SM.PlayOneShotSound("clearboard1");
         }
         else if (clearNumber > 4 && clearNumber <= 10)
         {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard2");
+            SoundManager.SM.PlayOneShotSound("clearboard2");
         }
         else
         {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard3");
+            SoundManager.SM.PlayOneShotSound("clearboard3");
         }
 
     }
@@ -581,7 +581,7 @@ public class TutorialGameboard : MonoBehaviour
             ResetSquare_Full(gameBoardSquares[i]);
         }
 
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+        SoundManager.SM.PlayOneShotSound("clearBlockers");
         UpdateSquareConnections();
 
         if (endingSeq == true)
@@ -601,7 +601,7 @@ public class TutorialGameboard : MonoBehaviour
             ResetSquare_Full(gameBoardSquares[i]);
         }
 
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+        SoundManager.SM.PlayOneShotSound("clearBlockers");
         UpdateSquareConnections();
         repairButton.GetComponent<Tutorial_RepairButton>().DisabledClearButton();
         instructions_repair.SetActive(false);

@@ -13,6 +13,9 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
     private string rewardedAd = "rewardedVideo";
     public bool isTestAd;
 
+    [SerializeField] SwitchButton switchButton = default;
+    [SerializeField] SettingsMenu settingsMenu = default;
+
     private void Start() {
         GetPlatformID();
         Advertisement.AddListener(this);
@@ -65,9 +68,9 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
 
     private void RewardPlayer() {
         Debug.Log("Watched Ad Free 2 switches");
-        FindObjectOfType<SettingsMenu>().ExitSettings();
-        FindObjectOfType<SwitchButton>().AddSwitches(2);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+        settingsMenu.ExitSettings();
+        switchButton.AddSwitches(2);
+        SoundManager.SM.PlayOneShotSound("yahoo");
 
         //for playfab tracking
         int counter = PlayerPrefs.GetInt("Ads_Watched", 0);

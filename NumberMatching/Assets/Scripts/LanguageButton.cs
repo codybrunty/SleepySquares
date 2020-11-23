@@ -32,7 +32,7 @@ public class LanguageButton : MonoBehaviour
     {
         if (languageKey != "")
         {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+            SoundManager.SM.PlayOneShotSound("select1");
             PlayerPrefs.SetString("Language", languageKey);
             splash.FadeInSplash();
             StartCoroutine(ReloadCurrentScene());

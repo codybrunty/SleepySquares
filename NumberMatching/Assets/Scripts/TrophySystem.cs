@@ -188,7 +188,7 @@ public class TrophySystem : MonoBehaviour{
         yield return new WaitForSeconds(0.4f);
         TrophyEffect.SetActive(true);
         yield return new WaitForSeconds(0.35f);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("newTrophy");
+        SoundManager.SM.PlayOneShotSound("newTrophy");
         SwitchTrophyDisplay();
         Hashtable hash2 = new Hashtable();
         hash2.Add("amount", new Vector3(1.5f, 1.5f, 0f));

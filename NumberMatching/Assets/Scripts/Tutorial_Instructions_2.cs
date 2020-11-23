@@ -155,7 +155,7 @@ public class Tutorial_Instructions_2 : MonoBehaviour{
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
         iTween.PunchScale(green1, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
+        SoundManager.SM.PlayOneShotSound("monster1");
     }
 
     private void Green2Pop()
@@ -174,7 +174,7 @@ public class Tutorial_Instructions_2 : MonoBehaviour{
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
         iTween.PunchScale(go, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("connect");
+        SoundManager.SM.PlayOneShotSound("connect");
     }
 
     private void ConnectionAppear(GameObject connection)

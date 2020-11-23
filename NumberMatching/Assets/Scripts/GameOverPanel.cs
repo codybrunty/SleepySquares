@@ -91,7 +91,7 @@ public class GameOverPanel : MonoBehaviour{
         ScalePanel();
         ScaleEffect();
         gameOverEffect.SetActive(true);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("GameOver");
+        SoundManager.SM.PlayOneShotSound("GameOver");
 
         //MusicManager.MM.FadeOutCurrentMusic();
     }

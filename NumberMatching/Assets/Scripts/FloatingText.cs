@@ -27,6 +27,12 @@ public class FloatingText : MonoBehaviour{
     private Coroutine fadeInCo = null;
     private Coroutine fadeOutCo = null;
 
+    private TextMeshProUGUI mainText;
+
+    private void Awake() {
+        mainText = gameObject.GetComponent<TextMeshProUGUI>();
+    }
+
     void Start() {
         rt = gameObject.GetComponent<RectTransform>();
         currentPos = rt.anchoredPosition;
@@ -38,8 +44,8 @@ public class FloatingText : MonoBehaviour{
         rt.anchoredPosition = currentPos;
         rt.localScale = smallScale;
 
-        Color newColor = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 1f);
-        Color oldColor = new Color(gameObject.GetComponent<TextMeshProUGUI>().color.r, gameObject.GetComponent<TextMeshProUGUI>().color.g, gameObject.GetComponent<TextMeshProUGUI>().color.b, 0f);
+        Color newColor = new Color(mainText.color.r, mainText.color.g, mainText.color.b, 1f);
+        Color oldColor = new Color(mainText.color.r, mainText.color.g, mainText.color.b, 0f);
 
         TurnOffText();
 
@@ -106,47 +112,41 @@ public class FloatingText : MonoBehaviour{
 
     IEnumerator FadeInAlpha(Color targetColor)
     {
-        TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
-        Color orginalColor = text.color;
-
-
+        Color orginalColor = mainText.color;
         for (float time = 0f; time < fadeInTime; time += Time.deltaTime)
         {
-            text.color = Color.Lerp(orginalColor, targetColor, time / fadeInTime);
+            mainText.color = Color.Lerp(orginalColor, targetColor, time / fadeInTime);
             yield return null;
         }
 
-        text.color = targetColor;
+        mainText.color = targetColor;
     }
 
     IEnumerator FadeOutAlpha(Color targetColor)
     {
-        TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
-        Color orginalColor = new Color(text.color.r, text.color.g, text.color.b, 0f);
+        Color orginalColor = new Color(mainText.color.r, mainText.color.g, mainText.color.b, 0f);
 
         yield return new WaitForSeconds(holdTime);
         for (float t = 0f; t < fadeOutTime; t += Time.deltaTime)
         {
-            text.color = Color.Lerp(targetColor, orginalColor, t / fadeOutTime);
+            mainText.color = Color.Lerp(targetColor, orginalColor, t / fadeOutTime);
             yield return null;
         }
 
-        text.color = orginalColor;
+        mainText.color = orginalColor;
         ResetPosition();
         TurnOffText();
     }
 
     private void ResetPosition()
     {
-        TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
         rt.anchoredPosition = currentPos;
     }
 
     private void TurnOffText()
     {
-        TextMeshProUGUI text = gameObject.GetComponent<TextMeshProUGUI>();
-        Color newColor = new Color(text.color.r, text.color.g, text.color.b,0f);
-        text.color = newColor;
+        Color newColor = new Color(mainText.color.r, mainText.color.g, mainText.color.b,0f);
+        mainText.color = newColor;
     }
 
 

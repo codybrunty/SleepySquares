@@ -34,6 +34,18 @@ public class EyePickingMechanics : MonoBehaviour
     public Color orgColor;
     public Color dimColor;
 
+    private Image clearButtonImage;
+    private Image switchButtonImage;
+    private Image resetButtonImage;
+    private Image settingsButtonImage;
+
+    private void Awake() {
+        clearButtonImage = clearButton.GetComponent<Image>();
+        switchButtonImage = switchButton.GetComponent<Image>();
+        resetButtonImage = resetButton.GetComponent<Image>();
+        settingsButtonImage = settingsButton.GetComponent<Image>();
+    }
+
     public void TurnOn()
     {
         GetEyePicker();
@@ -63,9 +75,10 @@ public class EyePickingMechanics : MonoBehaviour
     {
         for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++)
         {
-            if (gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().eyePicker == true)
+            SquareMechanics_Gameboard square = gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>();
+            if (square.eyePicker == true)
             {
-                eyepicker = gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>();
+                eyepicker = square;
                 break;
             }
         }
@@ -77,9 +90,10 @@ public class EyePickingMechanics : MonoBehaviour
 
         for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++)
         {
-            gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().eyeMode = false;
-            gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().eyePicker = false;
-            gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().eyePickerCountdown = 0;
+            SquareMechanics_Gameboard square = gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>();
+            square.eyeMode = false;
+            square.eyePicker = false;
+            square.eyePickerCountdown = 0;
         }
     }
 
@@ -350,10 +364,11 @@ public class EyePickingMechanics : MonoBehaviour
         settingsButton.interactable = false;
         clearButton.interactable = false;
         switchButton.interactable = false;
-        clearButton.GetComponent<Image>().raycastTarget = false;
-        switchButton.GetComponent<Image>().raycastTarget = false;
-        resetButton.GetComponent<Image>().raycastTarget = false;
-        settingsButton.GetComponent<Image>().raycastTarget = false;
+
+        clearButtonImage.raycastTarget = false;
+        switchButtonImage.raycastTarget = false;
+        resetButtonImage.raycastTarget = false;
+        settingsButtonImage.raycastTarget = false;
     }
 
     private void EnableUIButtons()
@@ -381,7 +396,6 @@ public class EyePickingMechanics : MonoBehaviour
         Disable_Repair();
         Disable_Swap();
         Disable_Next();
-        Disable_Hard();
     }
 
     private void Enable_UI_Colors()
@@ -390,7 +404,6 @@ public class EyePickingMechanics : MonoBehaviour
         Enable_Repair();
         Enable_Swap();
         Enable_Next();
-        Enable_Hard();
     }
 
     private void Enable_Swap()
@@ -443,13 +456,4 @@ public class EyePickingMechanics : MonoBehaviour
         next_UI_Dim3.SetActive(true);
     }
 
-    private void Enable_Hard()
-    {
-        //.SetActive(false);
-    }
-
-    private void Disable_Hard()
-    {
-        //.SetActive(true);
-    }
 }

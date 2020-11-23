@@ -45,7 +45,7 @@ public class LocalisationSystem
 
     public static void SetLocalisedLanguage(string selectedLangauge)
     {
-        Debug.Log(selectedLangauge);
+        //Debug.Log(selectedLangauge);
         switch (selectedLangauge)
         {
             case "English":

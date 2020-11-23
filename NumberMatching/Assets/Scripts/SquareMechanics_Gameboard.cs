@@ -97,7 +97,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
 
     private int number4Effects = 0;
     [SerializeField] List<GameObject> scoringEffect1 = new List<GameObject>();
-    [SerializeField] List<GameObject> scoringEffect2 = new List<GameObject>();
 
 
     private void Awake()
@@ -225,7 +224,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             floatingGRP.transform.position += new Vector3(0f,500f,0f);
             //Instantiate(smoke, gameObject.transform.position, Quaternion.identity, gameObject.transform);
             //floatingGRP.GetComponent<FloatingSquare>().QuickBurst();
-            //FindObjectOfType<SoundManager>().PlayOneShotSound("poof");
         }
     }
 
@@ -256,7 +254,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             blockerImage.SetActive(true);
             Instantiate(smoke, gameObject.transform.position, Quaternion.identity, gameObject.transform);
             floatingGRP.GetComponent<FloatingSquare>().QuickBurst();
-            FindObjectOfType<SoundManager>().PlayOneShotSound("poof");
+            SoundManager.SM.PlayOneShotSound("poof");
         }
     }
 
@@ -398,20 +396,16 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     private void PopSFX() {
         switch (number) {
             case 1:
-                //Debug.Log("sfx1");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
+                SoundManager.SM.PlayOneShotSound("monster1");
                 break;
             case 2:
-                //Debug.Log("sfx2");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
+                SoundManager.SM.PlayOneShotSound("monster2");
                 break;
             case 3:
-                //Debug.Log("sfx3");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
+                SoundManager.SM.PlayOneShotSound("monster3");
                 break;
             case 4:
-                //Debug.Log("sfx3");
-                FindObjectOfType<SoundManager>().PlayOneShotSound("monster4");
+                SoundManager.SM.PlayOneShotSound("monster4");
                 break;
             default:
                 //Debug.Log("nosfx");
@@ -996,13 +990,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     }
 
     private void PlayScoringEffects() {
-        //Instantiate(scoringEffect1[number4Effects - 1], gameObject.transform.position + new Vector3(0f, 0f, -1f), new Quaternion(0f, 180f, 0f, 0f));
-        //Instantiate(scoringEffect2[number4Effects - 1], gameObject.transform.position + new Vector3(0f, 0f, -1f), new Quaternion(0f, 180f, 0f, 0f));
-
         GameObject effect1 = (GameObject)Instantiate(scoringEffect1[number4Effects - 1], gameObject.transform.position + new Vector3(0f, 0f, -1f), Quaternion.identity, gameObject.transform);
         effect1.transform.Rotate(new Vector3(210f, 0f, 0f));
-        GameObject effect2 = (GameObject)Instantiate(scoringEffect2[number4Effects - 1], gameObject.transform.position + new Vector3(0f, 0f, -1f), Quaternion.identity, gameObject.transform);
-        effect2.transform.Rotate(new Vector3(210f, 0f, 0f));
     }
 
     public void StopZzz()
@@ -1034,8 +1023,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         //Debug.Log("holdTime: " + holdTime);
     }
 
-    public void SetAdjescentSquares(GameBoardMechanics gb) {
-        gameboard = gb;
+    public void SetAdjescentSquares() {
         adjescentSquares[0] = SetTopSquare();
         adjescentSquares[1] = SetBottomSquare();
         adjescentSquares[2] = SetLeftSquare();

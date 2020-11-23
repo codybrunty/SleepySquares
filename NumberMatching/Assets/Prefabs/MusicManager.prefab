@@ -52,4 +52,16 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: song2
+    clip: {fileID: 8300000, guid: 987e7b5d1ca9b497fb49a04b58fbd513, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: song3
+    clip: {fileID: 8300000, guid: d51976fe3533a274682349297b5a20d9, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
   fadeOut: 0

@@ -9,6 +9,7 @@ public class ExitTutorialMechanics : MonoBehaviour{
     private Button exitButton;
     private Image exitImage;
     [SerializeField] SplashScreenTransition splash;
+    [SerializeField] GameObject languageButton;
 
     private void Start() {
         exitButton = gameObject.GetComponent<Button>();
@@ -19,11 +20,13 @@ public class ExitTutorialMechanics : MonoBehaviour{
             exitButton.interactable = false;
             exitImage.raycastTarget = false;
             exitImage.enabled = false;
+            languageButton.SetActive(true);
         }
         else {
             exitButton.interactable = true;
             exitImage.raycastTarget = true;
             exitImage.enabled = true;
+            languageButton.SetActive(false);
         }
     }
 

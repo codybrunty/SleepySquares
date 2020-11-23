@@ -9,6 +9,11 @@ public class FlashyButton : MonoBehaviour{
     [SerializeField] AnimationCurve ease = default;
     int counter = 0;
 
+    private SpriteRenderer mainSprite;
+
+    private void Awake() {
+        mainSprite = gameObject.GetComponent<SpriteRenderer>();
+    }
 
     private void OnEnable() {
         StartCoroutine(AlphaTweenSprite());
@@ -19,15 +24,15 @@ public class FlashyButton : MonoBehaviour{
 
         float alphaTarget = 0.5f;
         float fillDuration = 0.5f;
-        Color spriteColor = gameObject.GetComponent<SpriteRenderer>().color;
+        Color spriteColor = mainSprite.color;
 
         for (float t = 0f; t < fillDuration; t += Time.deltaTime) {
             float normalizedTime = t / fillDuration;
             float alpha = Mathf.Lerp(0, alphaTarget, ease.Evaluate(normalizedTime));
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b,alpha);
+            mainSprite.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b,alpha);
             yield return null;
         }
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alphaTarget);
+        mainSprite.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alphaTarget);
     }
 
     private void PunchButton() {

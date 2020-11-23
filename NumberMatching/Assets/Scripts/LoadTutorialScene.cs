@@ -8,7 +8,7 @@ public class LoadTutorialScene : MonoBehaviour{
 
     public void LoadScene() {
         splash.FadeInSplash();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+        SoundManager.SM.PlayOneShotSound("select1");
         StartCoroutine(LoadTutorial());
 
     }

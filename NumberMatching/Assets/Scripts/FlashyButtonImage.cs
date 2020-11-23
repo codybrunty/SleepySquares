@@ -10,6 +10,12 @@ public class FlashyButtonImage : MonoBehaviour{
     int counter = 0;
     public Vector3 scaleMax;
 
+    private Image mainImage;
+
+    private void Awake() {
+        mainImage = gameObject.GetComponent<Image>();
+    }
+
     private void OnEnable() {
         StartCoroutine(AlphaTweenSprite());
         PunchButton();
@@ -19,15 +25,15 @@ public class FlashyButtonImage : MonoBehaviour{
 
         float alphaTarget = 0.5f;
         float fillDuration = 0.5f;
-        Color spriteColor = gameObject.GetComponent<Image>().color;
+        Color spriteColor = mainImage.color;
 
         for (float t = 0f; t < fillDuration; t += Time.deltaTime) {
             float normalizedTime = t / fillDuration;
             float alpha = Mathf.Lerp(0, alphaTarget, ease.Evaluate(normalizedTime));
-            gameObject.GetComponent<Image>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alpha);
+            mainImage.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alpha);
             yield return null;
         }
-        gameObject.GetComponent<Image>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alphaTarget);
+        mainImage.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, alphaTarget);
     }
 
     private void PunchButton() {

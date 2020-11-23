@@ -16,22 +16,79 @@ public class BoardClearCommand : MonoBehaviour{
     [SerializeField] Image clearButtonBGImage = default;
 
     [SerializeField] GameObject starEffects = default;
+    private bool available = true;
+    [SerializeField] List<Color> colorLevels = new List<Color>();
+    [SerializeField] Image fillImage = default;
+    [SerializeField] ParticleSystem bubbles = default;
 
-    public void BoardClearOnClick() {
+    //script components 
+    private Button mainButton;
+    private Image mainImage;
+    private CollectionColor_Image clearButtonImageCollection;
+    private CollectionColor_Image clearButtonIconImageCollection;
+    private CollectionColor_Image clearButtonBGImageCollection;
 
-        if (clearsTotal > 0) {
-            Debug.Log("Clearing Board");
-            clearsTotal--;
-            UpdateClearDisplay();
-            UpdateClearFill();
-            gameboard.ClearBlockers();
-        }
-        else {
-            Debug.Log("No Clears Left");
-        }
-
+    private void Awake() {
+        GetScriptComponents();
     }
 
+    private void GetScriptComponents() {
+        mainButton = gameObject.GetComponent<Button>();
+        mainImage = gameObject.GetComponent<Image>();
+
+        clearButtonImageCollection = clearButtonImage.GetComponent<CollectionColor_Image>();
+        clearButtonIconImageCollection = clearButtonIconImage.GetComponent<CollectionColor_Image>();
+        clearButtonBGImageCollection = clearButtonBGImage.GetComponent<CollectionColor_Image>();
+    }
+
+    public void BoardClearOnClick() {
+        if (available) {
+            available = false;
+            if (clearsTotal > 0) {
+                Debug.Log("Clearing Board");
+                clearsTotal--;
+                UpdateClearDisplay();
+                UpdateClearFill();
+                gameboard.ClearBlockers();
+            }
+            else {
+                Debug.Log("No Clears Left");
+            }
+        }
+
+        StartCoroutine(DelayAvailable());
+    }
+
+    private void SetColors() {
+        Debug.Log("Set Colors");
+        int colorIndex = GetColor();
+        fillImage.color = colorLevels[colorIndex];
+        bubbles.startColor = colorLevels[colorIndex];
+    }
+
+    private int GetColor() {
+        int clears = gameboard.clearCounter;
+        int maxIncrementals  = gameboard.clearIncrementMultiplierMax + gameboard.incrementAfterClears;
+
+        int halfwaypoint = (maxIncrementals) / 2;
+
+        if (clears < halfwaypoint) {
+            return 0;
+        }
+        else {
+            if (clears >= (maxIncrementals)) {
+                return 2;
+            }
+            else {
+                return 1;
+            }
+        }
+    }
+
+    IEnumerator DelayAvailable() {
+        yield return new WaitForSeconds(1f);
+        available = true;
+    }
 
     public void UpdateClearsTotal(int number) {
         clearsTotal += number;
@@ -39,7 +96,7 @@ public class BoardClearCommand : MonoBehaviour{
         UpdateClearDisplay();
         UpdateClearFill();
         PopAnim();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearReady1");
+        SoundManager.SM.PlayOneShotSound("clearReady1");
         GameDataManager.GDM.SaveGameData();
     }
 
@@ -62,7 +119,8 @@ public class BoardClearCommand : MonoBehaviour{
     }
 
     public void UpdateClearFill() {
-        if(GameDataManager.GDM.hardModeOn == 1)
+        SetColors();
+        if (GameDataManager.GDM.hardModeOn == 1)
         {
             clearButtonFill.UpdateFillDisplay(1f);
         }
@@ -91,28 +149,28 @@ public class BoardClearCommand : MonoBehaviour{
 
 
     private void EnabledClearButton(){
-        Debug.Log("clear button enabled");
-        gameObject.GetComponent<Button>().interactable = true;
-        gameObject.GetComponent<Image>().raycastTarget = true;
-        clearButtonImage.GetComponent<CollectionColor_Image>().key = "Button1";
-        clearButtonImage.GetComponent<CollectionColor_Image>().GetColor();
-        clearButtonIconImage.GetComponent<CollectionColor_Image>().key = "Second";
-        clearButtonIconImage.GetComponent<CollectionColor_Image>().GetColor();
-        clearButtonBGImage.GetComponent<CollectionColor_Image>().key = "Button2";
-        clearButtonBGImage.GetComponent<CollectionColor_Image>().GetColor();
+        //Debug.Log("clear button enabled");
+        mainButton.interactable = true;
+        mainImage.raycastTarget = true;
+        clearButtonImageCollection.key = "Button1";
+        clearButtonImageCollection.GetColor();
+        clearButtonIconImageCollection.key = "Second";
+        clearButtonIconImageCollection.GetColor();
+        clearButtonBGImageCollection.key = "Button2";
+        clearButtonBGImageCollection.GetColor();
         starEffects.SetActive(true);
     }
 
     private void DisabledClearButton(){
-        Debug.Log("clear button disabled");
-        gameObject.GetComponent<Button>().interactable = false;
-        gameObject.GetComponent<Image>().raycastTarget = false;
-        clearButtonImage.GetComponent<CollectionColor_Image>().key = "Button3";
-        clearButtonImage.GetComponent<CollectionColor_Image>().GetColor();
-        clearButtonIconImage.GetComponent<CollectionColor_Image>().key = "Button4";
-        clearButtonIconImage.GetComponent<CollectionColor_Image>().GetColor();
-        clearButtonBGImage.GetComponent<CollectionColor_Image>().key = "Button5";
-        clearButtonBGImage.GetComponent<CollectionColor_Image>().GetColor();
+        //Debug.Log("clear button disabled");
+        mainButton.interactable = false;
+        mainImage.raycastTarget = false;
+        clearButtonImageCollection.key = "Button3";
+        clearButtonImageCollection.GetColor();
+        clearButtonIconImageCollection.key = "Button4";
+        clearButtonIconImageCollection.GetColor();
+        clearButtonBGImageCollection.key = "Button5";
+        clearButtonBGImageCollection.GetColor();
         starEffects.SetActive(false);
     }
 

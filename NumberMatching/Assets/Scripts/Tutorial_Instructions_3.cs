@@ -74,7 +74,7 @@ public class Tutorial_Instructions_3 : MonoBehaviour{
         Pop(red);
         Pop(purple);
         PlaySpecialEffects();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard2");
+        SoundManager.SM.PlayOneShotSound("clearboard2");
         green_f.SetActive(false);
         green_c.SetActive(false);
         green1_f.SetActive(false);

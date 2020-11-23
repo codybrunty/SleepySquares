@@ -32,7 +32,7 @@ public class Tutorial_Instructions_1 : MonoBehaviour{
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
         iTween.PunchScale(green, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("monster1");
+        SoundManager.SM.PlayOneShotSound("monster1");
     }
 
     private void RedPop() {
@@ -41,7 +41,7 @@ public class Tutorial_Instructions_1 : MonoBehaviour{
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
         iTween.PunchScale(red, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("monster2");
+        SoundManager.SM.PlayOneShotSound("monster2");
     }
 
     private void PurplePop() {
@@ -50,7 +50,7 @@ public class Tutorial_Instructions_1 : MonoBehaviour{
         hash.Add("amount", new Vector3(1f, 1f, 0f));
         hash.Add("time", 0.5f);
         iTween.PunchScale(purple, hash);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("monster3");
+        SoundManager.SM.PlayOneShotSound("monster3");
     }
 
 }

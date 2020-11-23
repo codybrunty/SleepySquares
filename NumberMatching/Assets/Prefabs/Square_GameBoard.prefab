@@ -35274,10 +35274,10 @@ MonoBehaviour:
   miniSquare: {fileID: 21300000, guid: 5c3b062d460c61f4a95ad6d7b43072b6, type: 3}
   star: {fileID: 21300000, guid: 417659d6a6cb74745b6788ef044bd6b0, type: 3}
   scoringEffect1:
-  - {fileID: 195900, guid: 6a8e653959436934c880bcd44b404820, type: 3}
-  - {fileID: 195900, guid: a1f40229ae1e819489e8b02029a4a4a6, type: 3}
-  - {fileID: 195900, guid: 7fafba96c344f54418e0aab1d19180de, type: 3}
-  - {fileID: 195900, guid: 15b4d6575f162a340abcd004be1cf93a, type: 3}
+  - {fileID: 157776, guid: 4aab0d4f58ee27943acd654ac9fb02f2, type: 3}
+  - {fileID: 157776, guid: 734c275118f4a8f47a6625b1a1c09dab, type: 3}
+  - {fileID: 157776, guid: 5b96771ded1c66c42907f9948808e368, type: 3}
+  - {fileID: 157776, guid: 43445d3f416f0bf48a98df9bf280eb37, type: 3}
   scoringEffect2:
   - {fileID: 157776, guid: 4aab0d4f58ee27943acd654ac9fb02f2, type: 3}
   - {fileID: 157776, guid: 734c275118f4a8f47a6625b1a1c09dab, type: 3}

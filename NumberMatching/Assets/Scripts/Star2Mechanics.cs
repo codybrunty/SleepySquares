@@ -95,12 +95,12 @@ public class Star2Mechanics : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         FlyToSwitches();
         yield return new WaitForSeconds(0.5f);
-        FindObjectOfType<SoundManager>().PlayOneShotSound("yahoo");
+        SoundManager.SM.PlayOneShotSound("yahoo");
         switchButton.AddSwitches(2);
     }
 
     private void PlayStarSFX() {
-        FindObjectOfType<SoundManager>().PlayOneShotSound("star");
+        SoundManager.SM.PlayOneShotSound("star");
     }
 
     private void FlyToSwitches() {

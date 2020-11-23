@@ -82,7 +82,7 @@ public class Tutorial_Instructions_4 : MonoBehaviour{
         {
             Pop(invisiblieWhites[i]);
         }
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+        SoundManager.SM.PlayOneShotSound("clearBlockers");
     }
 
     private void Pop(GameObject go)

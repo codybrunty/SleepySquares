@@ -17,12 +17,14 @@ public class GameBoardMechanics : MonoBehaviour
     public int hardModeOn = 0;
 
     [Header("Clear Settings")]
+    [SerializeField] private int clearScore;
     public bool firstClear = false;
     public int firstClearPts = 50;
     public int clearsEveryPts = 100;
     public int incrementClearEveryPtsBy = 5;
-    public int incrementClearEveryPtsAfter = 375;
+    public int incrementAfterClears= 3;
     public int clearIncrementMultiplier = 0;
+    public int clearIncrementMultiplierMax = 10;
     public int clearCounter = 1;
 
     [Header("Move Settings")]
@@ -42,7 +44,9 @@ public class GameBoardMechanics : MonoBehaviour
 
     [Header("Game Objects")]
     public List<GameObject> gameBoardSquares = new List<GameObject>();
-    public List<GameObject> blockerSquares = new List<GameObject>();
+    public List<SquareMechanics_Gameboard> gameBoardSquaresMechanics = new List<SquareMechanics_Gameboard>();
+    public List<FloatingSquare> gameBoardSquaresFloatGRPS = new List<FloatingSquare>();
+    public List<SquareMechanics_Gameboard> blockerSquares = new List<SquareMechanics_Gameboard>();
     [SerializeField] TextMeshProUGUI score_text = default;
     [SerializeField] TextMeshProUGUI highScore_text = default;
     private List<GameObject> completeList = new List<GameObject>();
@@ -92,6 +96,7 @@ public class GameBoardMechanics : MonoBehaviour
 
     //blockers
     private List<GameObject> emptySquares = new List<GameObject>();
+    private List<SquareMechanics_Gameboard> emptySquaresMechanics = new List<SquareMechanics_Gameboard>();
     //public SpriteRenderer pic;
     public bool bubblesOn = true;
     public bool eyePickingMode = false;
@@ -110,9 +115,14 @@ public class GameBoardMechanics : MonoBehaviour
     public float luckyWaitMin = 10f;
     public float luckyWaitMax = 60f;
 
+    private BoardClearCommand boardClearCommand;
+    private GameBoardBGMovement gbMovement;
+
     #region Start
     private void Awake()
     {
+        boardClearCommand = clearBlockerButton.GetComponent<BoardClearCommand>();
+        gbMovement = gameboard_bg.GetComponent<GameBoardBGMovement>();
         SetGameBoardSquareInfo();
         CameraSetup();
     }
@@ -133,17 +143,17 @@ public class GameBoardMechanics : MonoBehaviour
     {
         Debug.Log("Reset Board State");
         SetUIOnScreen();
-        gameboard_bg.GetComponent<GameBoardBGMovement>().TrueSize();
+        gbMovement.TrueSize();
         TurnOffAllSquareZzz();
         ZeroOutAllSquares();
 
         blockerSquares.Clear();
-        clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = 0;
+        boardClearCommand.clearsTotal = 0;
         clearCounter = 1;
         clearIncrementMultiplier = 0;
         firstClear = false;
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearDisplay();
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+        boardClearCommand.UpdateClearDisplay();
+        boardClearCommand.UpdateClearFill();
 
         switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
         switchButton.UpdateSwitchAmmountDisplay();
@@ -189,34 +199,34 @@ public class GameBoardMechanics : MonoBehaviour
         {
             Debug.Log("continue previous session");
             //clear board first
-            for (int i = 0; i < gameBoardSquares.Count; i++)
+            for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZeroOutSquareInfo();
+                gameBoardSquaresMechanics[i].ZeroOutSquareInfo();
             }
 
 
-            for (int i = 0; i < gameBoardSquares.Count; i++)
+            for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number = GameDataManager.GDM.squares[i].number;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed = GameDataManager.GDM.squares[i].completed;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker = GameDataManager.GDM.squares[i].blocker;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections = GameDataManager.GDM.squares[i].adjescentConnections;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = false;
+                gameBoardSquaresMechanics[i].number = GameDataManager.GDM.squares[i].number;
+                gameBoardSquaresMechanics[i].completed = GameDataManager.GDM.squares[i].completed;
+                gameBoardSquaresMechanics[i].blocker = GameDataManager.GDM.squares[i].blocker;
+                gameBoardSquaresMechanics[i].adjescentConnections = GameDataManager.GDM.squares[i].adjescentConnections;
+                gameBoardSquaresMechanics[i].luckyCoin = false;
 
-                if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0)
+                if (gameBoardSquaresMechanics[i].number != 0)
                 {
-                    gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SilentSquareDisplay();
+                    gameBoardSquaresMechanics[i].SilentSquareDisplay();
                 }
             }
 
             SetBlockerSquaresList();
 
             firstClear = GameDataManager.GDM.firstClear;
-            clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = GameDataManager.GDM.currentClears;
+            boardClearCommand.clearsTotal = GameDataManager.GDM.currentClears;
             clearCounter = GameDataManager.GDM.currentClearCounter;
             clearIncrementMultiplier = GameDataManager.GDM.clearIncrementMultiplier;
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearDisplay();
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+            boardClearCommand.UpdateClearDisplay();
+            boardClearCommand.UpdateClearFill();
 
             switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
             switchButton.UpdateSwitchAmmountDisplay();
@@ -254,34 +264,34 @@ public class GameBoardMechanics : MonoBehaviour
         {
             Debug.Log("continue previous session");
             //clear board first
-            for (int i = 0; i < gameBoardSquares.Count; i++)
+            for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZeroOutSquareInfo();
+                gameBoardSquaresMechanics[i].ZeroOutSquareInfo();
             }
 
 
-            for (int i = 0; i < gameBoardSquares.Count; i++)
+            for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number = GameDataManager.GDM.HM_squares[i].number;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed = GameDataManager.GDM.HM_squares[i].completed;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker = GameDataManager.GDM.HM_squares[i].blocker;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections = GameDataManager.GDM.HM_squares[i].adjescentConnections;
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = false;
+                gameBoardSquaresMechanics[i].number = GameDataManager.GDM.HM_squares[i].number;
+                gameBoardSquaresMechanics[i].completed = GameDataManager.GDM.HM_squares[i].completed;
+                gameBoardSquaresMechanics[i].blocker = GameDataManager.GDM.HM_squares[i].blocker;
+                gameBoardSquaresMechanics[i].adjescentConnections = GameDataManager.GDM.HM_squares[i].adjescentConnections;
+                gameBoardSquaresMechanics[i].luckyCoin = false;
 
-                if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0)
+                if (gameBoardSquaresMechanics[i].number != 0)
                 {
-                    gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SilentSquareDisplay();
+                    gameBoardSquaresMechanics[i].SilentSquareDisplay();
                 }
             }
 
             SetBlockerSquaresList();
 
             firstClear = false;
-            clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal = 0;
+            boardClearCommand.clearsTotal = 0;
             clearCounter = 0;
             clearIncrementMultiplier = 0;
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearDisplay();
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+            boardClearCommand.UpdateClearDisplay();
+            boardClearCommand.UpdateClearFill();
 
             switchButton.switchAmmount = GameDataManager.GDM.currentSwitches;
             switchButton.UpdateSwitchAmmountDisplay();
@@ -326,12 +336,12 @@ public class GameBoardMechanics : MonoBehaviour
     private void SaveNormalBoard()
     {
         Debug.Log("save normal board state");
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            GameDataManager.GDM.squares[i].number = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number;
-            GameDataManager.GDM.squares[i].completed = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed;
-            GameDataManager.GDM.squares[i].blocker = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker;
-            GameDataManager.GDM.squares[i].adjescentConnections = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections;
+            GameDataManager.GDM.squares[i].number = gameBoardSquaresMechanics[i].number;
+            GameDataManager.GDM.squares[i].completed = gameBoardSquaresMechanics[i].completed;
+            GameDataManager.GDM.squares[i].blocker = gameBoardSquaresMechanics[i].blocker;
+            GameDataManager.GDM.squares[i].adjescentConnections = gameBoardSquaresMechanics[i].adjescentConnections;
             GameDataManager.GDM.squares[i].luckyCoin = false;
         }
         GameDataManager.GDM.currentPoints = score;
@@ -355,7 +365,7 @@ public class GameBoardMechanics : MonoBehaviour
         GetHighScore();
 
         GameDataManager.GDM.firstClear = firstClear;
-        GameDataManager.GDM.currentClears = clearBlockerButton.GetComponent<BoardClearCommand>().clearsTotal;
+        GameDataManager.GDM.currentClears = boardClearCommand.clearsTotal;
         GameDataManager.GDM.currentClearCounter = clearCounter;
         GameDataManager.GDM.clearIncrementMultiplier = clearIncrementMultiplier;
         GameDataManager.GDM.currentSwitches = switchButton.switchAmmount;
@@ -370,12 +380,12 @@ public class GameBoardMechanics : MonoBehaviour
     private void SaveHardBoard()
     {
         Debug.Log("save hard board state");
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            GameDataManager.GDM.HM_squares[i].number = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number;
-            GameDataManager.GDM.HM_squares[i].completed = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().completed;
-            GameDataManager.GDM.HM_squares[i].blocker = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker;
-            GameDataManager.GDM.HM_squares[i].adjescentConnections = gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().adjescentConnections;
+            GameDataManager.GDM.HM_squares[i].number = gameBoardSquaresMechanics[i].number;
+            GameDataManager.GDM.HM_squares[i].completed = gameBoardSquaresMechanics[i].completed;
+            GameDataManager.GDM.HM_squares[i].blocker = gameBoardSquaresMechanics[i].blocker;
+            GameDataManager.GDM.HM_squares[i].adjescentConnections = gameBoardSquaresMechanics[i].adjescentConnections;
             GameDataManager.GDM.HM_squares[i].luckyCoin = false;
         }
         GameDataManager.GDM.HM_currentPoints = score;
@@ -431,9 +441,15 @@ public class GameBoardMechanics : MonoBehaviour
             StartCoroutine(AnimationsThenRevealGameOverPanel());
             raycastForMouse.gameStarted = false;
 
+            TestPrintClearEveryPts();
+
             GameOverCounter();
             SaveBoardState();
         }
+    }
+
+    private void TestPrintClearEveryPts() {
+        Debug.LogWarning("Lost on clear amount: "+(clearsEveryPts + (incrementClearEveryPtsBy * clearIncrementMultiplier)));
     }
 
     private void GameOverCounter()
@@ -561,7 +577,7 @@ public class GameBoardMechanics : MonoBehaviour
         score_text.text = score.ToString();
         if (hardModeOn != 1)
         {
-            clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+            boardClearCommand.UpdateClearFill();
         }
     }
 
@@ -574,13 +590,13 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void ClearSFX(int clearNumber) {
         if (clearNumber <= 15) {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard1");
+            SoundManager.SM.PlayOneShotSound("clearboard1");
         }
         else if (clearNumber > 15 && clearNumber <= 35) {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard2");
+            SoundManager.SM.PlayOneShotSound("clearboard2");
         }
         else {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard3");
+            SoundManager.SM.PlayOneShotSound("clearboard3");
             popArt.WordArtAnimation(clearNumber);
         }
 
@@ -588,13 +604,13 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void ClearSFX(int clearNumber, bool dontPlayArt) {
         if (clearNumber <= 15) {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard1");
+            SoundManager.SM.PlayOneShotSound("clearboard1");
         }
         else if (clearNumber > 15 && clearNumber <= 35) {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard2");
+            SoundManager.SM.PlayOneShotSound("clearboard2");
         }
         else {
-            FindObjectOfType<SoundManager>().PlayOneShotSound("clearboard3");
+            SoundManager.SM.PlayOneShotSound("clearboard3");
         }
 
     }
@@ -607,13 +623,13 @@ public class GameBoardMechanics : MonoBehaviour
         Debug.Log("Turn Hard Mode On");
         TimeManager.TM.StopTimer();
         CheckIfFirstTimeEverHardMode();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+        SoundManager.SM.PlayOneShotSound("select1");
         GameDataManager.GDM.SaveGameData();
         hardModeOn = 1;
         GameDataManager.GDM.hardModeOn = hardModeOn;
         hardText.UpdateHardText();
         resetButton.ResetHardModeSwitch();
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+        boardClearCommand.UpdateClearFill();
         RemoveAnyLuckyCoinsFromBoard();
         GameDataManager.GDM.SaveGameData();
     }
@@ -632,13 +648,13 @@ public class GameBoardMechanics : MonoBehaviour
     {
         Debug.Log("Turn Hard Mode Off");
         TimeManager.TM.StopTimer();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("select1");
+        SoundManager.SM.PlayOneShotSound("select1");
         GameDataManager.GDM.SaveGameData();
         hardModeOn = 0;
         GameDataManager.GDM.hardModeOn = hardModeOn;
         hardText.UpdateHardText();
         resetButton.ResetHardModeSwitch();
-        clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearFill();
+        boardClearCommand.UpdateClearFill();
         RemoveAnyLuckyCoinsFromBoard();
         GameDataManager.GDM.SaveGameData();
     }
@@ -647,9 +663,9 @@ public class GameBoardMechanics : MonoBehaviour
     #region Miscellaneous
     private void DimSleepingSquares()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().CheckDimIfCompleted();
+            gameBoardSquaresMechanics[i].CheckDimIfCompleted();
         }
     }
 
@@ -687,17 +703,17 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void ZeroOutAllSquares()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ZeroOutSquareInfo();
+            gameBoardSquaresMechanics[i].ZeroOutSquareInfo();
         }
     }
 
     private void TurnOffAllSquareZzz()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().StopZzz();
+            gameBoardSquaresMechanics[i].StopZzz();
         }
     }
 
@@ -730,11 +746,11 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void SetBlockerSquaresList()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().blocker == true)
+            if (gameBoardSquaresMechanics[i].blocker == true)
             {
-                blockerSquares.Add(gameBoardSquares[i]);
+                blockerSquares.Add(gameBoardSquaresMechanics[i]);
             }
         }
     }
@@ -767,7 +783,7 @@ public class GameBoardMechanics : MonoBehaviour
         {
             if (gameBoardSquares[i] != square)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SquareDown();
+                gameBoardSquaresMechanics[i].SquareDown();
             }
         }
     }
@@ -791,16 +807,11 @@ public class GameBoardMechanics : MonoBehaviour
         if (moveCounter - moveCounter_tmp > (int)luckyCoinWaitTime/4)
         {
             ReloadEmptySquares();
-            if (emptySquares.Count > 0) {
-                int randomSquareIndex = UnityEngine.Random.Range(0, emptySquares.Count);
-                emptySquares[randomSquareIndex].GetComponent<SquareMechanics_Gameboard>().luckyCoin = true;
-                emptySquares[randomSquareIndex].GetComponent<SquareMechanics_Gameboard>().SetLuckyColor();
+            if (emptySquaresMechanics.Count > 0) {
+                int randomSquareIndex = UnityEngine.Random.Range(0, emptySquaresMechanics.Count);
+                emptySquaresMechanics[randomSquareIndex].luckyCoin = true;
+                emptySquaresMechanics[randomSquareIndex].SetLuckyColor();
             }
-            /*
-            else {
-                Debug.Log("no empty squares");
-            }
-            */
         }
         else
         {
@@ -830,14 +841,15 @@ public class GameBoardMechanics : MonoBehaviour
 
     }
 
-    private void ReloadEmptySquares()
-    {
+    private void ReloadEmptySquares() {
         emptySquares.Clear();
+        emptySquaresMechanics.Clear();
+
         for (int i = 0; i < gameBoardSquares.Count; i++)
         {
-            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0)
-            {
+            if (gameBoardSquaresMechanics[i].number == 0) {
                 emptySquares.Add(gameBoardSquares[i]);
+                emptySquaresMechanics.Add(gameBoardSquaresMechanics[i]);
             }
         }
     }
@@ -865,10 +877,10 @@ public class GameBoardMechanics : MonoBehaviour
             StopCoroutine(luckyCor);
         }
 
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().luckyCoin = false;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SetLuckyColor();
+            gameBoardSquaresMechanics[i].luckyCoin = false;
+            gameBoardSquaresMechanics[i].SetLuckyColor();
         }
     }
 
@@ -890,9 +902,9 @@ public class GameBoardMechanics : MonoBehaviour
     public void CheckIfBoardFull()
     {
         int emptyCounter = 0;
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0)
+            if (gameBoardSquaresMechanics[i].number == 0)
             {
                 emptyCounter++;
                 //Debug.Log("not game over");
@@ -907,8 +919,7 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void ScaleSquaresBG()
     {
-        gameboard_bg.GetComponent<GameBoardBGMovement>().Shrink();
-        //gameboard_bg.SetActive(false);
+        gbMovement.Shrink();
     }
 
     private void ScaleSquares()
@@ -924,18 +935,18 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void SwitchSquaresToFakeMaterial()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SwitchToFakeMaterials();
+            gameBoardSquaresMechanics[i].SwitchToFakeMaterials();
         }
     }
 
 
     private void ShakeBoard()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ShakeSquare();
+            gameBoardSquaresMechanics[i].ShakeSquare();
         }
     }
 
@@ -1006,15 +1017,12 @@ public class GameBoardMechanics : MonoBehaviour
     public void AddBlockerToBoard()
     {
         ReloadEmptySquares();
-        int randomSquareIndex = UnityEngine.Random.Range(0, emptySquares.Count);
-
-        //List<GameObject> emptySquares_randomOrder = RandomizeEmptySquares(emptySquares);
-        if (emptySquares.Count != 0)
+        int randomSquareIndex = UnityEngine.Random.Range(0, emptySquaresMechanics.Count);
+        
+        if (emptySquaresMechanics.Count != 0)
         {
-            //CreateBlockerAt(emptySquares_randomOrder[0]);
-            //StartCoroutine(EjectSquare(emptySquares_randomOrder[0]));
-            CreateBlockerAt(emptySquares[randomSquareIndex]);
-            StartCoroutine(EjectSquare(emptySquares[randomSquareIndex]));
+            CreateBlockerAt(emptySquaresMechanics[randomSquareIndex]);
+            StartCoroutine(EjectSquare(emptySquaresMechanics[randomSquareIndex]));
         }
         else
         {
@@ -1022,7 +1030,7 @@ public class GameBoardMechanics : MonoBehaviour
         }
     }
 
-    IEnumerator EjectSquare(GameObject square)
+    IEnumerator EjectSquare(SquareMechanics_Gameboard squareMechanics)
     {
         float waitTime = 0f;
         if (playSquareClearAnimation)
@@ -1030,14 +1038,14 @@ public class GameBoardMechanics : MonoBehaviour
             waitTime += boardScoreSquareClearDuration;
         }
         yield return new WaitForSeconds(waitTime);
-        square.GetComponent<SquareMechanics_Gameboard>().SetSquareDisplay();
+        squareMechanics.SetSquareDisplay();
         UpdateSquareConnections();
     }
 
-    private void CreateBlockerAt(GameObject square)
+    private void CreateBlockerAt(SquareMechanics_Gameboard squareMechanics)
     {
-        blockerSquares.Add(square);
-        square.GetComponent<SquareMechanics_Gameboard>().number = 5;
+        blockerSquares.Add(squareMechanics);
+        squareMechanics.number = 5;
     }
 
     private List<GameObject> RandomizeEmptySquares(List<GameObject> squares)
@@ -1057,13 +1065,6 @@ public class GameBoardMechanics : MonoBehaviour
         scoreboard.ScoreboardAdd(number);
     }
 
-    private void AddToScore(GameObject square) {
-        score = score + square.GetComponent<SquareMechanics_Gameboard>().number;
-    }
-    private void AddToTotalPoints(GameObject square) {
-        totalPoints = totalPoints + square.GetComponent<SquareMechanics_Gameboard>().number;
-    }
-
     private void AddToScore(int number) {
         score = score + number;
     }
@@ -1073,19 +1074,20 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void AddSquareToCompletedList(GameObject square)
     {
+        SquareMechanics_Gameboard squareMechanics = square.GetComponent<SquareMechanics_Gameboard>();
         completeList.Add(square);
 
         if (completedListPass)
         {
-            for (int i = 0; i < square.GetComponent<SquareMechanics_Gameboard>().adjescentConnections.Count; i++)
+            for (int i = 0; i < squareMechanics.adjescentConnections.Count; i++)
             {
-                if (square.GetComponent<SquareMechanics_Gameboard>().adjescentConnections[i] == true)
+                if (squareMechanics.adjescentConnections[i] == true)
                 {
-                    if (square.GetComponent<SquareMechanics_Gameboard>().adjescentSquares[i].completed == true)
+                    if (squareMechanics.adjescentSquares[i].completed == true)
                     {
-                        if (!completeList.Contains(square.GetComponent<SquareMechanics_Gameboard>().adjescentSquares[i].gameObject))
+                        if (!completeList.Contains(squareMechanics.adjescentSquares[i].gameObject))
                         {
-                            AddSquareToCompletedList(square.GetComponent<SquareMechanics_Gameboard>().adjescentSquares[i].gameObject);
+                            AddSquareToCompletedList(squareMechanics.adjescentSquares[i].gameObject);
                         }
                     }
                     else
@@ -1102,20 +1104,16 @@ public class GameBoardMechanics : MonoBehaviour
     private void SetGameBoardSquareInfo()
     {
 
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionIndex = i;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionX = i / gameBoardHeight;
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().gamePositionY = i % gameBoardHeight;
-
+            gameBoardSquaresMechanics[i].gamePositionIndex = i;
+            gameBoardSquaresMechanics[i].gamePositionX = i / gameBoardHeight;
+            gameBoardSquaresMechanics[i].gamePositionY = i % gameBoardHeight;
         }
 
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().SetAdjescentSquares(gameObject.GetComponent<GameBoardMechanics>());
-
+            gameBoardSquaresMechanics[i].SetAdjescentSquares();
         }
     }
 
@@ -1132,17 +1130,14 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void MakeSquaresFloat()
     {
-        int counter = 0;
-        foreach (GameObject square in gameBoardSquares)
-        {
-            square.GetComponent<SquareMechanics_Gameboard>().connection_group.SetActive(false);
-            square.GetComponent<SquareMechanics_Gameboard>().floatingGRP.GetComponent<FloatingSquare>().FloatBurst();
-
-            if (counter % 2 == 0)
-            {
-                Instantiate(smokeEffect, square.transform.position, Quaternion.identity, gameObject.transform);
-            }
-
+        foreach (SquareMechanics_Gameboard squareMechanics in gameBoardSquaresMechanics) {
+            squareMechanics.connection_group.SetActive(false);
+        }
+        foreach (FloatingSquare floatSquare in gameBoardSquaresFloatGRPS) {
+            floatSquare.FloatBurst();
+        }
+        foreach (GameObject square in gameBoardSquares) {
+            Instantiate(smokeEffect, square.transform.position, Quaternion.identity, gameObject.transform);
         }
     }
 
@@ -1150,10 +1145,10 @@ public class GameBoardMechanics : MonoBehaviour
     {
         for (int i = 0; i < blockerSquares.Count; i++)
         {
-            blockerSquares[i].GetComponent<SquareMechanics_Gameboard>().ResetSquare_BlockerClear();
+            blockerSquares[i].ResetSquare_BlockerClear();
         }
         blockerSquares.Clear();
-        FindObjectOfType<SoundManager>().PlayOneShotSound("clearBlockers");
+        SoundManager.SM.PlayOneShotSound("clearBlockers");
 
         UpdateSquareConnections();
         DimSleepingSquares();
@@ -1163,35 +1158,31 @@ public class GameBoardMechanics : MonoBehaviour
 
     public void UpdateSquareConnections()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            if (gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 0 && gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number != 5)
+            if (gameBoardSquaresMechanics[i].number != 0 && gameBoardSquaresMechanics[i].number != 5)
             {
-                gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().ConnectionDisplay();
+                gameBoardSquaresMechanics[i].ConnectionDisplay();
             }
         }
     }
 
     public void ResetLinkFromBoard()
     {
-        List<GameObject> squares = new List<GameObject>(completeList);
+        List<GameObject> completedSquares = new List<GameObject>(completeList);
 
         touchEnabled = false;
         int floatingTextNumber = 0;
-
-        //string debugstring = "";
-        for (int i = 0; i < squares.Count; i++)
+        
+        for (int i = 0; i < completedSquares.Count; i++)
         {
-            //debugstring += squares[i].name+",";
-            floatingTextNumber += squares[i].GetComponent<SquareMechanics_Gameboard>().number;
-            AddToScore(squares[i]);
-            AddToTotalPoints(squares[i]);
-            squares[i].GetComponent<SquareMechanics_Gameboard>().ResetSquare_OnCompletion_Before();
-
+            SquareMechanics_Gameboard squareMechanics = completedSquares[i].GetComponent<SquareMechanics_Gameboard>();
+            floatingTextNumber += squareMechanics.number;
+            AddToScore(squareMechanics.number);
+            AddToTotalPoints(squareMechanics.number);
+            squareMechanics.ResetSquare_OnCompletion_Before();
         }
-        //Debug.LogWarning(debugstring);
 
-        //double score if over 34
         if(floatingTextNumber >= 36) {
             AddToScore(floatingTextNumber);
             AddToTotalPoints(floatingTextNumber);
@@ -1202,29 +1193,31 @@ public class GameBoardMechanics : MonoBehaviour
         ReduceMoveLimit();
         UpdateSquareConnections();
 
-        StartCoroutine(ClearAnimation(floatingTextNumber, squares));
+        StartCoroutine(ClearAnimation(floatingTextNumber, completedSquares));
     }
 
-    IEnumerator ClearAnimation(int number, List<GameObject> squares)
-    {
-
+    IEnumerator ClearAnimation(int number, List<GameObject> squares) {
         playSquareClearAnimation = true;
+        List<SquareMechanics_Gameboard> squaresMechanics = new List<SquareMechanics_Gameboard>();
+        for (int i = 0; i < squares.Count; i++) {
+            squaresMechanics.Add(squares[i].GetComponent<SquareMechanics_Gameboard>());
+        }
         
-        for (int i = 0; i < squares.Count; i++)
+        for (int i = 0; i < squaresMechanics.Count; i++)
         {
             Hashtable hash = new Hashtable();
             hash.Add("scale", new Vector3(1.08f, 1.08f, 1.08f));
             hash.Add("time", boardScoreSquareClearDuration);
             hash.Add("easetype", "easeOutCubic");
-            iTween.ScaleTo(squares[i].GetComponent<SquareMechanics_Gameboard>().floatingGRP, hash);
+            iTween.ScaleTo(squaresMechanics[i].floatingGRP, hash);
         }
         //Debug.Log("test1"+squares[0].name);
         yield return new WaitForSeconds(boardScoreSquareClearDuration);
         //Debug.Log("test2" + squares[0].name);
 
-        for (int i = 0; i < squares.Count; i++)
+        for (int i = 0; i < squaresMechanics.Count; i++)
         {
-            squares[i].GetComponent<SquareMechanics_Gameboard>().ResetSquare_OnCompletion_After();
+            squaresMechanics[i].ResetSquare_OnCompletion_After();
         }
 
         UpdateClearsTotal();
@@ -1260,11 +1253,11 @@ public class GameBoardMechanics : MonoBehaviour
     {
         if (hardModeOn != 1)
         {
-            int clearScore = GetClearScore();
+            clearScore = GetClearScore();
             if (score >= clearScore)
             {
                 CalculateClearCounter();
-                clearBlockerButton.GetComponent<BoardClearCommand>().UpdateClearsTotal(1);
+                boardClearCommand.UpdateClearsTotal(1);
                 UpdateClearsTotal();
                 SaveBoardState();
             }
@@ -1281,9 +1274,12 @@ public class GameBoardMechanics : MonoBehaviour
         else
         {
             clearCounter++;
-            if (score >= incrementClearEveryPtsAfter) {
-                //Debug.LogWarning(score + " increase clear increment multiplier");
+            if (clearCounter > incrementAfterClears) {
+
                 clearIncrementMultiplier++;
+                if(clearIncrementMultiplier > clearIncrementMultiplierMax) {
+                    clearIncrementMultiplier = clearIncrementMultiplierMax;
+                }
             }
         }
     }
@@ -1295,11 +1291,17 @@ public class GameBoardMechanics : MonoBehaviour
             //Debug.LogWarning("Target: " + firstClearPts);
             return firstClearPts;
         }
-        else
-        {
-            //Debug.LogWarning("Current: " + ((clearCounter * clearsEveryPts) + firstClearPts + (clearIncrementMultiplier * incrementClearEveryPtsBy)));
+        else {
+            //Debug.LogWarning("multiplier: " + clearIncrementMultiplier);
+            //Debug.LogWarning("incremental points: " + incrementClearEveryPtsBy);
+            //Debug.LogWarning("(m+i): " + (clearIncrementMultiplier * incrementClearEveryPtsBy));
+
             //Debug.LogWarning("Target: " + ((clearCounter * clearsEveryPts) + firstClearPts + (clearIncrementMultiplier * incrementClearEveryPtsBy)));
-            return (clearCounter * clearsEveryPts) + firstClearPts + (clearIncrementMultiplier * incrementClearEveryPtsBy);
+
+            //old
+            //return (clearCounter * clearsEveryPts) + firstClearPts + ((clearIncrementMultiplier * incrementClearEveryPtsBy) + GetMultiplierFactorialAmmount(clearIncrementMultiplier));
+            //new
+            return (clearCounter * clearsEveryPts) + firstClearPts + (GetMultiplierFactorialAmmount(clearIncrementMultiplier)+ GetMultiplierAtMaxPoints());
         }
     }
 
@@ -1309,7 +1311,40 @@ public class GameBoardMechanics : MonoBehaviour
         }
         else {
             //Debug.LogWarning("Last: "+ (((clearCounter - 1) * clearsEveryPts) + firstClearPts + (GetLastIncrementMultiplier() * incrementClearEveryPtsBy)));
-            return ((clearCounter-1) * clearsEveryPts) + firstClearPts + (GetLastIncrementMultiplier() * incrementClearEveryPtsBy);
+            //old    
+            //return ((clearCounter-1) * clearsEveryPts) + firstClearPts + ((GetLastIncrementMultiplier() * incrementClearEveryPtsBy)+ GetMultiplierFactorialAmmount(GetLastIncrementMultiplier()));
+            //new
+            return ((clearCounter - 1) * clearsEveryPts) + firstClearPts + (GetMultiplierFactorialAmmount(GetLastIncrementMultiplier())+ GetPreviousMultiplierAtMaxPoints());
+        }
+    }
+
+    private int GetMultiplierAtMaxPoints() {
+        if (clearIncrementMultiplier == clearIncrementMultiplierMax) {
+           return (clearIncrementMultiplierMax * incrementClearEveryPtsBy) * (clearCounter - (clearIncrementMultiplier + incrementAfterClears));
+        }
+        else {
+            return 0;
+        }
+    }
+
+    private int GetPreviousMultiplierAtMaxPoints() {
+        if (clearIncrementMultiplier == clearIncrementMultiplierMax) {
+            return (clearIncrementMultiplierMax * incrementClearEveryPtsBy) * (clearCounter - 1 - (GetLastIncrementMultiplier() + incrementAfterClears));
+        }
+        else {
+            return 0;
+        }
+    }
+
+    private int GetMultiplierFactorialAmmount(int num) {
+        if (num == 0) {
+            return 0;
+        }
+        else if (num == 1) {
+            return incrementClearEveryPtsBy;
+        }
+        else {
+            return ((num* incrementClearEveryPtsBy)+(GetMultiplierFactorialAmmount(num - 1)));
         }
     }
 
@@ -1318,7 +1353,17 @@ public class GameBoardMechanics : MonoBehaviour
             return 0;
         }
         else {
-            return clearIncrementMultiplier - 1;
+            if (clearIncrementMultiplier == clearIncrementMultiplierMax) {
+                if (clearIncrementMultiplierMax+incrementAfterClears == clearCounter) {
+                    return clearIncrementMultiplier - 1;
+                }
+                else {
+                    return clearIncrementMultiplier;
+                }
+            }
+            else {
+                return clearIncrementMultiplier - 1;
+            }
         }
     }
 
@@ -1341,9 +1386,9 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void PrintSquarePositions()
     {
-        for (int i = 0; i < gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++)
         {
-            gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().PrintPosition();
+            gameBoardSquaresMechanics[i].PrintPosition();
         }
     }
 

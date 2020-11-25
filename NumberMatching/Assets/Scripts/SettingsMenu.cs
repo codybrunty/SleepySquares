@@ -11,11 +11,11 @@ public class SettingsMenu : MonoBehaviour{
     [SerializeField] GameObject StorePanel = default;
     [SerializeField] GameObject LanguagePanel = default;
     [SerializeField] GameObject CreditsPanel = default;
-    [SerializeField] GameObject Back = default;
-    [SerializeField] GameObject Exit = default;
-    [SerializeField] GameObject Music = default;
-    [SerializeField] GameObject SFX = default;
-    [SerializeField] GameObject bg = default;
+    [SerializeField] Image Back = default;
+    [SerializeField] Image Exit = default;
+    [SerializeField] MusicButtonMechanics Music = default;
+    [SerializeField] SoundButtonMechanics SFX = default;
+    [SerializeField] Image bg = default;
     [SerializeField] GameBoardMechanics gameboard = default;
     [SerializeField] NotificationSystem notificationSystem = default;
     public float fadeDuration = .5f;
@@ -25,8 +25,8 @@ public class SettingsMenu : MonoBehaviour{
 
         FadeInBG();
         FadeInExit();
-        Music.SetActive(true);
-        SFX.SetActive(true);
+        Music.gameObject.SetActive(true);
+        SFX.gameObject.SetActive(true);
 
         notificationSystem.CheckAlertStatus();
 
@@ -46,8 +46,8 @@ public class SettingsMenu : MonoBehaviour{
 
         FadeInBG();
         FadeInExit();
-        Music.SetActive(true);
-        SFX.SetActive(true);
+        Music.gameObject.SetActive(true);
+        SFX.gameObject.SetActive(true);
 
         StartCoroutine(FadeOutBack());
         StartCoroutine(FadeOutPanel(StorePanel));
@@ -175,10 +175,10 @@ public class SettingsMenu : MonoBehaviour{
 
     private void TurnOffSoundButtons()
     {
-        if (Music.activeSelf == true)
+        if (Music.gameObject.activeSelf == true)
         {
-            Music.GetComponent<MusicButtonMechanics>().TurnOffMusicButton();
-            SFX.GetComponent<SoundButtonMechanics>().TurnOffMusicButton();
+            Music.TurnOffMusicButton();
+            SFX.TurnOffMusicButton();
         }
     }
 
@@ -259,52 +259,52 @@ public class SettingsMenu : MonoBehaviour{
 
     private void FadeInBG()
     {
-        if (bg.activeSelf == false)
+        if (bg.gameObject.activeSelf == false)
         {
-            bg.GetComponent<Image>().color = new Color(bg.GetComponent<Image>().color.r, bg.GetComponent<Image>().color.g, bg.GetComponent<Image>().color.b, 0f);
-            bg.SetActive(true);
-            StartCoroutine(FadeInImgs(bg.GetComponent<Image>()));
+            bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, 0f);
+            bg.gameObject.SetActive(true);
+            StartCoroutine(FadeInImgs(bg));
         }
     }
 
     private void FadeInExit()
     {
-        if (Exit.activeSelf == false)
+        if (Exit.gameObject.activeSelf == false)
         {
-            Exit.GetComponent<Image>().color = new Color(Exit.GetComponent<Image>().color.r, Exit.GetComponent<Image>().color.g, Exit.GetComponent<Image>().color.b, 0f);
-            Exit.SetActive(true);
-            StartCoroutine(FadeInImgs(Exit.GetComponent<Image>()));
+            Exit.color = new Color(Exit.color.r, Exit.color.g, Exit.color.b, 0f);
+            Exit.gameObject.SetActive(true);
+            StartCoroutine(FadeInImgs(Exit));
         }
     }
 
     IEnumerator FadeOutExit()
     {
-        StartCoroutine(FadeOutImgs(Exit.GetComponent<Image>()));
+        StartCoroutine(FadeOutImgs(Exit));
         yield return new WaitForSeconds(fadeDuration);
-        Exit.SetActive(false);
+        Exit.gameObject.SetActive(false);
     }
 
     IEnumerator FadeOutBG()
     {
-        StartCoroutine(FadeOutImgs(bg.GetComponent<Image>()));
+        StartCoroutine(FadeOutImgs(bg));
         yield return new WaitForSeconds(fadeDuration);
-        bg.SetActive(false);
+        bg.gameObject.SetActive(false);
     }
 
     IEnumerator FadeOutBack()
     {
-        StartCoroutine(FadeOutImgs(Back.GetComponent<Image>()));
+        StartCoroutine(FadeOutImgs(Back));
         yield return new WaitForSeconds(fadeDuration);
-        Back.SetActive(false);
+        Back.gameObject.SetActive(false);
     }
 
     private void FadeInBack()
     {
-        if (Back.activeSelf == false)
+        if (Back.gameObject.activeSelf == false)
         {
-            Back.GetComponent<Image>().color = new Color(Back.GetComponent<Image>().color.r, Back.GetComponent<Image>().color.g, Back.GetComponent<Image>().color.b, 0f);
-            Back.SetActive(true);
-            StartCoroutine(FadeInImgs(Back.GetComponent<Image>()));
+            Back.color = new Color(Back.color.r, Back.color.g, Back.color.b, 0f);
+            Back.gameObject.SetActive(true);
+            StartCoroutine(FadeInImgs(Back));
         }
     }
 

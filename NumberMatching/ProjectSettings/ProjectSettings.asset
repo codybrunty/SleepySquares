@@ -170,7 +170,7 @@ PlayerSettings:
     iPhone: com.BombChomp.SleepyHeadz
   buildNumber:
     iPhone: 18
-  AndroidBundleVersionCode: 46
+  AndroidBundleVersionCode: 47
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0

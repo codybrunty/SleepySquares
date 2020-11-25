@@ -1385,6 +1385,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392790897}
   m_CullTransparentMesh: 0
+--- !u!114 &413235595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8740164292765945669, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &414730564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4521,6 +4533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2d4420cec652d4a9be95b8b1834311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverPanel: {fileID: 1840233303}
 --- !u!114 &886864371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4748,6 +4761,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &933717713 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8740164292642004441, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &947476899
 GameObject:
   m_ObjectHideFlags: 0
@@ -5058,9 +5083,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 161507027}
   gameBoard: {fileID: 1157066860}
-  GameOverPanel: {fileID: 1840233299}
+  GameOverPanel: {fileID: 1840233303}
   ray: {fileID: 932889519}
   notificationSystem: {fileID: 1237418774}
+  raycastMouse: {fileID: 932889519}
   moveDuration: 1
   ease:
     serializedVersion: 2
@@ -5383,6 +5409,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015253156}
   m_CullTransparentMesh: 0
+--- !u!114 &1033615540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8740164292584349277, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c47e11d5807edce4289e7da462aac03b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1038448466
 GameObject:
   m_ObjectHideFlags: 0
@@ -6533,6 +6571,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6, y: 9, z: 3}
   m_Center: {x: 0, y: -0.5, z: 11.7}
+--- !u!114 &1179672181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8740164292921570105, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1184001411
 GameObject:
   m_ObjectHideFlags: 0
@@ -7563,9 +7613,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 161507027}
   gameBoard: {fileID: 1157066860}
-  GameOverPanel: {fileID: 1840233299}
+  GameOverPanel: {fileID: 1840233303}
   ray: {fileID: 932889519}
   notificationSystem: {fileID: 0}
+  raycastMouse: {fileID: 932889519}
   moveDuration: 1
   ease:
     serializedVersion: 2
@@ -16216,6 +16267,7 @@ MonoBehaviour:
   - {r: 0.97647065, g: 0.4784314, b: 0.5647059, a: 1}
   - {r: 0.8588236, g: 0.57254905, b: 0.95294124, a: 1}
   - {r: 0.9647059, g: 0.7764706, b: 0.37254903, a: 1}
+  nextBoard: {fileID: 780546782}
   bounce: 1
   faces:
   - {fileID: 4507597470305196921}
@@ -17350,6 +17402,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1973000206 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8740164292274191899, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eac173599325d4419a2f0a9e7a1c7a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1973328721
 GameObject:
   m_ObjectHideFlags: 0
@@ -41353,6 +41417,7 @@ MonoBehaviour:
   - {r: 0.97647065, g: 0.4784314, b: 0.5647059, a: 0.8117647}
   - {r: 0.8588236, g: 0.57254905, b: 0.95294124, a: 0.8117647}
   - {r: 0.9647059, g: 0.7764706, b: 0.37254903, a: 0.8117647}
+  nextBoard: {fileID: 780546782}
   bounce: 0
   faces:
   - {fileID: 8221918505494055048}
@@ -41424,6 +41489,7 @@ MonoBehaviour:
   - {r: 0.97647065, g: 0.4784314, b: 0.5647059, a: 0.8117647}
   - {r: 0.8588236, g: 0.57254905, b: 0.95294124, a: 0.8117647}
   - {r: 0.9647059, g: 0.7764706, b: 0.37254903, a: 0.8117647}
+  nextBoard: {fileID: 780546782}
   bounce: 0
   faces:
   - {fileID: 8221918505695087298}
@@ -45053,6 +45119,31 @@ PrefabInstance:
       propertyPath: gameboard
       value: 
       objectReference: {fileID: 1157066860}
+    - target: {fileID: 8740164293015887005, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: SFX
+      value: 
+      objectReference: {fileID: 1973000206}
+    - target: {fileID: 8740164293015887005, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: Music
+      value: 
+      objectReference: {fileID: 1033615540}
+    - target: {fileID: 8740164293015887005, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: bg
+      value: 
+      objectReference: {fileID: 1179672181}
+    - target: {fileID: 8740164293015887005, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: Back
+      value: 
+      objectReference: {fileID: 933717713}
+    - target: {fileID: 8740164293015887005, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: Exit
+      value: 
+      objectReference: {fileID: 413235595}
     - target: {fileID: 8740164293015887007, guid: 8810f81a827f7f34894a2c1f5f3ad219,
         type: 3}
       propertyPath: m_Name

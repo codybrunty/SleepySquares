@@ -9,7 +9,7 @@ public class SquareMechanics_Next : MonoBehaviour{
     [SerializeField] GameBoardMechanics gameboard = default;
     public int number = 0;
     public List<Color> spriteColors = new List<Color>();
-    private NextBoardMechanics nextBoard;
+    [SerializeField] NextBoardMechanics nextBoard = default;
     public bool bounce = false;
     [SerializeField] List<GameObject> faces = new List<GameObject>();
     public bool useFaces = false;
@@ -24,15 +24,14 @@ public class SquareMechanics_Next : MonoBehaviour{
     public AnimationCurve swapEase;
     public List<BezierPosition> bezPoints = new List<BezierPosition>();
 
+    private Image mainImage;
+
 
     private void Awake()
     {
+        mainImage = gameObject.GetComponent<Image>();
         squareScale = gameObject.transform.localScale;
         squarePos = gameObject.transform.localPosition;
-    }
-
-    public void SetNextBoard() {
-        nextBoard = gameObject.transform.parent.GetComponent<NextBoardMechanics>();
     }
 
     public void SetRandomNumber() {
@@ -41,7 +40,7 @@ public class SquareMechanics_Next : MonoBehaviour{
 
     public void SetFakeDisplay(int fakeNumber)
     {
-        gameObject.GetComponent<Image>().color = spriteColors[fakeNumber - 1];
+        mainImage.color = spriteColors[fakeNumber - 1];
     }
 
     public void SetNumberAndDisplay(int num) {
@@ -63,14 +62,27 @@ public class SquareMechanics_Next : MonoBehaviour{
         //HardMode
         if (randomMax == 5)
         {
-            //decreasee the frequency of 4 getting picked
-            if (resultNumber == 4)
-            {
-                int randomNumber = UnityEngine.Random.Range(1, 3);
-                if (randomNumber != 1)
-                {
-                    randomMax = 4;
-                    resultNumber = UnityEngine.Random.Range(1, randomMax);
+            //decreasee the frequency of 4 getting picked untill 1000 points
+            if (gameboard.score < 1000) {
+                if (resultNumber == 4) {
+                    //50% chance of changing a 4
+                    int randomNumber = UnityEngine.Random.Range(1, 3);
+                    if (randomNumber == 2) {
+                        //Debug.LogWarning("4 Square Switch Up");
+                        randomMax = 4;
+                        resultNumber = UnityEngine.Random.Range(1, randomMax);
+                    }
+                }
+            }
+            else {
+                if (resultNumber == 4) {
+                    //25% chance of changing a 4
+                    int randomNumber = UnityEngine.Random.Range(1, 5);
+                    if (randomNumber == 2) {
+                        //Debug.LogWarning("4 Square Switch Up");
+                        randomMax = 4;
+                        resultNumber = UnityEngine.Random.Range(1, randomMax);
+                    }
                 }
             }
         }
@@ -101,7 +113,7 @@ public class SquareMechanics_Next : MonoBehaviour{
 
     public void SetNumberDisplay() {
         if (number != 0) {
-            gameObject.GetComponent<Image>().color = spriteColors[number - 1];
+            mainImage.color = spriteColors[number - 1];
             SetFaceDisplay();
             PopAnim();
         }
@@ -130,16 +142,16 @@ public class SquareMechanics_Next : MonoBehaviour{
     }
 
 
-    public void MoveNextSquareAlongRoute(float timeDuration, GameObject square)
+    public void MoveNextSquareAlongRoute(float timeDuration, SquareMechanics_Gameboard squareMechanics)
     {
-        SetUpBezierCurvePoints(square);
+        SetUpBezierCurvePoints(squareMechanics);
         StartCoroutine(MoveSquareOnRoute(timeDuration));
     }
 
-    private void SetUpBezierCurvePoints(GameObject square)
+    private void SetUpBezierCurvePoints(SquareMechanics_Gameboard squareMechanics)
     {
-        route.GetChild(3).position = RectTransformUtility.WorldToScreenPoint(Camera.main, square.transform.position);
-        int squareIndex = square.GetComponent<SquareMechanics_Gameboard>().gamePositionIndex;
+        route.GetChild(3).position = RectTransformUtility.WorldToScreenPoint(Camera.main, squareMechanics.gameObject.transform.position);
+        int squareIndex = squareMechanics.gamePositionIndex;
         route.GetChild(1).position = new Vector2 (bezPoints[squareIndex].p1_x, bezPoints[squareIndex].p1_y); 
         route.GetChild(2).position = new Vector2(bezPoints[squareIndex].p2_x, bezPoints[squareIndex].p2_y);
     }

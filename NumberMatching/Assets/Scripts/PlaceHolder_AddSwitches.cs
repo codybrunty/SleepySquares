@@ -7,10 +7,7 @@ public class PlaceHolder_AddSwitches : MonoBehaviour {
     [SerializeField] SwitchButton switchButton = default;
 
     public void AddSwitchesOnClick() {
-
         switchButton.AddSwitches(3);
-
-
     }
 
 }

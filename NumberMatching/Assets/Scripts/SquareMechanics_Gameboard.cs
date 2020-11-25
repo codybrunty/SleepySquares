@@ -17,11 +17,10 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     public int gamePositionIndex = 0;
     public List<SquareMechanics_Gameboard> adjescentSquares = new List<SquareMechanics_Gameboard>() { null, null, null, null };
     public List<GameObject> solids = new List<GameObject>();
-    public List<GameObject> blinks = new List<GameObject>();
     public GameObject connection_group = default;
     [Header("Game Objects")]
     [SerializeField] SpriteRenderer squareSprite = default;
-    [SerializeField] List<GameObject> faces = new List<GameObject>();
+    [SerializeField] List<FacialAnimation> faces = new List<FacialAnimation>();
     [SerializeField] List<Color> numberColors = new List<Color>();
     [SerializeField] List<Material> materialColors = new List<Material>();
     [SerializeField] List<Material> materialColors_fake = new List<Material>();
@@ -95,12 +94,21 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     private Vector3 solid3_up;
     private Vector3 square_down;
 
+    private MeshRenderer cube_mesh;
+    private SpriteRenderer middleSquare_sprite;
+    private FloatingSquare floatingGRP_floatingSquare;
+    private CollectionColor_Sprite squareSprite_collection;
+
     private int number4Effects = 0;
     [SerializeField] List<GameObject> scoringEffect1 = new List<GameObject>();
 
 
     private void Awake()
     {
+        floatingGRP_floatingSquare = floatingGRP.GetComponent<FloatingSquare>();
+        middleSquare_sprite = middleSquare.GetComponent<SpriteRenderer>();
+        cube_mesh = cube.GetComponent<MeshRenderer>();
+        squareSprite_collection = squareSprite.GetComponent<CollectionColor_Sprite>();
         floatingGRPScale = floatingGRP.transform.localScale;
         squareScale = gameObject.transform.localScale;
         squareRotation = gameObject.transform.localRotation;
@@ -186,8 +194,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
 
     public void SetLuckyColor() {
         if (luckyCoin) {
-            middleSquare.GetComponent<SpriteRenderer>().sprite = star;
-            middleSquare.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            middleSquare_sprite.sprite = star;
+            middleSquare_sprite.color = new Color(1f, 1f, 1f, 1f);
 
             Hashtable hash = new Hashtable();
             hash.Add("amount", new Vector3(.75f, .75f, .75f));
@@ -197,8 +205,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             SoundManager.SM.PlayOneShotSound("Bonus");
         }
         else {
-            middleSquare.GetComponent<SpriteRenderer>().sprite = miniSquare;
-            middleSquare.GetComponent<SpriteRenderer>().color = new Color(214f / 255f, 227f / 255f, 235f / 255f, 1f);
+            middleSquare_sprite.sprite = miniSquare;
+            middleSquare_sprite.color = new Color(214f / 255f, 227f / 255f, 235f / 255f, 1f);
         }
     }
 
@@ -222,15 +230,10 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             completed = true;
             blockerImage.SetActive(true);
             floatingGRP.transform.position += new Vector3(0f,500f,0f);
-            //Instantiate(smoke, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-            //floatingGRP.GetComponent<FloatingSquare>().QuickBurst();
         }
     }
 
     public void PressDown() {
-        //gameObject.transform.localPosition = new Vector3(squarePosition.x, squarePosition.y - .05f, squarePosition.z);
-        //solids[2].transform.localPosition = new Vector3(solids[2].transform.localPosition.x, solids[2].transform.localPosition.y + .157f, solids[2].transform.localPosition.z);
-        //solids[3].transform.localPosition = new Vector3(solids[3].transform.localPosition.x, solids[3].transform.localPosition.y + .157f, solids[3].transform.localPosition.z);
         gameObject.transform.localPosition = square_down;
         solids[2].transform.localPosition = solid2_down;
         solids[3].transform.localPosition = solid3_down;
@@ -240,8 +243,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         gameObject.transform.localPosition = squarePosition;
         solids[2].transform.localPosition = solid2_up;
         solids[3].transform.localPosition = solid3_up;
-        //solids[2].transform.localPosition = new Vector3(solids[2].transform.localPosition.x, solids[2].transform.localPosition.y - .157f, solids[2].transform.localPosition.z);
-        //solids[3].transform.localPosition = new Vector3(solids[3].transform.localPosition.x, solids[3].transform.localPosition.y - .157f, solids[3].transform.localPosition.z);
 
     }
 
@@ -253,50 +254,13 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             completed = true;
             blockerImage.SetActive(true);
             Instantiate(smoke, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-            floatingGRP.GetComponent<FloatingSquare>().QuickBurst();
+            floatingGRP_floatingSquare.QuickBurst();
             SoundManager.SM.PlayOneShotSound("poof");
         }
     }
 
     public void ConnectionDisplay() {
-        BlinkingConnectionDisplay();
         SolidConnectionDisplay();
-    }
-
-    private void BlinkingConnectionDisplay() {
-        if (gameboard.bubblesOn)
-        {
-            if (!completed)
-            {
-                TurnOnBlinks();
-            }
-            else
-            {
-                TurnOffAllBlinks();
-            }
-
-        }
-    }
-
-    private void TurnOnBlinks() {
-        for (int i = 0; i < blinks.Count; i++) {
-            if (adjescentSquares[i] != null && adjescentConnections[i] == false) {
-                if (adjescentSquares[i].number == 0)
-                {
-                    blinks[i].SetActive(true);
-                    blinks[i].GetComponent<ParticleSystem>().startColor = numberColors[number - 1];
-                }
-                else {
-                    blinks[i].SetActive(false);
-                }
-            }
-        }
-    }
-
-    private void TurnOffAllBlinks() {
-        for (int i = 0; i < blinks.Count; i++) {
-            blinks[i].SetActive(false);
-        }
     }
 
     private void SolidConnectionDisplay() {
@@ -304,7 +268,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         for (int i = 0; i < adjescentConnections.Count; i++) {
             if (adjescentConnections[i] == true) {
                 solids[i].SetActive(true);
-                blinks[i].SetActive(false);
             }
             else {
                 solids[i].SetActive(false);
@@ -322,7 +285,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
                 }
             }
 
-            faces[number - 1].GetComponent<FacialAnimation>().ShutThisManyEyes(eyeShutCounter);
+            faces[number - 1].ShutThisManyEyes(eyeShutCounter);
 
         }
         gameboard.UpdateSquareConnections();
@@ -343,8 +306,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
 
     private void SetSquareFace() {
         if (number < 5) {
-            faces[number - 1].SetActive(true);
-            faces[number - 1].GetComponent<FacialAnimation>().StartFacialAnimation();
+            faces[number - 1].gameObject.SetActive(true);
+            faces[number - 1].StartFacialAnimation();
         }
     }
 
@@ -354,7 +317,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
 
         //Debug.LogWarning(numberColors[number - 1]);
 
-        cube.GetComponent<MeshRenderer>().material = materialColors[number - 1];
+        cube_mesh.material = materialColors[number - 1];
         LittleSquareDisplay();
     }
 
@@ -365,18 +328,18 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             //Debug.Log(number);
             if (completed)
             {
-                cube.GetComponent<MeshRenderer>().material = materialColors_sleep[number - 1];
+                cube_mesh.material = materialColors_sleep[number - 1];
                 sleepingDim.color = new Color(sleepColor.r, sleepColor.g, sleepColor.b, 0f);
                 dimMaskSquareCut.SetActive(true);
             }
             else
             {
-                cube.GetComponent<MeshRenderer>().material = materialColors_fake[number - 1];
+                cube_mesh.material = materialColors_fake[number - 1];
             }
         }
         else
         {
-            cube.GetComponent<MeshRenderer>().material = materialColors_fake[4];
+            cube_mesh.material = materialColors_fake[4];
         }
 
     }
@@ -530,11 +493,11 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     {
         SquareMechanics_Gameboard eyePickerSquare = null;
     
-        for (int i = 0; i < gameboard.gameBoardSquares.Count; i++)
+        for (int i = 0; i < gameboard.gameBoardSquaresMechanics.Count; i++)
         {
-            if (gameboard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().eyePicker)
+            if (gameboard.gameBoardSquaresMechanics[i].eyePicker)
             {
-                eyePickerSquare = gameboard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>();
+                eyePickerSquare = gameboard.gameBoardSquaresMechanics[i];
             }
         }
 
@@ -642,8 +605,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         adjescentConnections = new List<bool> { false, false, false, false };
         completed = false;
         TurnOffFaces();
-        squareSprite.GetComponent<CollectionColor_Sprite>().GetColor();
-        cube.GetComponent<MeshRenderer>().material = eggshell;
+        squareSprite_collection.GetColor();
+        cube_mesh.material = eggshell;
         blocker = false;
         blockerImage.SetActive(false);
         SetSquarePosition();
@@ -668,8 +631,8 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         //StartCoroutine(ChangeColorDelay());
         connection_group.SetActive(false);
         TurnOffFaces();
-        squareSprite.GetComponent<CollectionColor_Sprite>().GetColor();
-        cube.GetComponent<MeshRenderer>().material = eggshell;
+        squareSprite_collection.GetColor();
+        cube_mesh.material = eggshell;
         LittleSquareDisplay();
     }
 
@@ -677,23 +640,23 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         yield return new WaitForSeconds(0.05f);
         connection_group.SetActive(false);
         TurnOffFaces();
-        squareSprite.GetComponent<CollectionColor_Sprite>().GetColor();
-        cube.GetComponent<MeshRenderer>().material = eggshell;
+        squareSprite_collection.GetColor();
+        cube_mesh.material = eggshell;
         LittleSquareDisplay();
     }
 
     private void SetSquarePosition() {
-        floatingGRP.GetComponent<FloatingSquare>().StopFloat();
+        floatingGRP_floatingSquare.StopFloat();
         gameObject.transform.localRotation = squareRotation;
         gameObject.transform.localPosition = squarePosition;
     }
 
     private void TurnOffFaces() {
         for(int i = 0; i < faces.Count; i++) {
-            if (faces[i].activeSelf == true) {
-                faces[i].GetComponent<FacialAnimation>().StopFacialAnimation();
-                faces[i].GetComponent<FacialAnimation>().ResetEyes();
-                faces[i].SetActive(false);
+            if (faces[i].gameObject.activeSelf == true) {
+                faces[i].StopFacialAnimation();
+                faces[i].ResetEyes();
+                faces[i].gameObject.SetActive(false);
             }
         }
     }
@@ -773,7 +736,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             completed = true;
             CheckDimIfCompleted();
             //Debug.LogWarning(squareSprite.transform.parent.parent.gameObject.name + " " + completed);
-            faces[number-1].GetComponent<FacialAnimation>().StopFacialAnimation();
+            faces[number-1].StopFacialAnimation();
             EyeballDisplay();
 
             if (zCoroutine == null)
@@ -793,7 +756,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
             completed = false;
             CheckDimIfCompleted();
             //Debug.LogWarning(squareSprite.transform.parent.parent.gameObject.name + " " + completed);
-            faces[number-1].GetComponent<FacialAnimation>().StartFacialAnimation();
+            faces[number-1].StartFacialAnimation();
             EyeballDisplay();
         }
         
@@ -916,7 +879,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
 
                 }
                 //Debug.Log(eyeShutCounter);
-                adjescentSquares[i].faces[adjescentSquares[i].number - 1].GetComponent<FacialAnimation>().ShutThisManyEyes(eyeShutCounter-1);
+                adjescentSquares[i].faces[adjescentSquares[i].number - 1].ShutThisManyEyes(eyeShutCounter-1);
             }
         }
     }
@@ -948,17 +911,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     {
         dimMaskSquareCut.SetActive(false);
         sleepingDim.color = new Color(sleepColor.r, sleepColor.g, sleepColor.b, 0f);
-        /*
-        if (number > 0 && number < 5)
-        {
-            sleepingDim.color = new Color(sleepColor.r, sleepColor.g, sleepColor.b, 0f);
-            //squareSprite.color = numberColors[number-1];
-            //faces[number - 1].GetComponent<FacialAnimation>().UnDimBlinks();
-        }
-        else{
-            //squareSprite.color = numberColors[4];
-        }
-        */
     }
 
     public void ResetSquare_OnCompletion_Before()
@@ -1002,7 +954,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         }
 
         //Debug.Log(gameObject.name + "TurnOffZzzs");
-        //sleepZzz.GetComponent<ParticleSystem>().loop = true;
         sleepZzz.SetActive(false);
     }
 
@@ -1015,9 +966,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         yield return new WaitForSeconds(delayTime);
         sleepZzz.SetActive(true);
         yield return new WaitForSeconds(zzzTime);
-        //sleepZzz.GetComponent<ParticleSystem>().loop = false;
         yield return new WaitForSeconds(.5f);
-        //sleepZzz.GetComponent<ParticleSystem>().loop = true;
         sleepZzz.SetActive(false);
         //Debug.Log("delayTime: " + delayTime);
         //Debug.Log("holdTime: " + holdTime);
@@ -1039,7 +988,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         }
         if (!edgeCase) {
             int index = gamePositionIndex + 1;
-            return gameboard.gameBoardSquares[index].GetComponent<SquareMechanics_Gameboard>();
+            return gameboard.gameBoardSquaresMechanics[index];
         }
         else {
             //Debug.Log(gameObject.name + " has no top");
@@ -1055,7 +1004,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         }
         if (!edgeCase) {
             int index = gamePositionIndex - 1;
-            return gameboard.gameBoardSquares[index].GetComponent<SquareMechanics_Gameboard>();
+            return gameboard.gameBoardSquaresMechanics[index];
         }
         else {
             //Debug.Log(gameObject.name + " has no bottom");
@@ -1072,7 +1021,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         if (!edgeCase) {
             int height = gameboard.gameBoardHeight;
             int index = gamePositionIndex - height;
-            return gameboard.gameBoardSquares[index].GetComponent<SquareMechanics_Gameboard>();
+            return gameboard.gameBoardSquaresMechanics[index];
         }
         else {
             //Debug.Log(gameObject.name + " has no left");
@@ -1090,7 +1039,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         if (!edgeCase) {
             int height = gameboard.gameBoardHeight;
             int index = gamePositionIndex + height;
-            return gameboard.gameBoardSquares[index].GetComponent<SquareMechanics_Gameboard>();
+            return gameboard.gameBoardSquaresMechanics[index];
         }
         else {
             //Debug.Log(gameObject.name + " has no right");

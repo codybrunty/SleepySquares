@@ -16,13 +16,21 @@ public class LanguageButton : MonoBehaviour
 
     [SerializeField] SplashScreenTransition splash = default;
 
+    private Button mainButton;
+    private Image mainImage;
+
+    private void Awake() {
+        mainButton = gameObject.GetComponent<Button>();
+        mainImage = gameObject.GetComponent<Image>();
+    }
+
     private void Start()
     {
         currentLanguage = PlayerPrefs.GetString("Language", "English");
         if (languageKey == currentLanguage)
         {
-            gameObject.GetComponent<Button>().interactable = false;
-            gameObject.GetComponent<Image>().raycastTarget = false;
+            mainButton.interactable = false;
+            mainImage.raycastTarget = false;
             text.color = activeTextColor;
         }
     }

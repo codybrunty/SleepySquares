@@ -24,12 +24,10 @@ public class NextBoardMechanics : MonoBehaviour{
     }
 
     public void SetNextBoard() {
-        SetNextBoardOnNextSquare();
         FillNextBoard();
     }
 
     public void ResetNextBoard() {
-        SetNextBoardOnNextSquare();
         FillNextBoardWithRandom();
     }
 
@@ -56,7 +54,7 @@ public class NextBoardMechanics : MonoBehaviour{
 
             for (int i = 0; i < nextSquares.Count; i++)
             {
-                nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberAndDisplay(savedNextBoardNums[i]);
+                nextSquares[i].SetNumberAndDisplay(savedNextBoardNums[i]);
             }
         }
 
@@ -66,7 +64,7 @@ public class NextBoardMechanics : MonoBehaviour{
 
             for (int i = 0; i < nextSquares.Count; i++)
             {
-                nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberAndDisplay(savedNextBoardNums[i]);
+                nextSquares[i].SetNumberAndDisplay(savedNextBoardNums[i]);
             }
         }
         
@@ -77,14 +75,8 @@ public class NextBoardMechanics : MonoBehaviour{
     private void FillNextBoardWithRandom() {
         for (int i = 0; i < nextSquares.Count; i++)
         {
-            nextSquares[i].GetComponent<SquareMechanics_Next>().SetRandomNumber();
-            nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
-        }
-    }
-
-    private void SetNextBoardOnNextSquare() {
-        for (int i = 0; i<nextSquares.Count;i++) {
-            nextSquares[i].SetNextBoard();
+            nextSquares[i].SetRandomNumber();
+            nextSquares[i].SetNumberDisplay();
         }
     }
 
@@ -94,8 +86,8 @@ public class NextBoardMechanics : MonoBehaviour{
 
         if (allZeros) {
             Debug.Log("Empty Next Board. New Number added.");
-            nextSquares[0].GetComponent<SquareMechanics_Next>().SetRandomNumber();
-            nextSquares[0].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
+            nextSquares[0].SetRandomNumber();
+            nextSquares[0].SetNumberDisplay();
         }
         else {
             RotateNextSquaresDown();
@@ -113,7 +105,7 @@ public class NextBoardMechanics : MonoBehaviour{
 
         for (int i = 1; i < nextSquares.Count; i++)
         {
-            Coroutine c =StartCoroutine(MoveOverTime(nextSquares[i].gameObject, pos[i], pos[i-1]));
+            Coroutine c =StartCoroutine(MoveOverTime(nextSquares[i], pos[i], pos[i-1]));
             cors.Add(c);
         }
         Coroutine c2 = StartCoroutine(TurnOnFirstSquare());
@@ -149,16 +141,16 @@ public class NextBoardMechanics : MonoBehaviour{
         cors.Clear();
     }
 
-    IEnumerator MoveOverTime(GameObject square, Vector3 oldPos, Vector3 newPos)
+    IEnumerator MoveOverTime(SquareMechanics_Next squareMechanics, Vector3 oldPos, Vector3 newPos)
     {
         for (float t = 0; t < moveDuration; t+=Time.deltaTime)
         {
-            square.transform.localPosition = Vector3.Lerp(oldPos,newPos,t/moveDuration);
+            squareMechanics.gameObject.transform.localPosition = Vector3.Lerp(oldPos,newPos,t/moveDuration);
             yield return null;
         }
 
-        square.transform.localPosition = oldPos;
-        square.GetComponent<SquareMechanics_Next>().SetNumberDisplay();
+        squareMechanics.gameObject.transform.localPosition = oldPos;
+        squareMechanics.SetNumberDisplay();
     }
 
     private void RotateNextSquaresDown() {
@@ -166,11 +158,10 @@ public class NextBoardMechanics : MonoBehaviour{
         for (int i = 0; i < nextSquares.Count; i++) {
             //all but last
             if (i != nextSquares.Count - 1) {
-                nextSquares[i].GetComponent<SquareMechanics_Next>().number = nextSquares[i + 1].GetComponent<SquareMechanics_Next>().number;
-                //nextSquares[i].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
+                nextSquares[i].number = nextSquares[i + 1].number;
             }
             else {
-                nextSquares[i].GetComponent<SquareMechanics_Next>().SetRandomNumber();
+                nextSquares[i].SetRandomNumber();
             }
         }
 
@@ -180,7 +171,7 @@ public class NextBoardMechanics : MonoBehaviour{
         bool allZeros = true;
 
         for(int i = 0; i < nextSquares.Count; i++) {
-            if (nextSquares[i].GetComponent<SquareMechanics_Next>().number != 0) {
+            if (nextSquares[i].number != 0) {
                 allZeros = false;
             }
         }
@@ -189,17 +180,17 @@ public class NextBoardMechanics : MonoBehaviour{
     }
 
     private void ClearFirstNextSquare() {
-        nextSquares[0].GetComponent<SquareMechanics_Next>().number = 0;
-        nextSquares[0].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
+        nextSquares[0].number = 0;
+        nextSquares[0].SetNumberDisplay();
     }
 
     public int GetFirstNumber() {
-        int number = nextSquares[0].GetComponent<SquareMechanics_Next>().number;
+        int number = nextSquares[0].number;
         return number;
     }
 
     public void SetFirstNumber(int newNumber) {
-        nextSquares[0].GetComponent<SquareMechanics_Next>().number = newNumber;
-        nextSquares[0].GetComponent<SquareMechanics_Next>().SetNumberDisplay();
+        nextSquares[0].number = newNumber;
+        nextSquares[0].SetNumberDisplay();
     }
 }

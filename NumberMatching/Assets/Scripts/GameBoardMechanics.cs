@@ -114,9 +114,12 @@ public class GameBoardMechanics : MonoBehaviour
     public bool gameStarted = false;
     public float luckyWaitMin = 10f;
     public float luckyWaitMax = 60f;
+    public int doublePointsThreshold_normal = 36;
+    public int doublePointsThreshold_hard = 51;
 
     private BoardClearCommand boardClearCommand;
     private GameBoardBGMovement gbMovement;
+
 
     #region Start
     private void Awake()
@@ -441,7 +444,7 @@ public class GameBoardMechanics : MonoBehaviour
             StartCoroutine(AnimationsThenRevealGameOverPanel());
             raycastForMouse.gameStarted = false;
 
-            TestPrintClearEveryPts();
+            //TestPrintClearEveryPts();
 
             GameOverCounter();
             SaveBoardState();
@@ -1183,11 +1186,22 @@ public class GameBoardMechanics : MonoBehaviour
             squareMechanics.ResetSquare_OnCompletion_Before();
         }
 
-        if(floatingTextNumber >= 36) {
-            AddToScore(floatingTextNumber);
-            AddToTotalPoints(floatingTextNumber);
-            floatingTextNumber *= 2;
+
+        if (hardModeOn == 0) {
+            if (floatingTextNumber >= doublePointsThreshold_normal) {
+                AddToScore(floatingTextNumber);
+                AddToTotalPoints(floatingTextNumber);
+                floatingTextNumber *= 2;
+            }
         }
+        else {
+            if (floatingTextNumber >= doublePointsThreshold_hard) {
+                AddToScore(floatingTextNumber);
+                AddToTotalPoints(floatingTextNumber);
+                floatingTextNumber *= 2;
+            }
+        }
+
 
         HighScoreCheck();
         ReduceMoveLimit();

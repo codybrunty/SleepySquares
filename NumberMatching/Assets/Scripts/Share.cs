@@ -5,25 +5,19 @@ using System.IO;
 
 public class Share : MonoBehaviour{
 
-
-    /*
-    private int highScore = 55;
-    private string twitterAddress = "https://www.twitter.com/intent/tweet";
-    private string twitterLanguage = "en";
-    private string twitterTweetBeg = "SleepyHeadz New HighScore: ";
-    private string twitterTweetEnd = " Good Luck Beating that! #BombChomp";
-    private string twitterLinkAttached = "https://www.google.com";
-
-    public void ShareScoreOnTwitter() {
-        Application.OpenURL(twitterAddress+"?text="+WWW.EscapeURL(twitterTweetBeg) + highScore + WWW.EscapeURL(twitterTweetEnd) + WWW.EscapeURL(twitterLinkAttached) + "&amp;lang="+twitterLanguage+WWW.EscapeURL(twitterLanguage));
-    }
-
-    */
+    [SerializeField] GameOverPanel gameOverPanel = default;
     private string shareMessage;
+    private long score = 0;
 
     public void ShareScore() {
-        shareMessage = "Wooo, I can't believe I just scored 55 points in SleepyHeadz";
+        GetScore();
+        shareMessage = "Wooo, I just scored " + score + " points! I challenge you to beat me in #SleepySquares";
+        //Debug.Log(shareMessage);
         StartCoroutine(TakeScreenShotAndShare());
+    }
+
+    private void GetScore() {
+        score = gameOverPanel.score;
     }
 
     private IEnumerator TakeScreenShotAndShare() {
@@ -34,12 +28,12 @@ public class Share : MonoBehaviour{
         screenShot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         screenShot.Apply();
 
-        string filePath = Path.Combine(Application.temporaryCachePath, "shared img.png");
+        string filePath = Path.Combine(Application.temporaryCachePath, "shared_img.png");
         File.WriteAllBytes(filePath, screenShot.EncodeToPNG());
 
         Destroy(screenShot);
 
-        new NativeShare().AddFile(filePath).SetSubject("SleepyHeadz").SetText(shareMessage).Share();
+        new NativeShare().AddFile(filePath).SetSubject("Sleepy Squares").SetText(shareMessage).Share();
 
     }
 

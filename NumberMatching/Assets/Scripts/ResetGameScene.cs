@@ -11,11 +11,12 @@ public class ResetGameScene : MonoBehaviour{
 
     [SerializeField] SettingsMenu settings = default;
     [SerializeField] GameBoardMechanics gameBoard = default;
-    [SerializeField] GameObject GameOverPanel = default;
-    private List<GameObject> emptySquares = new List<GameObject>();
+    [SerializeField] GameOverPanel GameOverPanel = default;
+    private List<SquareMechanics_Gameboard> emptySquaresMechanics = new List<SquareMechanics_Gameboard>();
     private List<Button> disabledButtons = new List<Button>();
     [SerializeField] RaycastMouse ray = default;
     [SerializeField] NotificationSystem notificationSystem = default;
+    [SerializeField] RaycastMouse raycastMouse = default;
 
 
 
@@ -62,7 +63,7 @@ public class ResetGameScene : MonoBehaviour{
         settings.ExitSettings();
         //gameBoard.ResetBoardState();
         gameBoard.SetBoardState();
-        GameOverPanel.SetActive(false);
+        GameOverPanel.gameObject.SetActive(false);
         ray.gameStarted = false;
     }
 
@@ -113,20 +114,20 @@ public class ResetGameScene : MonoBehaviour{
         }
 
         yield return new WaitForSeconds(waitTime);
-        emptySquares.Clear();
+        emptySquaresMechanics.Clear();
 
 
-        for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++) {
-            if (gameBoard.gameBoardSquares[i].GetComponent<SquareMechanics_Gameboard>().number == 0) {
-                emptySquares.Add(gameBoard.gameBoardSquares[i]);
+        for (int i = 0; i < gameBoard.gameBoardSquaresMechanics.Count; i++) {
+            if (gameBoard.gameBoardSquaresMechanics[i].number == 0) {
+                emptySquaresMechanics.Add(gameBoard.gameBoardSquaresMechanics[i]);
             }
         }
 
 
 
-        if (emptySquares.Count > 0) {
-            int randomIndex = UnityEngine.Random.Range(0, emptySquares.Count);
-            FindObjectOfType<RaycastMouse>().GameSquareHit(emptySquares[randomIndex]);
+        if (emptySquaresMechanics.Count > 0) {
+            int randomIndex = UnityEngine.Random.Range(0, emptySquaresMechanics.Count);
+            raycastMouse.GameSquareHit(emptySquaresMechanics[randomIndex]);
             StartCoroutine(FillBoard(false));
         }
         else {
@@ -141,8 +142,8 @@ public class ResetGameScene : MonoBehaviour{
         SoundManager.SM.PlayOneShotSound("ResetGame");
         settings.ExitSettings(false);
         gameBoard.ResetBoardState();
-        GameOverPanel.GetComponent<GameOverPanel>().ResetGameOverPanelScale();
-        GameOverPanel.SetActive(false);
+        GameOverPanel.ResetGameOverPanelScale();
+        GameOverPanel.gameObject.SetActive(false);
         notificationSystem.CheckAlertStatus();
         //MusicManager.MM.FadeInNewMusic();
     }

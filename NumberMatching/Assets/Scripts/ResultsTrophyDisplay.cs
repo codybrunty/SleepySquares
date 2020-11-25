@@ -33,7 +33,11 @@ public class ResultsTrophyDisplay : MonoBehaviour{
     private float star1_pos = .25f;
     private float star2_pos = .75f;
 
-    
+    private CollectionColor_Image star1_ccimage;
+    private CollectionColor_Image star2_ccimage;
+    private CollectionColor_Image trophy_ccimage;
+
+
     private List<int> trophyLevelScores = new List<int> {   0,      150,    500,    1500,   2500,
                                                             5000,   7500,   10000,  12500,  15000,
                                                             18000,  21000,  24000,  27000,  30000,
@@ -57,6 +61,7 @@ public class ResultsTrophyDisplay : MonoBehaviour{
 
     private void OnEnable()
     {
+        SetCollection();
         position = gameObject.transform.position;
         gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 0f);
 
@@ -78,6 +83,12 @@ public class ResultsTrophyDisplay : MonoBehaviour{
         PlayerPrefs.SetInt("TrophyPoints", trophyPoints);
 
         StartCoroutine(ScaleDown());
+    }
+
+    private void SetCollection() {
+        star1_ccimage= star1.GetComponent<CollectionColor_Image>();
+        star2_ccimage= star2.GetComponent<CollectionColor_Image>();
+        trophy_ccimage= trophy.GetComponent<CollectionColor_Image>();
     }
 
     IEnumerator ScaleUp()
@@ -120,33 +131,6 @@ public class ResultsTrophyDisplay : MonoBehaviour{
         StartCoroutine(MoveBarOverTime(oldFillNumber, newFillNumber));
         AnimateNewStars(oldFillNumber, newFillNumber);
     }
-
-    /*
-    IEnumerator PlayStar(GameObject star)
-    {
-        yield return new WaitForSeconds(1f);
-        Hashtable hash = new Hashtable();
-        hash.Add("amount", new Vector3(2f, 2f, 0f));
-        hash.Add("time", .75f);
-        iTween.PunchScale(star, hash);
-        SoundManager.SM.PlayOneShotSound("star");
-        star.GetComponent<CollectionColor_Image>().key = "Trophy3";
-        star.GetComponent<CollectionColor_Image>().GetColor();
-
-        yield return new WaitForSeconds(0.25f);
-
-        if (star == star1)
-        {
-            popText1.FlashText();
-        }
-        else
-        {
-            popText2.FlashText();
-        }
-        SoundManager.SM.PlayOneShotSound("yahoo");
-        switchButton.AddSwitchesNoAnimation(2);
-    }
-    */
 
     IEnumerator LevelUpTrophyDisplay()
     {
@@ -263,8 +247,8 @@ public class ResultsTrophyDisplay : MonoBehaviour{
         hash.Add("time", .75f);
         iTween.PunchScale(star1, hash);
         SoundManager.SM.PlayOneShotSound("star");
-        star1.GetComponent<CollectionColor_Image>().key = "Trophy3";
-        star1.GetComponent<CollectionColor_Image>().GetColor();
+        star1_ccimage.key = "Trophy3";
+        star1_ccimage.GetColor();
     }
 
     private void PopStar2()
@@ -275,8 +259,8 @@ public class ResultsTrophyDisplay : MonoBehaviour{
         hash.Add("time", .75f);
         iTween.PunchScale(star2, hash);
         SoundManager.SM.PlayOneShotSound("star");
-        star2.GetComponent<CollectionColor_Image>().key = "Trophy3";
-        star2.GetComponent<CollectionColor_Image>().GetColor();
+        star2_ccimage.key = "Trophy3";
+        star2_ccimage.GetColor();
     }
 
     private void AnimateNewStars(float oldFill, float newFill)
@@ -307,24 +291,24 @@ public class ResultsTrophyDisplay : MonoBehaviour{
     {
         if (bar.fillAmount > star1_pos)
         {
-            star1.GetComponent<CollectionColor_Image>().key = "Trophy3";
-            star1.GetComponent<CollectionColor_Image>().GetColor();
+            star1_ccimage.key = "Trophy3";
+            star1_ccimage.GetColor();
         }
         else
         {
-            star1.GetComponent<CollectionColor_Image>().key = "Second";
-            star1.GetComponent<CollectionColor_Image>().GetColor();
+            star1_ccimage.key = "Second";
+            star1_ccimage.GetColor();
         }
 
         if (bar.fillAmount > star2_pos)
         {
-            star2.GetComponent<CollectionColor_Image>().key = "Trophy3";
-            star2.GetComponent<CollectionColor_Image>().GetColor();
+            star2_ccimage.key = "Trophy3";
+            star2_ccimage.GetColor();
         }
         else
         {
-            star2.GetComponent<CollectionColor_Image>().key = "Second";
-            star2.GetComponent<CollectionColor_Image>().GetColor();
+            star2_ccimage.key = "Second";
+            star2_ccimage.GetColor();
         }
     }
 
@@ -375,13 +359,13 @@ public class ResultsTrophyDisplay : MonoBehaviour{
 
         if (trophyIndex >= 29)
         {
-            trophy.GetComponent<CollectionColor_Image>().key = trophyColorList[2];
+            trophy_ccimage.key = trophyColorList[2];
         }
         else
         {
-             trophy.GetComponent<CollectionColor_Image>().key = trophyColorList[trophyIndex % 3];
+            trophy_ccimage.key = trophyColorList[trophyIndex % 3];
         }
-        trophy.GetComponent<CollectionColor_Image>().GetColor();
+        trophy_ccimage.GetColor();
     }
 
     #endregion

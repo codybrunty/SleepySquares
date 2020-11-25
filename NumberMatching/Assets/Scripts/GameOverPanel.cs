@@ -24,6 +24,13 @@ public class GameOverPanel : MonoBehaviour{
     private float fadeInDuration = .5f;
     public AnimationCurve ease;
 
+    private RectTransform gameOverPanelGRP_rt;
+    private RectTransform gameOverEffect_rt;
+
+    private void Awake() {
+        gameOverPanelGRP_rt = gameOverPanelGRP.GetComponent<RectTransform>();
+        gameOverEffect_rt = gameOverEffect.GetComponent<RectTransform>();
+    }
 
     private void OnEnable() {
         ResetImageAlphaToZero();
@@ -114,8 +121,8 @@ public class GameOverPanel : MonoBehaviour{
 
     public void ResetGameOverPanelScale() {
         panel_bg.SetActive(false);
-        gameOverPanelGRP.GetComponent<RectTransform>().localScale = new Vector3(.01f, .01f, 1f);
-        gameOverEffect.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+        gameOverPanelGRP_rt.localScale = new Vector3(.01f, .01f, 1f);
+        gameOverEffect_rt.localScale = new Vector3(1f, 1f, 1f);
         gameOverEffect.SetActive(false);
     }
 }

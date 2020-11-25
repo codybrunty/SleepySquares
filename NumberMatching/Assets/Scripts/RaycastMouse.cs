@@ -33,11 +33,11 @@ public class RaycastMouse : MonoBehaviour {
                 RaycastHit2D hit_onSquare = Physics2D.GetRayIntersection(ray, Mathf.Infinity, 1 << layerMask_square);
                 if (hit_onSquare.collider != null)
                 {
+                    SquareMechanics_Gameboard squareMechanics = hit_onSquare.collider.gameObject.GetComponent<SquareMechanics_Gameboard>();
                     //press down release
-                    hit_onSquare.collider.gameObject.GetComponent<SquareMechanics_Gameboard>().PressRelease();
+                    squareMechanics.PressRelease();
                     pressSquare = null;
-
-                    GameSquareHit(hit_onSquare.collider.gameObject);
+                    GameSquareHit(squareMechanics);
                     squareHit = true;
                 }
 
@@ -82,19 +82,19 @@ public class RaycastMouse : MonoBehaviour {
         }
     }
 
-    public void GameSquareHit(GameObject square){
+    public void GameSquareHit(SquareMechanics_Gameboard squareMechanics){
 
         if (!gameboard.eyePickingMode)
         {
             //empty square non blocker
-            if (square.GetComponent<SquareMechanics_Gameboard>().number == 0)
+            if (squareMechanics.number == 0)
             {
 
                 //check if in switch mode
                 if (!switchButton.activated)
                 {
-                    CheckIfEmptySquareLucky(square);
-                    EmptySquareClicked(square);
+                    CheckIfEmptySquareLucky(squareMechanics);
+                    EmptySquareClicked(squareMechanics);
                 }
                 else
                 {
@@ -105,7 +105,7 @@ public class RaycastMouse : MonoBehaviour {
             }
 
             //blocker square
-            else if (square.GetComponent<SquareMechanics_Gameboard>().number == 5 && square.GetComponent<SquareMechanics_Gameboard>().blocker == true)
+            else if (squareMechanics.number == 5 && squareMechanics.blocker == true)
             {
                 //check if in switch mode
                 if (!switchButton.activated)
@@ -123,27 +123,26 @@ public class RaycastMouse : MonoBehaviour {
             {
                 if (switchButton.activated)
                 {
-                    OccupiedSquareClicked(square);
+                    OccupiedSquareClicked(squareMechanics);
                 }
             }
         }
         // in eye pick mode
         else
         {
-            if (square.GetComponent<SquareMechanics_Gameboard>().eyeMode)
+            if (squareMechanics.eyeMode)
             {
                 //Debug.LogWarning("good pick");
-                square.GetComponent<SquareMechanics_Gameboard>().EyeModeUpdate();
+                squareMechanics.EyeModeUpdate();
             }
         }
     }
 
-    private void CheckIfEmptySquareLucky(GameObject square) {
-        if (square.GetComponent<SquareMechanics_Gameboard>().luckyCoin == true) {
-            square.GetComponent<SquareMechanics_Gameboard>().luckyCoin = false;
-
-
-            square.GetComponent<SquareMechanics_Gameboard>().LuckyCoinFound(next.number);
+    private void CheckIfEmptySquareLucky(SquareMechanics_Gameboard squareMechanics) {
+        if (squareMechanics.luckyCoin == true) {
+            squareMechanics.luckyCoin = false;
+            
+            squareMechanics.LuckyCoinFound(next.number);
             Debug.Log("found lucky coin");
             gameboard.AddLuckyCoinToBoard();
         }
@@ -153,13 +152,13 @@ public class RaycastMouse : MonoBehaviour {
         Debug.Log("Blocker Square Clicked");
     }
 
-    private void OccupiedSquareClicked(GameObject square) {
+    private void OccupiedSquareClicked(SquareMechanics_Gameboard squareMechanics) {
         
 
-        if (square.GetComponent<SquareMechanics_Gameboard>().completed == false) {
+        if (squareMechanics.completed == false) {
 
             int number = nextBoard.GetFirstNumber();
-            int clickedNumber = square.GetComponent<SquareMechanics_Gameboard>().number;
+            int clickedNumber = squareMechanics.number;
             
 
             //blockers squares cant switch in from next board
@@ -170,7 +169,7 @@ public class RaycastMouse : MonoBehaviour {
                     //disable touch so user cant click out of swap while its animating
                     gameboard.touchEnabled = false;
                     switchButton.TurnOffEffect();
-                    StartCoroutine(SwapAnimation(clickedNumber, number, square));
+                    StartCoroutine(SwapAnimation(clickedNumber, number, squareMechanics));
                 }
             }
 
@@ -185,36 +184,35 @@ public class RaycastMouse : MonoBehaviour {
 
     }
 
-    IEnumerator SwapAnimation(int clickedNumber, int number, GameObject square)
+    IEnumerator SwapAnimation(int clickedNumber, int number, SquareMechanics_Gameboard squareMechanics)
     {
-
-
-        square.GetComponent<SquareMechanics_Gameboard>().MoveAlongRoute(swapDuration);
-        square.GetComponent<SquareMechanics_Gameboard>().HideConnections();
-        square.GetComponent<SquareMechanics_Gameboard>().WakeUpNeighbors();
-        next.MoveNextSquareAlongRoute(swapDuration,square);
+        
+        squareMechanics.MoveAlongRoute(swapDuration);
+        squareMechanics.HideConnections();
+        squareMechanics.WakeUpNeighbors();
+        next.MoveNextSquareAlongRoute(swapDuration, squareMechanics);
 
         SoundManager.SM.PlayOneShotSound("swoosh");
         yield return new WaitForSeconds(swapDuration);
-        SwapSquares(clickedNumber, number, square);
+        SwapSquares(clickedNumber, number, squareMechanics);
         gameboard.touchEnabled = true;
     }
 
-    private void SwapSquares(int clickedNumber, int number, GameObject square)
+    private void SwapSquares(int clickedNumber, int number, SquareMechanics_Gameboard squareMechanics)
     {
         nextBoard.SetFirstNumber(clickedNumber);
-        square.GetComponent<SquareMechanics_Gameboard>().ResetSquare_OnClick();
-        square.GetComponent<SquareMechanics_Gameboard>().number = number;
-        square.GetComponent<SquareMechanics_Gameboard>().SetSquareDisplay();
-        square.GetComponent<SquareMechanics_Gameboard>().CalculateConnections();
-        square.GetComponent<SquareMechanics_Gameboard>().RecalculateAdjescentSquares();
+        squareMechanics.ResetSquare_OnClick();
+        squareMechanics.number = number;
+        squareMechanics.SetSquareDisplay();
+        squareMechanics.CalculateConnections();
+        squareMechanics.RecalculateAdjescentSquares();
         switchButton.ReduceSwitchAmmount();
         gameboard.SaveBoardState();
         bool playSFX = false;
         switchButton.TurnOffSwitchMode(playSFX);
     }
 
-    private void EmptySquareClicked(GameObject square)
+    private void EmptySquareClicked(SquareMechanics_Gameboard squareMechanics)
     {
         if (!gameStarted)
         {
@@ -226,9 +224,9 @@ public class RaycastMouse : MonoBehaviour {
         if (number != 0)
         {
             nextBoard.RotateNextBoard();
-            square.GetComponent<SquareMechanics_Gameboard>().number = number;
-            square.GetComponent<SquareMechanics_Gameboard>().SetSquareDisplay();
-            square.GetComponent<SquareMechanics_Gameboard>().CalculateConnections();
+            squareMechanics.number = number;
+            squareMechanics.SetSquareDisplay();
+            squareMechanics.CalculateConnections();
         }
 
         if(!gameboard.eyePickingMode){

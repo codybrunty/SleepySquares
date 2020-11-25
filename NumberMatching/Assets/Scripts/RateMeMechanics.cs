@@ -38,8 +38,8 @@ public class RateMeMechanics : MonoBehaviour{
 #elif UNITY_IPHONE
         Application.OpenURL("itms-apps://itunes.apple.com/app/id1528662701");
         PlayerPrefs.SetInt("hasRated", 1);
-        hasRated = 1;
 #endif
+        hasRated = 1;
         HideRateButton();
     }
 

@@ -42,6 +42,11 @@ public class SwitchButton : MonoBehaviour{
     public bool ready = true;
     private bool addSwitches = true;
 
+    private Button mainButton;
+
+    private void Awake() {
+        mainButton = gameObject.GetComponent<Button>();
+    }
 
     private void Start() {
         switchAmmount = GameDataManager.GDM.currentSwitches;
@@ -119,11 +124,11 @@ public class SwitchButton : MonoBehaviour{
         resetButton.interactable = true;
         settingsButton.interactable = true;
         clearButton.interactable = true;
-        gameObject.GetComponent<Button>().interactable = true;
+        mainButton.interactable = true;
         StartCoroutine(EnableRaycastOnButton(resetButton));
         StartCoroutine(EnableRaycastOnButton(settingsButton));
         StartCoroutine(EnableRaycastOnButton(clearButton));
-        StartCoroutine(EnableRaycastOnButton(gameObject.GetComponent<Button>()));
+        StartCoroutine(EnableRaycastOnButton(mainButton));
     }
 
     IEnumerator EnableRaycastOnButton(Button button) {
@@ -135,7 +140,7 @@ public class SwitchButton : MonoBehaviour{
         resetButton.interactable = false;
         settingsButton.interactable = false;
         clearButton.interactable = false;
-        gameObject.GetComponent<Button>().interactable = false;
+        mainButton.interactable = false;
 
         gameObject.GetComponent<Image>().raycastTarget = false;
         clearButton.GetComponent<Image>().raycastTarget = false;
@@ -190,8 +195,6 @@ public class SwitchButton : MonoBehaviour{
     }
 
     private void AddSwitchAnimation(int number) {
-        //floatingText.text = ("+" + number.ToString());
-        //floatingText.gameObject.GetComponent<FloatingText>().FlashText();
         PopAnim();
     }
 
@@ -229,9 +232,9 @@ public class SwitchButton : MonoBehaviour{
 
 
     private void HighlightSwitchableSquares() {
-        for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++) {
+        for (int i = 0; i < gameBoard.gameBoardSquaresMechanics.Count; i++) {
             GameObject square = gameBoard.gameBoardSquares[i];
-            SquareMechanics_Gameboard squareInfo = square.GetComponent<SquareMechanics_Gameboard>();
+            SquareMechanics_Gameboard squareInfo = gameBoard.gameBoardSquaresMechanics[i];
             if (squareInfo.blocker != true && squareInfo.completed != true && squareInfo.number != 0 && squareInfo.number != nextSquare.number) {
                 HighlightSquare(square);
             }
@@ -240,9 +243,9 @@ public class SwitchButton : MonoBehaviour{
 
 
     private void DisableHighlightOnSwitchableSquares() {
-        for (int i = 0; i < gameBoard.gameBoardSquares.Count; i++) {
+        for (int i = 0; i < gameBoard.gameBoardSquaresMechanics.Count; i++) {
             GameObject square = gameBoard.gameBoardSquares[i];
-            SquareMechanics_Gameboard squareInfo = square.GetComponent<SquareMechanics_Gameboard>();
+            SquareMechanics_Gameboard squareInfo = gameBoard.gameBoardSquaresMechanics[i];
             UnHilightSquare(square);
         }
     }
@@ -430,14 +433,12 @@ public class SwitchButton : MonoBehaviour{
     {
         Disable_Score();
         Disable_Repair();
-        Disable_Hard();
     }
 
     private void Enable_UI_Colors()
     {
         Enable_Score();
         Enable_Repair();
-        Enable_Hard();
     }
 
     private void Enable_Repair() {
@@ -480,13 +481,4 @@ public class SwitchButton : MonoBehaviour{
         best_crown_dim.SetActive(true);
     }
 
-    private void Enable_Hard()
-    {
-        //.SetActive(false);
-    }
-
-    private void Disable_Hard()
-    {
-        //.SetActive(true);
-    }
 }

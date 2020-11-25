@@ -16,6 +16,12 @@ public class LuckyCoinReveal : MonoBehaviour
     private Vector3 startingPos;
     private Vector3 startingScale;
 
+    private SwitchButton switchButtonScript;
+
+    private void Awake() {
+        switchButtonScript = switchButton.GetComponent<SwitchButton>();
+    }
+
     private void Start()
     {
         startingPos = coinGRP.transform.position;
@@ -78,7 +84,7 @@ public class LuckyCoinReveal : MonoBehaviour
     }
 
     private void AddSwitches() {
-        switchButton.GetComponent<SwitchButton>().AddSwitches(1);
+        switchButtonScript.AddSwitches(1);
         SoundManager.SM.PlayOneShotSound("yahoo");
     }
 

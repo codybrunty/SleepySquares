@@ -9,7 +9,7 @@ public class CollectionColor_Text : MonoBehaviour{
     private TextMeshProUGUI mainText;
 
     private void Awake() {
-        mainText = gameObject.GetComponent<TextMeshProUGUI>();
+        SetMainText();
     }
 
     private void Start() {
@@ -17,7 +17,14 @@ public class CollectionColor_Text : MonoBehaviour{
     }
 
     public void GetColor() {
+        SetMainText();
         Color TextColor = CollectionManager.CM.GetUIColor(key);
         mainText.color = new Color(TextColor.r, TextColor.g, TextColor.b, mainText.color.a);
+    }
+
+    private void SetMainText() {
+        if (mainText == null) {
+            mainText = gameObject.GetComponent<TextMeshProUGUI>();
+        }
     }
 }

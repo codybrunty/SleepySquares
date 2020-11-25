@@ -8,11 +8,18 @@ public class CollectionColor_Sprite : MonoBehaviour{
     private SpriteRenderer mainSprite;
 
     private void Awake() {
-        mainSprite = gameObject.GetComponent<SpriteRenderer>();
+        SetMainSprite();
     }
 
     public void GetColor() {
+        SetMainSprite();
         Color spriteColor = CollectionManager.CM.GetUIColor(key);
         mainSprite.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, mainSprite.color.a);
+    }
+
+    private void SetMainSprite() {
+        if (mainSprite == null) {
+            mainSprite = gameObject.GetComponent<SpriteRenderer>();
+        }
     }
 }

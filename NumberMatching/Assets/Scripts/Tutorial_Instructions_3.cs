@@ -16,8 +16,9 @@ public class Tutorial_Instructions_3 : MonoBehaviour{
     [SerializeField] GameObject connection3 = default;
     [SerializeField] GameObject connection4 = default;
     [SerializeField] TutorialGoNext goNext = default;
-    [SerializeField] GameObject specialEffects1 = default;
-    [SerializeField] GameObject specialEffects2 = default;
+    [SerializeField] GameObject specialEffects_green = default;
+    [SerializeField] GameObject specialEffects_red= default;
+    [SerializeField] GameObject specialEffects_purple = default;
 
     [SerializeField] Tutorial_Dissapear green_d = default;
     [SerializeField] Tutorial_Dissapear green1_d = default;
@@ -133,16 +134,11 @@ public class Tutorial_Instructions_3 : MonoBehaviour{
 
     private void PlaySpecialEffects()
     {
-        Instantiate(specialEffects1, green.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, green.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects1, green1.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, green1.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects1, green2.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, green2.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects1, red.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, red.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects1, purple.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, purple.transform.position, Quaternion.identity, gameObject.transform);
+        Instantiate(specialEffects_green, green.transform.position, Quaternion.identity, green.transform);
+        Instantiate(specialEffects_green, green1.transform.position, Quaternion.identity, green1.transform);
+        Instantiate(specialEffects_green, green2.transform.position, Quaternion.identity, green2.transform);
+        Instantiate(specialEffects_red, red.transform.position, Quaternion.identity, red.transform);
+        Instantiate(specialEffects_purple, purple.transform.position, Quaternion.identity, purple.transform);
     }
 
     private void Pop(GameObject go)

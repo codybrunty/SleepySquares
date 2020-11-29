@@ -4753,12 +4753,12 @@ GameObject:
   - component: {fileID: 19928906}
   - component: {fileID: 3751880634159392642}
   m_Layer: 0
-  m_Name: SparkExplosion2D
+  m_Name: SparkExplosion2D 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &483154
 Transform:
   m_ObjectHideFlags: 0

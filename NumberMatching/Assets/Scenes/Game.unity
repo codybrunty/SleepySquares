@@ -296,6 +296,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42309236}
   m_CullTransparentMesh: 0
+--- !u!114 &66605993 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5040071018059241291, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &99564018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1650,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417744499}
   m_CullTransparentMesh: 0
+--- !u!1 &429775208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8740164292765319824, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &446761505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2041,7 +2059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 82.09985}
+  m_AnchoredPosition: {x: 0, y: 82.09961}
   m_SizeDelta: {x: 198.1, y: 409.0968}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &466111265
@@ -2570,6 +2588,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583756193}
   m_CullTransparentMesh: 0
+--- !u!1 &614784888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2143901840568941903, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+    type: 3}
+  m_PrefabInstance: {fileID: 8740164292858591822}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &653281406 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7278582455532711532, guid: be14d8a5f0bef4b4480bfaef19454b8b,
@@ -16631,8 +16655,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.6, y: 5}
-  m_SizeDelta: {x: 224.98672, y: 138.01193}
+  m_AnchoredPosition: {x: 1.6, y: 7.03}
+  m_SizeDelta: {x: 224.98672, y: 119.34334}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1853702012
 MonoBehaviour:
@@ -16692,7 +16716,7 @@ MonoBehaviour:
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -26.75
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -16877,6 +16901,10 @@ MonoBehaviour:
   isTestAd: 0
   switchButton: {fileID: 1591954444}
   settingsMenu: {fileID: 161507027}
+  adButton: {fileID: 66605993}
+  activeColor: {r: 0.3764706, g: 0.36078432, b: 0.53333336, a: 1}
+  dcImage: {fileID: 614784888}
+  playImage: {fileID: 429775208}
 --- !u!4 &1897348364
 Transform:
   m_ObjectHideFlags: 0
@@ -44934,11 +44962,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 446761509}
     m_Modifications:
+    - target: {fileID: 5040071018059241288, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.5529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040071018059241288, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040071018059241288, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.7137255
+      objectReference: {fileID: 0}
     - target: {fileID: 5040071018059241291, guid: 8810f81a827f7f34894a2c1f5f3ad219,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1897348363}
+    - target: {fileID: 8740164291244094071, guid: 8810f81a827f7f34894a2c1f5f3ad219,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8740164291610278634, guid: 8810f81a827f7f34894a2c1f5f3ad219,
         type: 3}
       propertyPath: splash

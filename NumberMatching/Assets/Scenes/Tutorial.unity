@@ -3229,9 +3229,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1294883936}
 --- !u!95 &84986392
 Animator:
   serializedVersion: 3
@@ -5319,9 +5316,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 2061180177}
 --- !u!95 &131359271
 Animator:
   serializedVersion: 3
@@ -6981,9 +6975,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1930988912}
 --- !u!95 &170442141
 Animator:
   serializedVersion: 3
@@ -7964,9 +7955,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 1975853708}
 --- !u!95 &212503266
 Animator:
   serializedVersion: 3
@@ -8524,9 +8512,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 1366823263}
 --- !u!95 &219809227
 Animator:
   serializedVersion: 3
@@ -12316,9 +12301,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 916603551}
 --- !u!95 &347812850
 Animator:
   serializedVersion: 3
@@ -12827,9 +12809,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1000983631}
 --- !u!95 &361567057
 Animator:
   serializedVersion: 3
@@ -12993,8 +12972,10 @@ MonoBehaviour:
   connection3: {fileID: 152226180}
   connection4: {fileID: 985936081}
   goNext: {fileID: 215177158}
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
+  specialEffects_green: {fileID: 157776, guid: 4aab0d4f58ee27943acd654ac9fb02f2, type: 3}
+  specialEffects_red: {fileID: 157776, guid: 734c275118f4a8f47a6625b1a1c09dab, type: 3}
+  specialEffects_purple: {fileID: 157776, guid: 5b96771ded1c66c42907f9948808e368,
+    type: 3}
   green_d: {fileID: 255500208}
   green1_d: {fileID: 1717400592}
   green2_d: {fileID: 99156849}
@@ -18065,9 +18046,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 865115086}
 --- !u!95 &572703472
 Animator:
   serializedVersion: 3
@@ -18353,9 +18331,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 0}
-  sleepingMouth: {fileID: 0}
-  mouth: {fileID: 0}
 --- !u!95 &580149315
 Animator:
   serializedVersion: 3
@@ -26390,9 +26365,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 1447430777}
 --- !u!95 &689368848
 Animator:
   serializedVersion: 3
@@ -29109,9 +29081,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 2078967099}
 --- !u!95 &771602461
 Animator:
   serializedVersion: 3
@@ -38095,9 +38064,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 1658095406}
 --- !u!95 &914179343
 Animator:
   serializedVersion: 3
@@ -39188,9 +39154,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 576887342}
 --- !u!95 &947676586
 Animator:
   serializedVersion: 3
@@ -39576,8 +39539,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -39643,6 +39604,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &959181978
 GameObject:
   m_ObjectHideFlags: 0
@@ -40863,9 +40825,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 2068361850}
 --- !u!95 &993893936
 Animator:
   serializedVersion: 3
@@ -41519,8 +41478,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -41586,6 +41543,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &1000983629
 GameObject:
   m_ObjectHideFlags: 0
@@ -42901,9 +42859,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1231282966}
 --- !u!95 &1039630968
 Animator:
   serializedVersion: 3
@@ -43618,9 +43573,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 0}
-  sleepingMouth: {fileID: 0}
-  mouth: {fileID: 0}
 --- !u!95 &1058351943
 Animator:
   serializedVersion: 3
@@ -44153,8 +44105,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -44220,6 +44170,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &1065072891
 GameObject:
   m_ObjectHideFlags: 0
@@ -49714,8 +49665,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -49781,6 +49730,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &1072552935
 GameObject:
   m_ObjectHideFlags: 0
@@ -50769,9 +50719,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 650006906}
 --- !u!95 &1112092218
 Animator:
   serializedVersion: 3
@@ -51784,8 +51731,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -51851,6 +51796,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &1138823460
 GameObject:
   m_ObjectHideFlags: 0
@@ -52477,9 +52423,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1804847}
 --- !u!95 &1153643913
 Animator:
   serializedVersion: 3
@@ -53769,9 +53712,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 639284686}
 --- !u!95 &1204234643
 Animator:
   serializedVersion: 3
@@ -60276,9 +60216,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 720219946}
 --- !u!95 &1253660686
 Animator:
   serializedVersion: 3
@@ -63588,9 +63525,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 1310132783}
 --- !u!95 &1354159391
 Animator:
   serializedVersion: 3
@@ -70084,9 +70018,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 0}
-  sleepingMouth: {fileID: 0}
-  mouth: {fileID: 0}
 --- !u!95 &1385314761
 Animator:
   serializedVersion: 3
@@ -71274,9 +71205,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 571778223}
 --- !u!95 &1431160530
 Animator:
   serializedVersion: 3
@@ -71380,9 +71308,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 0}
-  sleepingMouth: {fileID: 0}
-  mouth: {fileID: 0}
 --- !u!95 &1431380558
 Animator:
   serializedVersion: 3
@@ -73424,9 +73349,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 1360644863}
 --- !u!95 &1494602968
 Animator:
   serializedVersion: 3
@@ -75225,9 +75147,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 818899887}
 --- !u!95 &1534582567
 Animator:
   serializedVersion: 3
@@ -75514,8 +75433,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -75581,6 +75498,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &1544417372
 GameObject:
   m_ObjectHideFlags: 0
@@ -82954,9 +82872,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 1327948973}
 --- !u!95 &1616055869
 Animator:
   serializedVersion: 3
@@ -84946,9 +84861,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 1793908829}
 --- !u!95 &1656350030
 Animator:
   serializedVersion: 3
@@ -85969,9 +85881,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 0}
-  sleepingMouth: {fileID: 0}
-  mouth: {fileID: 0}
 --- !u!95 &1681627473
 Animator:
   serializedVersion: 3
@@ -93995,9 +93904,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 1939254359}
 --- !u!95 &1963990015
 Animator:
   serializedVersion: 3
@@ -94129,9 +94035,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 2116851420}
 --- !u!95 &1965605078
 Animator:
   serializedVersion: 3
@@ -95391,9 +95294,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 962697321}
 --- !u!95 &2010314913
 Animator:
   serializedVersion: 3
@@ -101263,9 +101163,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 106453377}
 --- !u!95 &2052027692
 Animator:
   serializedVersion: 3
@@ -103475,8 +103372,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -103542,6 +103437,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!1 &2132816237
 GameObject:
   m_ObjectHideFlags: 0
@@ -115207,9 +115103,6 @@ MonoBehaviour:
     endPosition: {x: 0.2197, y: 0.3005, z: 0.01789474}
     endScale: {x: 0.4111533, y: 0.2054259, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 8821ebbba52c0b148b6387f2af4778bc, type: 3}
-  mouth: {fileID: 1221630281136069952}
 --- !u!114 &770076572041717125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115804,9 +115697,6 @@ MonoBehaviour:
     endPosition: {x: 0.0132, y: 0.2078, z: 0.01789474}
     endScale: {x: 0.8336943, y: 0.4747294, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 33134115bc4e4e445bbe06fb0847b183, type: 3}
-  mouth: {fileID: 5647252939495948722}
 --- !u!212 &1221630281136069952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -116136,8 +116026,6 @@ MonoBehaviour:
   zDelayTimeMin: 0.1
   zDelayTimeMax: 10
   zzzTime: 8
-  specialEffects1: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
-  specialEffects2: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
   blocker: 0
   ray: {fileID: 89918887}
   shaketime: 0.75
@@ -116203,6 +116091,7 @@ MonoBehaviour:
   dimMask: {fileID: 21300000, guid: 76be19286ac1807499e9c53f05cddcbe, type: 3}
   dimMaskCutOut: {fileID: 21300000, guid: 9bb6e57eccf06794fb4ad421c65508b5, type: 3}
   sleepColor: {r: 0.83137256, g: 0.9411765, b: 1, a: 0.5294118}
+  scoringEffect: []
 --- !u!4 &1290520665054937683
 Transform:
   m_ObjectHideFlags: 0
@@ -126554,9 +126443,6 @@ MonoBehaviour:
     endPosition: {x: 0.2206, y: -0.1173, z: 0.01789474}
     endScale: {x: 0.4107331, y: 0.15816, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 4336881a251616944af98ccfcb285ee1, type: 3}
-  mouth: {fileID: 4173731750446123745}
 --- !u!114 &5994263282884312621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127493,9 +127379,6 @@ MonoBehaviour:
     endPosition: {x: 0.2306, y: 0.1019, z: 0.01789474}
     endScale: {x: 0.4215835, y: 0.3313107, z: 0.9578949}
   blinkSpeed: 0.25
-  awakeMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  sleepingMouth: {fileID: 21300000, guid: 142e48bc8c08aa94fb28dd60795e34ab, type: 3}
-  mouth: {fileID: 5184308679694102579}
 --- !u!61 &6605812884691090960
 BoxCollider2D:
   m_ObjectHideFlags: 0

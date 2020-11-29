@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
 
@@ -16,6 +17,17 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
     [SerializeField] SwitchButton switchButton = default;
     [SerializeField] SettingsMenu settingsMenu = default;
 
+    [SerializeField] Button adButton = default;
+    [SerializeField] Color activeColor = default;
+    [SerializeField] GameObject dcImage = default;
+    [SerializeField] GameObject playImage = default;
+    private bool buttonReady = false;
+    private Image adButtonImage;
+
+    private void Awake() {
+        adButtonImage = adButton.GetComponent<Image>();
+    }
+
     private void Start() {
         GetPlatformID();
         Advertisement.AddListener(this);
@@ -29,6 +41,22 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
 #if UNITY_ANDROID
         platformID = playStoreID;
 #endif
+    }
+
+    private void Update() {
+        if (!buttonReady) {
+            if (!Advertisement.IsReady(rewardedAd)) {
+                AdButtonActive();
+                buttonReady = true;
+            }
+        }
+    }
+
+    private void AdButtonActive() {
+        adButton.interactable = true;
+        adButtonImage.color = activeColor;
+        dcImage.SetActive(false);
+        playImage.SetActive(true);
     }
 
     private void InitializeAdManager() {

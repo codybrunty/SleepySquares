@@ -21066,8 +21066,8 @@ MonoBehaviour:
   zDelayTimeMax: 30
   zzzTime: 8
   floatingGRP: {fileID: 8825627978700756731}
-  specialEffects1: {fileID: 157776, guid: 2c7b7565e27ae49babbf6f2f97d6219c, type: 3}
-  specialEffects2: {fileID: 195900, guid: ec61825cb06be72419bb09eee03af08c, type: 3}
+  specialEffects1: {fileID: 157776, guid: d2c02accd7e6bc646b69729d95e86510, type: 3}
+  specialEffects2: {fileID: 195900, guid: 242d0253eee46844b8c76e33f9051a22, type: 3}
   shakeTime: 0.75
   shakeMag: 0.2
   ease:

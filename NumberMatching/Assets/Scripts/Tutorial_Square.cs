@@ -43,9 +43,6 @@ public class Tutorial_Square : MonoBehaviour
     public float zDelayTimeMax;
     public float zzzTime;
 
-
-    public GameObject specialEffects1 = default;
-    public GameObject specialEffects2 = default;
     private Quaternion squareRotation;
     private Vector3 squarePosition;
     private Vector3 squareScale;
@@ -77,6 +74,8 @@ public class Tutorial_Square : MonoBehaviour
     [SerializeField] Sprite dimMask = default;
     [SerializeField] Sprite dimMaskCutOut = default;
     public Color sleepColor;
+    [SerializeField] List<GameObject> scoringEffect = new List<GameObject>();
+    private int number4Effects = 0;
 
 
     private void Start()
@@ -394,6 +393,7 @@ public class Tutorial_Square : MonoBehaviour
     }
 
     public void ResetSquare_OnCompletion_Before() {
+        number4Effects = number;
         number = 0;
         adjescentConnections = new List<bool> { false, false, false, false };
         completed = false;
@@ -509,8 +509,9 @@ public class Tutorial_Square : MonoBehaviour
 
     private void PlaySpecialEffects()
     {
-        Instantiate(specialEffects1, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+        //Instantiate(specialEffects1, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+        GameObject effect1 = (GameObject)Instantiate(scoringEffect[number4Effects - 1], gameObject.transform.position + new Vector3(0f, 0f, -1f), Quaternion.identity, gameObject.transform);
+        effect1.transform.Rotate(new Vector3(210f, 0f, 0f));
     }
 
     private void PopAwayDone()

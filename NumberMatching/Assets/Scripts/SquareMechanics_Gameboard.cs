@@ -39,7 +39,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     private Coroutine zCoroutine = null;
     public GameObject floatingGRP = default;
     public GameObject specialEffects1 = default;
-    public GameObject specialEffects2 = default;
     public float shakeTime = 0f;
     public float shakeMag = 0f;
     public AnimationCurve ease;
@@ -143,7 +142,7 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
         else {
             int randomPointsAdded = UnityEngine.Random.Range((nextNumber * luckyCoinMinMultiplier), (nextNumber*luckyCoinMaxMultiplier)+1);
             PlaySpecialEffects();
-            PlaySpecialEffects();
+            //PlaySpecialEffects();
             gameboard.AddLuckyPoints(randomPointsAdded);
             LuckyPointsPopUp(randomPointsAdded,nextNumber);
         }
@@ -938,7 +937,6 @@ public class SquareMechanics_Gameboard : MonoBehaviour {
     private void PlaySpecialEffects()
     {
         Instantiate(specialEffects1, gameObject.transform.position, Quaternion.identity, gameObject.transform);
-        Instantiate(specialEffects2, gameObject.transform.position,Quaternion.identity, gameObject.transform);
     }
 
     private void PlayScoringEffects() {

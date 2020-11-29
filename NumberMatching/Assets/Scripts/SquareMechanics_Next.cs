@@ -76,10 +76,10 @@ public class SquareMechanics_Next : MonoBehaviour{
             }
             else {
                 if (resultNumber == 4) {
-                    //25% chance of changing a 4
+                    //20% chance of changing a 4
                     int randomNumber = UnityEngine.Random.Range(1, 5);
                     if (randomNumber == 2) {
-                        //Debug.LogWarning("4 Square Switch Up");
+                        //Debug.LogWarning("4 Square Switched Out");
                         randomMax = 4;
                         resultNumber = UnityEngine.Random.Range(1, randomMax);
                     }

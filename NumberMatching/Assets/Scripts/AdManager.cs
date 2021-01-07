@@ -19,10 +19,12 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
 
     [SerializeField] Button adButton = default;
     [SerializeField] Color activeColor = default;
+    [SerializeField] Color deactiveColor = default;
     [SerializeField] GameObject dcImage = default;
     [SerializeField] GameObject playImage = default;
-    private bool buttonReady = false;
     private Image adButtonImage;
+    public bool m_bIsHearts = false;
+    public DailyManager m_oDailyManager;
 
     private void Awake() {
         adButtonImage = adButton.GetComponent<Image>();
@@ -43,29 +45,33 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
 #endif
     }
 
-    private void Update() {
-        if (!buttonReady) {
-            if (!Advertisement.IsReady(rewardedAd)) {
-                AdButtonActive();
-                buttonReady = true;
-            }
-        }
-    }
-
-    private void AdButtonActive() {
+    public void AdButtonActive() {
         adButton.interactable = true;
         adButtonImage.color = activeColor;
         dcImage.SetActive(false);
         playImage.SetActive(true);
     }
 
+    public void AdButtonDeactive() {
+        adButton.interactable = false;
+        adButtonImage.color = deactiveColor;
+        dcImage.SetActive(true);
+        playImage.SetActive(false);
+    }
+
     private void InitializeAdManager() {
         Advertisement.Initialize(platformID, isTestAd);
     }
 
-    public void PlayRewardedAd() {
+    public void PlayRewardedAd_store() {
         if (!Advertisement.IsReady(rewardedAd)) { return; }
         Advertisement.Show(rewardedAd);
+    }
+    public void PlayRewardedAd_hearts() {
+        m_bIsHearts = true;
+        if (!Advertisement.IsReady(rewardedAd)) { return; }
+        Advertisement.Show(rewardedAd);
+    
     }
 
 
@@ -95,14 +101,27 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
     }
 
     private void RewardPlayer() {
-        Debug.Log("Watched Ad Free 2 switches");
-        settingsMenu.ExitSettings();
-        switchButton.AddSwitches(2);
-        SoundManager.SM.PlayOneShotSound("yahoo");
+        if (m_bIsHearts) {
+            m_bIsHearts = false;
+            Debug.Log("Watched Ad for 3 hearts");
+            m_oDailyManager.ContinueDaily();
 
-        //for playfab tracking
-        int counter = PlayerPrefs.GetInt("Ads_Watched", 0);
-        counter++;
-        PlayerPrefs.SetInt("Ads_Watched", counter);
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Ads_Watched_Daily", 0);
+            counter++;
+            PlayerPrefs.SetInt("Ads_Watched_Daily", counter);
+        }
+        else {
+            Debug.Log("Watched Ad Free 2 switches");
+            settingsMenu.ExitSettings();
+            switchButton.AddSwitches(2);
+            SoundManager.SM.PlayOneShotSound("yahoo");
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Ads_Watched", 0);
+            counter++;
+            PlayerPrefs.SetInt("Ads_Watched", counter);
+        }
     }
 }

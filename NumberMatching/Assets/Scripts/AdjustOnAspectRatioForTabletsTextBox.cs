@@ -10,8 +10,9 @@ public class AdjustOnAspectRatioForTabletsTextBox : MonoBehaviour
 
         if (testAspect < 1.45)
         {
-            Vector3 pos = gameObject.transform.position;
-            gameObject.transform.position = new Vector3(pos.x, pos.y - 27f, pos.z);
+            RectTransform rt = gameObject.GetComponent<RectTransform>();
+            Vector3 pos = rt.anchoredPosition;
+            rt.anchoredPosition = new Vector3(pos.x, pos.y - 48f, pos.z);
             gameObject.transform.localScale = new Vector3(.9f,.9f,1f);
         }
 

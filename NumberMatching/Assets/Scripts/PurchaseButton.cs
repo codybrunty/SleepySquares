@@ -13,6 +13,7 @@ public class PurchaseButton : MonoBehaviour{
     [SerializeField] TextMeshProUGUI ammountText = default;
     [SerializeField] Image dc = default;
     [SerializeField] Color activeColor = default;
+    [SerializeField] Color deactiveColor = default;
 
     [SerializeField] Button mainButton = default;
     [SerializeField] Image mainButtonImage = default;
@@ -20,7 +21,7 @@ public class PurchaseButton : MonoBehaviour{
 
     private void Awake() {
         UpdateSwitchAmmountDisplay();
-        StartCoroutine(LoadPrice());
+        //StartCoroutine(LoadPrice());
     }
 
     private void UpdateSwitchAmmountDisplay() {
@@ -45,26 +46,31 @@ public class PurchaseButton : MonoBehaviour{
 
         switch (purchaseType) {
             case PurchaseType.swap_30:
-                ButtonActiveMode();
                 loadedPrice = IAPManager.instance.GetProductPriceFromStore(IAPManager.instance.swap_30);
                 break;
             case PurchaseType.swap_75:
-                ButtonActiveMode();
                 loadedPrice = IAPManager.instance.GetProductPriceFromStore(IAPManager.instance.swap_75);
                 break;
             case PurchaseType.swap_200:
-                ButtonActiveMode();
                 loadedPrice = IAPManager.instance.GetProductPriceFromStore(IAPManager.instance.swap_200);
                 break;
         }
         priceText.text = loadedPrice;
     }
 
-    private void ButtonActiveMode() {
+    public void ButtonActiveMode() {
         dc.gameObject.SetActive(false);
         mainButton.interactable = true;
-        mainText.SetActive(true);
         mainButtonImage.color = activeColor;
+        mainText.SetActive(true);
+        StartCoroutine(LoadPrice());
+    }
+
+    public void ButtonDeactiveMode() {
+        dc.gameObject.SetActive(true);
+        mainButton.interactable = false;
+        mainButtonImage.color = deactiveColor;
+        mainText.SetActive(false);
     }
 
     public void PurchaseButtonOnClick() {

@@ -8,24 +8,9 @@ public class NotificationSystem : MonoBehaviour
     [SerializeField] Image alert = default;
     [SerializeField] GameObject ScaleGRP = default;
 
-    private void Start()
+    public void ActivateNotification()
     {
-        CheckAlertStatus();
-    }
-
-    public void CheckAlertStatus()
-    {
-        alert.gameObject.SetActive(false);
-        int trophyIndex = PlayerPrefs.GetInt("TrophyIndex", 0);
-
-        if (trophyIndex + 1 >= 3)
-        {
-            int playedHardMode = PlayerPrefs.GetInt("PlayedHardMode", 0);
-            if (playedHardMode == 0)
-            {
-                StartCoroutine(ShowAlert());
-            }
-        }
+        StartCoroutine(ShowAlert());
     }
 
     IEnumerator ShowAlert()
@@ -34,5 +19,9 @@ public class NotificationSystem : MonoBehaviour
         alert.gameObject.SetActive(true);
         SoundManager.SM.PlayOneShotSound("yahoo");
         iTween.PunchScale(ScaleGRP, new Vector3(2f, 2f, 2f), 0.75f);
+    }
+
+    public void HideAlert() {
+        alert.gameObject.SetActive(false);
     }
 }

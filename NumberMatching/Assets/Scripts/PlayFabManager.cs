@@ -106,6 +106,9 @@ public class PlayFabManager : MonoBehaviour
     public int Purchase_200;
     public int TimePlayed;
     public int TimePlayed_HM;
+    public int Ads_Watched_Daily;
+    public int Daily_Complete;
+    public int Daily_Failed;
 
     public void SetPlayfabPlayerStatistics()
     {
@@ -130,30 +133,35 @@ public class PlayFabManager : MonoBehaviour
             new StatisticUpdate { StatisticName = "Purchase_75", Value = Purchase_75 },
             new StatisticUpdate { StatisticName = "Purchase_200", Value = Purchase_200 },
             new StatisticUpdate { StatisticName = "TimePlayed", Value = TimePlayed },
-            new StatisticUpdate { StatisticName = "TimePlayed_HM", Value = TimePlayed_HM },}
-            },
+            new StatisticUpdate { StatisticName = "TimePlayed_HM", Value = TimePlayed_HM },
+            new StatisticUpdate { StatisticName = "Ads_Watched_Daily", Value = Ads_Watched_Daily },
+            new StatisticUpdate { StatisticName = "Daily_Complete", Value = Daily_Complete },
+            new StatisticUpdate { StatisticName = "Daily_Failed", Value = Daily_Failed },}
+        },
         result => { Debug.Log("User statistics updated"); },
         error => { Debug.LogError(error.GenerateErrorReport()); });
     }
 
-    public void GetLocalUserStatistics()
-    {
-    Trophy_Level = PlayerPrefs.GetInt("TrophyIndex", 0) + 1;
-    Score = GameDataManager.GDM.currentPoints;
-    HighScore = GameDataManager.GDM.HighScore_AllTime;
-    GameOver = PlayerPrefs.GetInt("GameOver", 0);
-    Score_HM = GameDataManager.GDM.HM_currentPoints;
-    HighScore_HM = GameDataManager.GDM.HardModeHighScore_AllTime;
-    GameOver_HM = PlayerPrefs.GetInt("GameOver_HM", 0);
-    Swaps = GameDataManager.GDM.currentSwitches;
-    Swaps_Used = PlayerPrefs.GetInt("Swaps_Used", 0);
-    Swaps_Found = PlayerPrefs.GetInt("Swaps_Found", 0);
-    Ads_Watched = PlayerPrefs.GetInt("Ads_Watched", 0);
-    Purchase_30 = PlayerPrefs.GetInt("Purchase_30", 0);
-    Purchase_75 = PlayerPrefs.GetInt("Purchase_75", 0);
-    Purchase_200 = PlayerPrefs.GetInt("Purchase_200", 0);
-    TimePlayed = Convert.ToInt32(PlayerPrefs.GetFloat("TimePlayed", 0));
-    TimePlayed_HM = Convert.ToInt32(PlayerPrefs.GetFloat("TimePlayed_HM", 0));
+    public void GetLocalUserStatistics(){
+        Trophy_Level = PlayerPrefs.GetInt("TrophyIndex", 0) + 1;
+        Score = GameDataManager.GDM.currentPoints;
+        HighScore = GameDataManager.GDM.HighScore_AllTime;
+        GameOver = PlayerPrefs.GetInt("GameOver", 0);
+        Score_HM = GameDataManager.GDM.HM_currentPoints;
+        HighScore_HM = GameDataManager.GDM.HardModeHighScore_AllTime;
+        GameOver_HM = PlayerPrefs.GetInt("GameOver_HM", 0);
+        Swaps = GameDataManager.GDM.currentSwitches;
+        Swaps_Used = PlayerPrefs.GetInt("Swaps_Used", 0);
+        Swaps_Found = PlayerPrefs.GetInt("Swaps_Found", 0);
+        Ads_Watched = PlayerPrefs.GetInt("Ads_Watched", 0);
+        Purchase_30 = PlayerPrefs.GetInt("Purchase_30", 0);
+        Purchase_75 = PlayerPrefs.GetInt("Purchase_75", 0);
+        Purchase_200 = PlayerPrefs.GetInt("Purchase_200", 0);
+        TimePlayed = Convert.ToInt32(PlayerPrefs.GetFloat("TimePlayed", 0));
+        TimePlayed_HM = Convert.ToInt32(PlayerPrefs.GetFloat("TimePlayed_HM", 0));
+        Ads_Watched_Daily = PlayerPrefs.GetInt("Ads_Watched_Daily", 0);
+        Daily_Complete = PlayerPrefs.GetInt("Daily_Complete", 0);
+        Daily_Failed = PlayerPrefs.GetInt("Daily_Failed", 0);
     }
     #endregion
 
@@ -178,14 +186,14 @@ public class PlayFabManager : MonoBehaviour
         int localTrophyLevel = PlayerPrefs.GetInt("TrophyIndex", 0) + 1;
         if (playfabTrophyLevel > localTrophyLevel) {
             Debug.Log("Local Data Lost");
-            Debug.Log("playfab trophy: " + playfabTrophyLevel);
-            Debug.Log("local trophy: " + localTrophyLevel);
+            //Debug.Log("playfab trophy: " + playfabTrophyLevel);
+            //Debug.Log("local trophy: " + localTrophyLevel);
             LoadPlayfabStatisticsIntoGameData(result);
         }
         else {
             Debug.Log("Local Data Good");
-            Debug.Log("playfab trophy: " + playfabTrophyLevel);
-            Debug.Log("local trophy: " + localTrophyLevel);
+            //Debug.Log("playfab trophy: " + playfabTrophyLevel);
+            //Debug.Log("local trophy: " + localTrophyLevel);
         }
     }
 
@@ -246,6 +254,15 @@ public class PlayFabManager : MonoBehaviour
                 case "TimePlayed_HM":
                     float tp_hm = (float)stat.Value;
                     PlayerPrefs.SetFloat("TimePlayed_HM", tp_hm);
+                    break;
+                case "Ads_Watched_Daily":
+                    PlayerPrefs.SetInt("Ads_Watched_Daily", stat.Value);
+                    break;
+                case "Daily_Complete":
+                    PlayerPrefs.SetInt("Daily_Complete", stat.Value);
+                    break;
+                case "Daily_Failed":
+                    PlayerPrefs.SetInt("Daily_Failed", stat.Value);
                     break;
                 default:
                     break;

@@ -39,7 +39,7 @@ public class GameOverPanel : MonoBehaviour{
     }
 
     private void SetBGImage() {
-        if (gameboard.hardModeOn == 1) {
+        if (gameboard.hardModeOn == 1 && gameboard.DailyModeOn==false) {
             resultsScren.sprite = bg_hard;
         }
         else {

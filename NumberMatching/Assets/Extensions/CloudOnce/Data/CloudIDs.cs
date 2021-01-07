@@ -66,6 +66,26 @@ namespace CloudOnce
 #endif
                 }
             }
+
+            public static string DailyHighScore
+            {
+                get
+                {
+#if UNITY_ANDROID && !UNITY_EDITOR
+#if CLOUDONCE_GOOGLE
+                    return "CgkI1a-4sNcXEAIQBA";
+#else
+                    return string.Empty;
+#endif
+#elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
+                    return "dailyhighscore.001";
+#elif UNITY_EDITOR
+                    return "DailyHighScore";
+#else
+                    return string.Empty;
+#endif
+                }
+            }
         }
     }
 }

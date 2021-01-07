@@ -5,29 +5,29 @@ using TMPro;
 
 public class HardModeTextMechanics : MonoBehaviour{
 
-    private SpriteRenderer hardmodeImage;
+    private SpriteRenderer flagImage;
+    public GameBoardMechanics gameboard;
+    public List<Sprite> flags = new List<Sprite>();
+    public DailyManager m_oDailyManager;
+    public BestScoreIcon m_oBestScoreIcon;
+
 
     private void Start() {
-        hardmodeImage = gameObject.GetComponent<SpriteRenderer>();
+        flagImage = gameObject.GetComponent<SpriteRenderer>();
         UpdateHardText();
     }
 
     public void UpdateHardText() {
-        if (GameDataManager.GDM.hardModeOn == 1) {
-            TurnHardModeImageOn();
+        if (gameboard.DailyModeOn) {
+            flagImage.sprite = flags[2];
+            m_oDailyManager.EnableHearts();
+            m_oBestScoreIcon.EnableArrow();
         }
         else {
-            TurnHardModeImageOff();
+            flagImage.sprite = flags[GameDataManager.GDM.hardModeOn];
+            m_oDailyManager.DisableHearts();
+            m_oBestScoreIcon.EnableCrown();
         }
     }
 
-    private void TurnHardModeImageOn() {
-        Color newColorImage = new Color(hardmodeImage.color.r, hardmodeImage.color.g, hardmodeImage.color.b, 1f);
-        hardmodeImage.color = newColorImage;
-    }
-
-    private void TurnHardModeImageOff() {
-        Color newColorImage = new Color(hardmodeImage.color.r, hardmodeImage.color.g, hardmodeImage.color.b, 0f);
-        hardmodeImage.color = newColorImage;
-    }
 }

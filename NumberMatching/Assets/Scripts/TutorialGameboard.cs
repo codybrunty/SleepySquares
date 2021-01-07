@@ -23,7 +23,6 @@ public class TutorialGameboard : MonoBehaviour
     [SerializeField] GameObject gameboardScaleGroup = default;
 
     [SerializeField] GameObject gameOverEffect=default;
-    [SerializeField] GameObject gameOverEffect2 = default;
     [SerializeField] GameObject gameOverEffect3 = default;
     [SerializeField] GameObject gameOverEffectPosition1GO = default;
     [SerializeField] GameObject gameOverEffectPosition2GO = default;
@@ -85,7 +84,9 @@ public class TutorialGameboard : MonoBehaviour
         {
             update2 = true;
             MoveSwapButtonIntoPlace();
+
         }
+
     }
 
     private void MoveSwapButtonIntoPlace()
@@ -277,6 +278,7 @@ public class TutorialGameboard : MonoBehaviour
             iTween.ScaleTo(completeList[i].GetComponent<Tutorial_Square>().floatingGRP, hash);
         }
 
+
         yield return new WaitForSeconds(boardScoreSquareClearDuration);
 
         for (int i = 0; i < completeList.Count; i++)
@@ -450,17 +452,25 @@ public class TutorialGameboard : MonoBehaviour
     }
     IEnumerator ExplosionEffects()
     {
-        Instantiate(gameOverEffect, gameOverEffectPosition1, Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect2, gameOverEffectPosition1, Quaternion.identity, gameObject.transform);
+        GameObject effect1 = Instantiate(gameOverEffect, gameOverEffectPosition1, Quaternion.identity, gameObject.transform)as GameObject;
+        effect1.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect2 = Instantiate(gameOverEffect, gameOverEffectPosition1, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect2.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition2, Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition2, Quaternion.identity, gameObject.transform);
+        GameObject effect3 = Instantiate(gameOverEffect, gameOverEffectPosition2, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect3.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect4 = Instantiate(gameOverEffect, gameOverEffectPosition2, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect4.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition3, Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition3, Quaternion.identity, gameObject.transform);
+        GameObject effect5 = Instantiate(gameOverEffect, gameOverEffectPosition3, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect5.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect6 = Instantiate(gameOverEffect, gameOverEffectPosition3, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect6.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition4, Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition4, Quaternion.identity, gameObject.transform);
+        GameObject effect7 = Instantiate(gameOverEffect, gameOverEffectPosition4, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect7.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect8 = Instantiate(gameOverEffect, gameOverEffectPosition4, Quaternion.identity, gameObject.transform) as GameObject; ;
+        effect8.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
     }
 
     private void ScaleSquares()

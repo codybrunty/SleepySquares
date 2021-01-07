@@ -19,6 +19,7 @@ public class RateMeMechanics : MonoBehaviour{
             {
                 HideRateButton();
             }
+
         }
         else
         {
@@ -33,12 +34,10 @@ public class RateMeMechanics : MonoBehaviour{
 
 #if UNITY_ANDROID
         Application.OpenURL("market://details?id=" + Application.identifier);
-        PlayerPrefs.SetInt("hasRated", 1);
-
 #elif UNITY_IPHONE
         Application.OpenURL("itms-apps://itunes.apple.com/app/id1528662701");
-        PlayerPrefs.SetInt("hasRated", 1);
 #endif
+        PlayerPrefs.SetInt("hasRated", 1);
         hasRated = 1;
         HideRateButton();
     }

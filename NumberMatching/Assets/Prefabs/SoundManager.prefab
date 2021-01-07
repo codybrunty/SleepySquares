@@ -219,3 +219,15 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: LoseHeart
+    clip: {fileID: 8300000, guid: e63871bcec25a974b9db8b82d95a9617, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: GainHearts
+    clip: {fileID: 8300000, guid: db2fbcbcae1256c4d90f13f9466ef696, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

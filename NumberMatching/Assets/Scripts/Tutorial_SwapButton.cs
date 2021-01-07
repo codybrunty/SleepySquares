@@ -132,6 +132,8 @@ public class Tutorial_SwapButton : MonoBehaviour
         switchBG.SetActive(false);
         TurnOffGlow();
 
+
+
         if (disabledSwap == false)
         {
             EnableSwapButton();
@@ -141,19 +143,21 @@ public class Tutorial_SwapButton : MonoBehaviour
             }
         }
 
-        if (gameBoard.endingSeq == true)
-        {
-            gameBoard.instructions_ending1.GetComponent<TypewriterEffect>().index = 0;
-            gameBoard.instructions_ending1.SetActive(true);
-        }
+
 
         InactiveColors();
         DisableHighlightOnSwitchableSquares();
-
         instructions_swapmode.SetActive(false);
-
         square_rotationGroup.StopSwitchNextSquareMovement();
-
+        
+        if (gameBoard.endingSeq == true) {
+            gameBoard.instructions_ending1.GetComponent<TypewriterEffect>().index = 0;
+            gameBoard.instructions_ending1.SetActive(true);
+        }
+        else {
+            instructions.GetComponent<TypewriterEffect>().index = 2;
+            instructions.SetActive(true);
+        }
 
         if (tutorialBeginingMode)
         {

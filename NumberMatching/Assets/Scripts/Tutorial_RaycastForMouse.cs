@@ -12,6 +12,8 @@ public class Tutorial_RaycastForMouse : MonoBehaviour
     public float swapDuration = 1f;
     private bool squareHit = false;
     [SerializeField] Tutorial_Next_Square next = default;
+    [SerializeField] GameObject instructions_swap = default;
+
 
     private void Update()
     {
@@ -150,6 +152,7 @@ public class Tutorial_RaycastForMouse : MonoBehaviour
         switchButton.ReduceSwitchAmmount();
         nextBoard.ColorDisplay();
         switchButton.SwapButtonOnClick(false);
+        instructions_swap.SetActive(false);
     }
 
     private void EmptyTuteSquareClicked(GameObject square)

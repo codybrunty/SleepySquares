@@ -70,7 +70,6 @@ public class GameBoardMechanics : MonoBehaviour
     public float shakeTime = 1f;
     public float shakeMaxMagnitude = .175f;
     private Vector3 gameboardOrgScale;
-    [SerializeField] GameObject gameOverEffect = default;
     [SerializeField] GameObject gameOverEffect2 = default;
 
     [SerializeField] GameObject gameOverEffectPosition1GO = default;
@@ -119,7 +118,16 @@ public class GameBoardMechanics : MonoBehaviour
 
     private BoardClearCommand boardClearCommand;
     private GameBoardBGMovement gbMovement;
+    public bool DailyModeOn = false;
 
+    public int dailyDesignIndex;
+    public List<DailyDesign> dailyDesigns = new List<DailyDesign>();
+    public DailyManager m_oDailyManager;
+    private List<int> dailyGoalScores = new List<int> { 150, 175, 200, 225, 250, 275, 300 };
+    //private List<int> dailyGoalScores = new List<int> { 50, 50, 50, 50, 50, 50, 50 };
+    public int dailyGoalScoreIndex;
+    public BestScoreIcon m_oBestScoreIcon;
+    public TargetReward m_oTargetReward;
 
     #region Start
     private void Awake()
@@ -137,8 +145,8 @@ public class GameBoardMechanics : MonoBehaviour
         SetBoardBaseColor();
         SetBoardState();
         gameboardOrgScale = gameboardScaleGroup.transform.localScale;
-        //PrintSquarePositions();
     }
+
     #endregion
 
     #region Reset Board State
@@ -162,6 +170,7 @@ public class GameBoardMechanics : MonoBehaviour
         switchButton.UpdateSwitchAmmountDisplay();
 
         hardModeOn = GameDataManager.GDM.hardModeOn;
+        hardText.UpdateHardText();
         score = 0;
         UpdateScoreDiplay();
         GetHighScore();
@@ -173,7 +182,7 @@ public class GameBoardMechanics : MonoBehaviour
         moveCounter = 0;
 
         nextBoard.ResetNextBoard();
-        StartCoroutine(EnableTouch(.1f));
+
         gameOver = false;
 
         DimSleepingSquares();
@@ -181,8 +190,9 @@ public class GameBoardMechanics : MonoBehaviour
         SaveBoardState();
     }
 
-    IEnumerator EnableTouch(float num)
+    public IEnumerator EnableTouch(float num)
     {
+        Debug.Log("enable touch");
         yield return new WaitForSeconds(num);
         touchEnabled = true;
     }
@@ -190,8 +200,88 @@ public class GameBoardMechanics : MonoBehaviour
 
     #region Set Board State
 
+    public void SetDailyBoard() {
+        DailyModeOn = true;
+        PlayerPrefs.SetInt("DailyReminder", 1);
+        GetPuzzleFromDailySeed();
+        GameDataManager.GDM.hardModeOn = 1;
+        GameDataManager.GDM.SaveGameData();
+        ResetBoardState();
+
+        if (m_oDailyManager.hasHearts) {
+            StartCoroutine(EnableTouch(.1f));
+        }
+        else {
+            Debug.Log("touch disabled no hearts");
+            touchEnabled = false;
+        }
+        
+
+        for (int i = 0; i < gameBoardSquaresMechanics.Count; i++) {
+            gameBoardSquaresMechanics[i].number = dailyDesigns[dailyDesignIndex].designNumbers[i];
+            gameBoardSquaresMechanics[i].adjescentConnections = new List<bool> { false,false,false,false};
+            gameBoardSquaresMechanics[i].luckyCoin = false;
+            gameBoardSquaresMechanics[i].completed = false;
+            gameBoardSquaresMechanics[i].blocker = false;
+
+            if (dailyDesigns[dailyDesignIndex].designNumbers[i] == 5) {
+                gameBoardSquaresMechanics[i].completed = true;
+                gameBoardSquaresMechanics[i].blocker = true;
+            }
+
+
+            if (gameBoardSquaresMechanics[i].number != 0) {
+                gameBoardSquaresMechanics[i].SilentSquareDisplay();
+            }
+        }
+
+    }
+
+    private void GetPuzzleFromDailySeed() {
+
+        Debug.Log("Getting The Saved Daily Puzzle Seed");
+        int savedSeed = PlayerPrefs.GetInt("DailySeedNumber", 0);
+        Debug.Log("Getting The Current Daily Puzzle Seed");
+        int currentSeed = TimeManager.TM.GetDateInt();
+
+        if (savedSeed != currentSeed) {
+            Debug.Log("Selecting New Puzzle From Current Seed");
+            savedSeed = currentSeed;
+            
+            //new day reset player prefs
+            PlayerPrefs.SetInt("DailySeedNumber", savedSeed);
+            PlayerPrefs.SetInt("DailyHearts", 3);
+            PlayerPrefs.SetInt("DailyTargetHit",0);
+            PlayerPrefs.SetInt("DailyHighScore", 0);
+            PlayerPrefs.SetInt("DailyReminder", 0);
+
+            SetRandomDailyDesignIndex(savedSeed);
+        }
+        else {
+            Debug.Log("Dailies From Saved Seed");
+            dailyDesignIndex = PlayerPrefs.GetInt("DailyDesignIndex", 0);
+            dailyGoalScoreIndex = PlayerPrefs.GetInt("DailyGoalScoresIndex", 0);
+        }
+        
+        Debug.Log("Dailiy Design: " + dailyDesignIndex);
+    }
+
+    private void SetRandomDailyDesignIndex(int seed) {
+        UnityEngine.Random.InitState(seed);
+
+        dailyDesignIndex = UnityEngine.Random.Range(0, dailyDesigns.Count);
+        PlayerPrefs.SetInt("DailyDesignIndex", dailyDesignIndex);
+
+        dailyGoalScoreIndex = UnityEngine.Random.Range(0, dailyGoalScores.Count);
+        PlayerPrefs.SetInt("DailyGoalScoresIndex", dailyGoalScoreIndex);
+
+        UnityEngine.Random.InitState(System.Environment.TickCount);
+    }
+
     private void SetNormalBoard()
     {
+        m_oDailyManager.HideContinueOptions();
+        StartCoroutine(EnableTouch(.1f));
         Debug.Log("Normal Mode Board Setup");
         if (GameDataManager.GDM.gameOver)
         {
@@ -257,6 +347,8 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void SetHardBoard()
     {
+        m_oDailyManager.HideContinueOptions();
+        StartCoroutine(EnableTouch(.1f));
         Debug.Log("Hard Mode Board Setup");
         if (GameDataManager.GDM.HM_gameOver)
         {
@@ -320,8 +412,8 @@ public class GameBoardMechanics : MonoBehaviour
         }
     }
 
-    public void SetBoardState()
-    {
+    public void SetBoardState() {
+        DailyModeOn = false;
         Debug.Log("setup board state");
         hardModeOn = GameDataManager.GDM.hardModeOn;
         if (hardModeOn == 1)
@@ -417,15 +509,19 @@ public class GameBoardMechanics : MonoBehaviour
 
     public void SaveBoardState()
     {
-        Debug.Log("save board state");
-        hardModeOn = GameDataManager.GDM.hardModeOn;
-        if (hardModeOn == 1)
-        {
-            SaveHardBoard();
+        if (DailyModeOn) {
+            GameDataManager.GDM.currentSwitches = switchButton.switchAmmount;
+            GameDataManager.GDM.SaveGameData();
         }
-        else
-        {
-            SaveNormalBoard();
+        else {
+            Debug.Log("save board state");
+            hardModeOn = GameDataManager.GDM.hardModeOn;
+            if (hardModeOn == 1) {
+                SaveHardBoard();
+            }
+            else {
+                SaveNormalBoard();
+            }
         }
     }
     #endregion
@@ -475,7 +571,12 @@ public class GameBoardMechanics : MonoBehaviour
 
     IEnumerator AnimationsThenRevealGameOverPanel()
     {
-        //StartCoroutine(cameraHolder.Shake(shakeTime, shakeMaxMagnitude));
+        if (DailyModeOn) {
+            yield return new WaitForSeconds(.1f);
+            LoseHeart();
+            yield return new WaitForSeconds(.5f);
+        }
+
         ShakeBoard();
         SoundManager.SM.PlayOneShotSound("pop");
         ScaleSquares();
@@ -486,6 +587,10 @@ public class GameBoardMechanics : MonoBehaviour
         //SoundManager.SM.PlayOneShotSound("pop");
 
         ShowGameOverPanel();
+    }
+
+    private void LoseHeart() {
+        m_oDailyManager.LoseOneHeart();
     }
 
     private void ShowGameOverPanel()
@@ -510,13 +615,21 @@ public class GameBoardMechanics : MonoBehaviour
     {
         Debug.Log("Post To Leaderboard");
         long scoreToPost = score;
-        if (hardModeOn == 1)
-        {
-            Leaderboards.HardModeHighScore.SubmitScore(scoreToPost, callbackCheck);
+
+        if (DailyModeOn) {
+            Debug.Log("Posted to Daily Leaderboard");
+            Leaderboards.DailyHighScore.SubmitScore(scoreToPost, callbackCheck);
         }
-        else
-        {
-           Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+        else {
+            if (hardModeOn == 1) {
+                Debug.Log("Posted to 4 Eyed Leaderboard");
+                Leaderboards.HardModeHighScore.SubmitScore(scoreToPost, callbackCheck);
+            }
+            else {
+                Debug.Log("Posted to 3 Eyed Leaderboard");
+                Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+            }
+
         }
 
     }
@@ -563,6 +676,10 @@ public class GameBoardMechanics : MonoBehaviour
 
     IEnumerator NewHighScoreAnimation()
     {
+        if (DailyModeOn) {
+            DailyModeNewHighScore();
+        }
+
         SoundManager.SM.PlayOneShotSound("kazoo");
         confetti.SetActive(true);
         yield return new WaitForSeconds(0.1f);
@@ -573,6 +690,22 @@ public class GameBoardMechanics : MonoBehaviour
         yield return new WaitForSeconds(3f);
         confetti.SetActive(false);
     }
+
+    private void DailyModeNewHighScore() {
+        int targetHit = PlayerPrefs.GetInt("DailyTargetHit", 0);
+        if (targetHit == 0) {
+            PlayerPrefs.SetInt("DailyTargetHit", 1);
+            m_oBestScoreIcon.EnableCrown();
+            m_oTargetReward.TargetHitRevealAnimation();
+
+            //for playfab tracking
+            int counter = PlayerPrefs.GetInt("Daily_Complete", 0);
+            counter++;
+            PlayerPrefs.SetInt("Daily_Complete", counter);
+        }
+        PlayerPrefs.SetInt("DailyHighScore", score);
+    }
+
 
     private void UpdateScoreDiplay()
     {
@@ -587,6 +720,14 @@ public class GameBoardMechanics : MonoBehaviour
     private void UpdateHighScoreDisplay()
     {
         highScore_text.text = highScore.ToString();
+
+        if (DailyModeOn) {
+            int targetHit = PlayerPrefs.GetInt("DailyTargetHit", 0);
+            if (targetHit == 1) {
+                //switch arrow to crown
+                m_oBestScoreIcon.EnableCrown();
+            }
+        }
     }
 
 
@@ -623,10 +764,11 @@ public class GameBoardMechanics : MonoBehaviour
     #region Hard Mode
     public void TurnOnHardMode()
     {
+        m_oDailyManager.CheckIfDailyStarted();
+        DailyModeOn = false;
         Debug.Log("Turn Hard Mode On");
         TimeManager.TM.StopTimer();
-        CheckIfFirstTimeEverHardMode();
-        SoundManager.SM.PlayOneShotSound("select1");
+        //SoundManager.SM.PlayOneShotSound("select1");
         GameDataManager.GDM.SaveGameData();
         hardModeOn = 1;
         GameDataManager.GDM.hardModeOn = hardModeOn;
@@ -637,21 +779,12 @@ public class GameBoardMechanics : MonoBehaviour
         GameDataManager.GDM.SaveGameData();
     }
 
-    private void CheckIfFirstTimeEverHardMode()
-    {
-        int playedHardMode = PlayerPrefs.GetInt("PlayedHardMode", 0);
-        if(playedHardMode == 0)
-        {
-            PlayerPrefs.SetInt("PlayedHardMode", 1);
-            notificationSystem.CheckAlertStatus();
-        }
-    }
-
-    public void TurnOffHardMode()
-    {
+    public void TurnOffHardMode() {
+        m_oDailyManager.CheckIfDailyStarted();
+        DailyModeOn = false;
         Debug.Log("Turn Hard Mode Off");
         TimeManager.TM.StopTimer();
-        SoundManager.SM.PlayOneShotSound("select1");
+        //SoundManager.SM.PlayOneShotSound("select1");
         GameDataManager.GDM.SaveGameData();
         hardModeOn = 0;
         GameDataManager.GDM.hardModeOn = hardModeOn;
@@ -722,29 +855,45 @@ public class GameBoardMechanics : MonoBehaviour
 
     private void GetHighScore()
     {
-        if (hardModeOn == 1)
-        {
-            highScore = GameDataManager.GDM.HardModeHighScore_AllTime;
+        if (DailyModeOn) {
+            int dailyTargetHit = PlayerPrefs.GetInt("DailyTargetHit", 0);
+            
+            //daily already hit true
+            if(dailyTargetHit == 1) {
+                highScore = PlayerPrefs.GetInt("DailyHighScore", 0);
+            }
+            else {
+                highScore = dailyGoalScores[dailyGoalScoreIndex];
+            }
         }
-        else
-        {
-            highScore = GameDataManager.GDM.HighScore_AllTime;
+        else { 
+            if (hardModeOn == 1) {
+                highScore = GameDataManager.GDM.HardModeHighScore_AllTime;
+            }
+            else {
+                highScore = GameDataManager.GDM.HighScore_AllTime;
+            }
         }
     }
 
     private void SaveHighScore()
     {
-        if (hardModeOn == 1)
-        {
-            GameDataManager.GDM.HardModeHighScore_AllTime = highScore;
-            Debug.Log("HardMode HighScore Updated");
+        if (DailyModeOn) {
+            PlayerPrefs.SetInt("DailyHighScore", highScore);
         }
-        else
-        {
-            GameDataManager.GDM.HighScore_AllTime = highScore;
-            Debug.Log("Regular HighScore Updated");
+        else {
+            if (hardModeOn == 1) {
+                GameDataManager.GDM.HardModeHighScore_AllTime = highScore;
+                Debug.Log("HardMode HighScore Updated");
+            }
+            else {
+                GameDataManager.GDM.HighScore_AllTime = highScore;
+                Debug.Log("Regular HighScore Updated");
+            }
+            GameDataManager.GDM.SaveGameData();
         }
-        GameDataManager.GDM.SaveGameData();
+
+
     }
 
     private void SetBlockerSquaresList()
@@ -766,7 +915,7 @@ public class GameBoardMechanics : MonoBehaviour
 
 
         float testAspect = ((float)Camera.main.pixelHeight / Camera.main.pixelWidth);
-        if (testAspect > 1.5)
+        if (testAspect > 1.7)
         {
             Camera.main.orthographicSize = newOrtho;
         }
@@ -955,39 +1104,36 @@ public class GameBoardMechanics : MonoBehaviour
 
     IEnumerator ExplosionEffects()
     {
-        Instantiate(gameOverEffect, gameOverEffectPosition1 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect2, gameOverEffectPosition1 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //.SM.PlayOneShotSound("fireworks");
+        GameObject effect1 = Instantiate(gameOverEffect2, gameOverEffectPosition1 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect1.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect2 = Instantiate(gameOverEffect2, gameOverEffectPosition1 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect2.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition2 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition2 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
+        GameObject effect3 = Instantiate(gameOverEffect2, gameOverEffectPosition2 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect3.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect4 = Instantiate(gameOverEffect2, gameOverEffectPosition2 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect4.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition3 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition3 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
+        GameObject effect5 = Instantiate(gameOverEffect2, gameOverEffectPosition3 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect5.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect6 = Instantiate(gameOverEffect2, gameOverEffectPosition3 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect6.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition4 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition4 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
+        GameObject effect7 = Instantiate(gameOverEffect2, gameOverEffectPosition4 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect7.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect8 = Instantiate(gameOverEffect2, gameOverEffectPosition4 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect8.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect, gameOverEffectPosition5 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect2, gameOverEffectPosition5 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
+        GameObject effect9 = Instantiate(gameOverEffect2, gameOverEffectPosition5 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect9.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect10 = Instantiate(gameOverEffect2, gameOverEffectPosition5 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect10.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition6 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition6 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
+        GameObject effect11 = Instantiate(gameOverEffect2, gameOverEffectPosition6 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect11.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        GameObject effect12 = Instantiate(gameOverEffect2, gameOverEffectPosition6 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform) as GameObject;
+        effect12.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition7 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition7 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
-        yield return new WaitForSeconds(.125f);
-        Instantiate(gameOverEffect2, gameOverEffectPosition8 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        Instantiate(gameOverEffect, gameOverEffectPosition8 + new Vector3(1, 0, 0), Quaternion.identity, gameObject.transform);
-        //SoundManager.SM.PlayOneShotSound("fireworks");
-        yield return new WaitForSeconds(.125f);
-
     }
 
     private void FixGameboardScale()

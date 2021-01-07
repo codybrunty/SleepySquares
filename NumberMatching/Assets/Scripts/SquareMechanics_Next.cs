@@ -55,6 +55,11 @@ public class SquareMechanics_Next : MonoBehaviour{
             randomMax = 5;
         }
 
+        //shift back to 4 when in daily leaderboards 
+        if (gameboard.DailyModeOn) {
+            randomMax = 4;
+        }
+
         int resultNumber = UnityEngine.Random.Range(1, randomMax);
 
 
@@ -86,7 +91,7 @@ public class SquareMechanics_Next : MonoBehaviour{
                 }
             }
         }
-        //Normal Mode
+        //Normal Mode or daily
         else
         {
             if(gameboard.score < 150)

@@ -18,7 +18,9 @@ public class SettingsMenu : MonoBehaviour{
     [SerializeField] Image bg = default;
     [SerializeField] GameBoardMechanics gameboard = default;
     [SerializeField] NotificationSystem notificationSystem = default;
+    [SerializeField] GameObject internetreachable = default;
     public float fadeDuration = .5f;
+    public DailyManager m_oDailyManager;
 
     public void ShowMainPanel() {
         FadeInPanel(MainPanel);
@@ -28,8 +30,6 @@ public class SettingsMenu : MonoBehaviour{
         Music.gameObject.SetActive(true);
         SFX.gameObject.SetActive(true);
 
-        notificationSystem.CheckAlertStatus();
-
         StartCoroutine(FadeOutBack());
         StartCoroutine(FadeOutPanel(StorePanel));
         StartCoroutine(FadeOutPanel(LanguagePanel));
@@ -38,6 +38,7 @@ public class SettingsMenu : MonoBehaviour{
 
         DisableGameboardTouch();
         PlayPositiveSFX();
+        internetreachable.SetActive(false);
     }
 
     public void ShowMainPanel(bool playNegative)
@@ -64,6 +65,8 @@ public class SettingsMenu : MonoBehaviour{
         {
             PlayPositiveSFX();
         }
+
+        internetreachable.SetActive(false);
     }
 
     public void ShowTrophyPanel()
@@ -81,10 +84,13 @@ public class SettingsMenu : MonoBehaviour{
         TurnOffSoundButtons();
         DisableGameboardTouch();
         PlayPositiveSFX();
+
+        internetreachable.SetActive(false);
     }
 
     public void ShowStorePanel()
     {
+        internetreachable.SetActive(true);
         FadeInPanel(StorePanel);
 
         StartCoroutine(FadeOutPanel(MainPanel));
@@ -115,6 +121,8 @@ public class SettingsMenu : MonoBehaviour{
         TurnOffSoundButtons();
         DisableGameboardTouch();
         PlayPositiveSFX();
+
+        internetreachable.SetActive(false);
     }
 
     public void ShowCreditsPanel()
@@ -133,6 +141,8 @@ public class SettingsMenu : MonoBehaviour{
         TurnOffSoundButtons();
         DisableGameboardTouch();
         PlayPositiveSFX();
+
+        internetreachable.SetActive(false);
     }
 
 
@@ -151,6 +161,7 @@ public class SettingsMenu : MonoBehaviour{
         TurnOffSoundButtons();
         StartCoroutine(EnableGameboardTouch());
         PlayNegativeSFX();
+        internetreachable.SetActive(false);
     }
 
     public void ExitSettings(bool playSound)
@@ -171,6 +182,8 @@ public class SettingsMenu : MonoBehaviour{
         {
             PlayNegativeSFX();
         }
+
+        internetreachable.SetActive(false);
     }
 
     private void TurnOffSoundButtons()
@@ -193,7 +206,13 @@ public class SettingsMenu : MonoBehaviour{
     IEnumerator EnableGameboardTouch() {
         yield return new WaitForSeconds(.25f);
         if (gameboard.gameOver != true) {
+            
             gameboard.touchEnabled = true;
+
+            //if we dont have any hearts and daily mode is on
+            if (m_oDailyManager.hasHearts==false && gameboard.DailyModeOn == true) {
+                gameboard.touchEnabled = false;
+            }
         }
     }
 

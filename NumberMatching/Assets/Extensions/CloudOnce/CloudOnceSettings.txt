@@ -10,6 +10,11 @@
 			"InternalID":"HardModeHighScore",
 			"AppleID":"hardhighscore.001",
 			"GoogleID":"CgkI1a-4sNcXEAIQAw"
+		},
+		{
+			"InternalID":"DailyHighScore",
+			"AppleID":"dailyhighscore.001",
+			"GoogleID":"CgkI1a-4sNcXEAIQBA"
 		}
 	],
 	"CloudVariables":[],

@@ -44,6 +44,21 @@ namespace CloudOnce
             get { return s_hardModeHighScore; }
         }
 
+        private static readonly UnifiedLeaderboard s_dailyHighScore = new UnifiedLeaderboard("DailyHighScore",
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS)
+            "dailyhighscore.001"
+#elif !UNITY_EDITOR && UNITY_ANDROID && CLOUDONCE_GOOGLE
+            "CgkI1a-4sNcXEAIQBA"
+#else
+            "DailyHighScore"
+#endif
+            );
+
+        public static UnifiedLeaderboard DailyHighScore
+        {
+            get { return s_dailyHighScore; }
+        }
+
         public static string GetPlatformID(string internalId)
         {
             return s_leaderboardDictionary.ContainsKey(internalId)
@@ -55,6 +70,7 @@ namespace CloudOnce
         {
             { "HighScore", s_highScore },
             { "HardModeHighScore", s_hardModeHighScore },
+            { "DailyHighScore", s_dailyHighScore },
         };
     }
 }

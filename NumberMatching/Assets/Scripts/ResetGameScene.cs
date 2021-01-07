@@ -77,7 +77,11 @@ public class ResetGameScene : MonoBehaviour{
 
     IEnumerator EnableButtons()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
+        if (gameBoard.DailyModeOn) {
+            yield return new WaitForSeconds(1f);
+        }
+
         foreach (Button b in disabledButtons)
         {
             b.interactable = true;
@@ -141,11 +145,15 @@ public class ResetGameScene : MonoBehaviour{
     public void ResetGameOverOnClick() {
         SoundManager.SM.PlayOneShotSound("ResetGame");
         settings.ExitSettings(false);
-        gameBoard.ResetBoardState();
         GameOverPanel.ResetGameOverPanelScale();
         GameOverPanel.gameObject.SetActive(false);
-        notificationSystem.CheckAlertStatus();
-        //MusicManager.MM.FadeInNewMusic();
+
+        if (gameBoard.DailyModeOn) {
+            gameBoard.SetDailyBoard();
+        }
+        else {
+            gameBoard.ResetBoardState();
+        }
     }
 
     public void OnResetPostToLeaderboard(int hardModeOn) {

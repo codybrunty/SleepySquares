@@ -26,7 +26,7 @@ public class SplashScreenManager : MonoBehaviour
         int tutorial = PlayerPrefs.GetInt("TutorialComplete",0);
         if (tutorial == 1)
         {
-            sceneName = "Game";
+            sceneName = "Gameboard";
         }
         else {
             sceneName = "Tutorial";

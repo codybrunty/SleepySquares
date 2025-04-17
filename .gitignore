@@ -59,3 +59,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Auto-generated build info for versioning, timestamps, etc.
+Assets/StreamingAssets/build_info
+
+# Ignore user-specific editor layouts
+UserSettings/

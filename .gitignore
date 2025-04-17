@@ -56,11 +56,11 @@ sysinfo.txt
 *.unitypackage
 *.aab
 
-# Crashlytics generated file
-crashlytics-build.properties
+# Crashlytics
+SleepySquares/crashlytics-build.properties
 
-# Auto-generated build info for versioning, timestamps, etc.
-Assets/StreamingAssets/build_info
+# Auto-generated build info
+SleepySquares/Assets/StreamingAssets/build_info
 
-# Ignore user-specific editor layouts
-UserSettings/
+# User-specific Unity layout and editor settings
+SleepySquares/UserSettings/

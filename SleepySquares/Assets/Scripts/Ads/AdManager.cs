@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
+public class AdManager : MonoBehaviour, IUnityAdsShowListener, IUnityAdsLoadListener,IUnityAdsInitializationListener {
 
-public class AdManager : MonoBehaviour, IUnityAdsListener{
 
     private string playStoreID = "3757843";
     private string appStoreID = "3757842";
@@ -23,7 +23,9 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
     [SerializeField] GameObject dcImage = default;
     [SerializeField] GameObject playImage = default;
     private Image adButtonImage;
-    public bool m_bIsHearts = false;
+    public bool m_bIsHearts = false; 
+    private bool adIsReady = false;
+
     public DailyManager m_oDailyManager;
 
     private void Awake() {
@@ -32,16 +34,17 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
 
     private void Start() {
         GetPlatformID();
-        Advertisement.AddListener(this);
         InitializeAdManager();
+        Advertisement.Load(rewardedAd, this);
     }
 
     private void GetPlatformID() {
-#if UNITY_IPHONE
-        platformID = appStoreID;
-#endif
-#if UNITY_ANDROID
-        platformID = playStoreID;
+#if UNITY_IOS
+    platformID = appStoreID;
+#elif UNITY_ANDROID
+    platformID = playStoreID;
+#else
+        platformID = "3757843"; 
 #endif
     }
 
@@ -60,45 +63,38 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
     }
 
     private void InitializeAdManager() {
-        Advertisement.Initialize(platformID, isTestAd);
+        Advertisement.Initialize(platformID, isTestAd, this);
     }
 
     public void PlayRewardedAd_store() {
-        if (!Advertisement.IsReady(rewardedAd)) { return; }
-        Advertisement.Show(rewardedAd);
+        if (!adIsReady) return;
+        Advertisement.Show(rewardedAd, this);
     }
     public void PlayRewardedAd_hearts() {
-        m_bIsHearts = true;
-        if (!Advertisement.IsReady(rewardedAd)) { return; }
-        Advertisement.Show(rewardedAd);
-    
+        m_bIsHearts = true; 
+        if (!adIsReady) return;
+        Advertisement.Show(rewardedAd, this);
+
     }
 
-
-    //IUnityAdsListener
-    public void OnUnityAdsReady(string placementId) {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnUnityAdsDidError(string message) {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnUnityAdsDidStart(string placementId) {
-        //throw new System.NotImplementedException();
-    }
-
-    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult) {
-        switch (showResult) {
-            case ShowResult.Failed:
-                break;
-            case ShowResult.Skipped:
-                break;
-            case ShowResult.Finished:
-                if (placementId == rewardedAd) { RewardPlayer(); }
-                break;
+    public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState) {
+        if (placementId == rewardedAd && showCompletionState == UnityAdsShowCompletionState.COMPLETED) {
+            RewardPlayer();
         }
     }
+
+    public void OnUnityAdsShowStart(string placementId) { }
+    public void OnUnityAdsShowClick(string placementId) { }
+    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message) { }
+
+    public void OnUnityAdsAdLoaded(string placementId) {
+        if (placementId == rewardedAd) {
+            adIsReady = true;
+        }
+    }
+
+    public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message) { }
+
 
     private void RewardPlayer() {
         if (m_bIsHearts) {
@@ -124,4 +120,13 @@ public class AdManager : MonoBehaviour, IUnityAdsListener{
             PlayerPrefs.SetInt("Ads_Watched", counter);
         }
     }
+
+    public void OnInitializationComplete() {
+        Debug.Log("Unity Ads Initialization Complete");
+    }
+
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message) {
+        Debug.LogError($"Unity Ads Initialization Failed: {error} - {message}");
+    }
+
 }

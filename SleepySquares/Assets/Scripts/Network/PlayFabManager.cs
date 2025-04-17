@@ -112,12 +112,13 @@ public class PlayFabManager : MonoBehaviour
 
     public void SetPlayfabPlayerStatistics()
     {
-        TimeManager.TM.SaveTimer();
-        GetLocalUserStatistics();
 
-        PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
-        {
-            Statistics = new List<StatisticUpdate> {
+        if (PlayFabClientAPI.IsClientLoggedIn()) {
+            TimeManager.TM.SaveTimer();
+            GetLocalUserStatistics();
+
+            PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest {
+                Statistics = new List<StatisticUpdate> {
             new StatisticUpdate { StatisticName = "Trophy_Level", Value = Trophy_Level },
             new StatisticUpdate { StatisticName = "Score", Value = Score },
             new StatisticUpdate { StatisticName = "HighScore", Value = HighScore },
@@ -137,9 +138,15 @@ public class PlayFabManager : MonoBehaviour
             new StatisticUpdate { StatisticName = "Ads_Watched_Daily", Value = Ads_Watched_Daily },
             new StatisticUpdate { StatisticName = "Daily_Complete", Value = Daily_Complete },
             new StatisticUpdate { StatisticName = "Daily_Failed", Value = Daily_Failed },}
-        },
-        result => { Debug.Log("User statistics updated"); },
-        error => { Debug.LogError(error.GenerateErrorReport()); });
+            },
+            result => { Debug.Log("User statistics updated"); },
+            error => { Debug.LogError(error.GenerateErrorReport()); });
+        }
+        else {
+            Debug.LogWarning("Tried to update stats before login");
+        }
+
+
     }
 
     public void GetLocalUserStatistics(){

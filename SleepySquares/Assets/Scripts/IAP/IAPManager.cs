@@ -88,6 +88,9 @@ public class IAPManager : MonoBehaviour, IStoreListener {
     public void OnInitializeFailed(InitializationFailureReason error) {
         Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
     }
+    public void OnInitializeFailed(InitializationFailureReason error,string message) {
+        Debug.Log("OnInitializeFailed InitializationFailureReason:" + error+" "+message);
+    }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) {
         if (String.Equals(args.purchasedProduct.definition.id, swap_30, StringComparison.Ordinal)) {

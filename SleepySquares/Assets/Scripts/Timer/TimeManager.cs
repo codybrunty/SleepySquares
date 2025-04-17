@@ -101,7 +101,7 @@ public class TimeManager : MonoBehaviour
 
     public IEnumerator GetDateTime() {
         Debug.Log("Connecting to Internet");
-        UnityWebRequest myHttpWebRequest = UnityWebRequest.Get("http://www.microsoft.com");
+        UnityWebRequest myHttpWebRequest = UnityWebRequest.Get("https://www.microsoft.com");
         yield return myHttpWebRequest.SendWebRequest();
 
         if (myHttpWebRequest.error == null) {

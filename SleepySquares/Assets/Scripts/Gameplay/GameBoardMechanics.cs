@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using CloudOnce;
+//using CloudOnce;
 
 public class GameBoardMechanics : MonoBehaviour
 {
@@ -618,22 +618,22 @@ public class GameBoardMechanics : MonoBehaviour
 
         if (DailyModeOn) {
             Debug.Log("Posted to Daily Leaderboard");
-            Leaderboards.DailyHighScore.SubmitScore(scoreToPost, callbackCheck);
+            //Leaderboards.DailyHighScore.SubmitScore(scoreToPost, callbackCheck);
         }
         else {
             if (hardModeOn == 1) {
                 Debug.Log("Posted to 4 Eyed Leaderboard");
-                Leaderboards.HardModeHighScore.SubmitScore(scoreToPost, callbackCheck);
+                //Leaderboards.HardModeHighScore.SubmitScore(scoreToPost, callbackCheck);
             }
             else {
                 Debug.Log("Posted to 3 Eyed Leaderboard");
-                Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
+                //Leaderboards.HighScore.SubmitScore(scoreToPost, callbackCheck);
             }
 
         }
 
     }
-    
+    /*
     private void callbackCheck(CloudRequestResult<bool> result)
     {
         if (result.Result == false)
@@ -641,7 +641,7 @@ public class GameBoardMechanics : MonoBehaviour
             Debug.Log(result.Error);
         }
     }
-    
+    */
     #endregion
 
     #region Scoring

@@ -59,8 +59,8 @@ sysinfo.txt
 # Crashlytics
 SleepySquares/crashlytics-build.properties
 
-# Auto-generated build info
-SleepySquares/Assets/StreamingAssets/build_info
-
-# User-specific Unity layout and editor settings
-SleepySquares/UserSettings/
+[Aa]ssets/PlayFabEditorExtensions
+[Aa]ssets/StreamingAssets/build_info
+[Aa]ssets/StreamingAssets/build_info.meta
+[Aa]ssets/UIParticles/Examples/Sprites/UI.spriteatlas
+[Uu]serSettings
